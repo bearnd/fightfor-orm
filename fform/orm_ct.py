@@ -74,7 +74,7 @@ class Sponsor(Base, OrmBase):
     # Relationship to a list of `Study` records.
     studies = sqlalchemy.orm.relationship(
         argument="Study",
-        secondary="study_sponsors",
+        secondary="clinicaltrials.study_sponsors",
         back_populates="sponsors"
     )
 
@@ -145,7 +145,7 @@ class Keyword(Base, OrmBase):
     # Relationship to a list of `Study` records.
     studies = sqlalchemy.orm.relationship(
         argument="Study",
-        secondary="study_keywords",
+        secondary="clinicaltrials.study_keywords",
         back_populates="keywords"
     )
 
@@ -206,7 +206,7 @@ class Condition(Base, OrmBase):
     # Relationship to a list of `Study` records.
     studies = sqlalchemy.orm.relationship(
         argument="Study",
-        secondary="study_conditions",
+        secondary="clinicaltrials.study_conditions",
         back_populates="conditions"
     )
 
@@ -566,7 +566,7 @@ class Investigator(Base, OrmBase):
     # Relationship to a list of `Location` records.
     locations = sqlalchemy.orm.relationship(
         argument="Location",
-        secondary="location_investigators",
+        secondary="clinicaltrials.location_investigators",
     )
 
     # Set table arguments.
@@ -662,13 +662,13 @@ class Location(Base, OrmBase):
     # Relationship to a list of `Investigator` records.
     investigators = sqlalchemy.orm.relationship(
         argument="Investigator",
-        secondary="location_investigators",
+        secondary="clinicaltrials.location_investigators",
     )
 
     # Relationship to a list of `Studies` records.
     studies = sqlalchemy.orm.relationship(
         argument="Study",
-        secondary="study_locations",
+        secondary="clinicaltrials.study_locations",
         back_populates="locations",
     )
 
@@ -1334,7 +1334,7 @@ class Measurement(Base, OrmBase):
     # Relationship to a `MeasureCategory` record.
     measure_category = sqlalchemy.orm.relationship(
         argument="MeasureCategory",
-        secondary="measure_category_measurements",
+        secondary="clinicaltrials.measure_category_measurements",
     )
 
     # Set table arguments.
@@ -1368,7 +1368,7 @@ class MeasureCategory(Base, OrmBase):
     # Relationship to a list of `Measurement` records.
     measurements = sqlalchemy.orm.relationship(
         argument="Measurement",
-        secondary="measure_category_measurements",
+        secondary="clinicaltrials.measure_category_measurements",
     )
 
     # Set table arguments.
@@ -1432,13 +1432,13 @@ class MeasureClass(Base, OrmBase):
     # Relationship to a list of `MeasureAnalyzed` records.
     measure_analyzeds = sqlalchemy.orm.relationship(
         argument="MeasureAnalyzed",
-        secondary="measure_class_analyzeds",
+        secondary="clinicaltrials.measure_class_analyzeds",
     )
 
     # Relationship to a list of `MeasureCategory` records.
     measure_categories = sqlalchemy.orm.relationship(
         argument="MeasureCategory",
-        secondary="measure_class_categories",
+        secondary="clinicaltrials.measure_class_categories",
     )
 
     # Set table arguments.
@@ -1594,13 +1594,13 @@ class Measure(Base, OrmBase):
     # Relationship to a list of `MeasureAnalyzed` records.
     measure_analyzeds = sqlalchemy.orm.relationship(
         argument="MeasureAnalyzed",
-        secondary="measure_measure_analyzeds",
+        secondary="clinicaltrials.measure_measure_analyzeds",
     )
 
     # Relationship to a list of `MeasureClass` records.
     measure_classes = sqlalchemy.orm.relationship(
         argument="MeasureClass",
-        secondary="measure_measure_classes",
+        secondary="clinicaltrials.measure_measure_classes",
     )
 
     # Set table arguments.
@@ -1752,7 +1752,7 @@ class ResultOutcome(Base, OrmBase):
     # Relationship to a list of `Group` records.
     groups = sqlalchemy.orm.relationship(
         argument="Group",
-        secondary="result_outcome_groups",
+        secondary="clinicaltrials.result_outcome_groups",
     )
 
     # Relationship to a `Measure` record.
@@ -1919,13 +1919,13 @@ class Intervention(Base, OrmBase):
     # Relationship to a list of `ArmGroup` records.
     arm_groups = sqlalchemy.orm.relationship(
         argument="ArmGroup",
-        secondary="intervention_arm_groups",
+        secondary="clinicaltrials.intervention_arm_groups",
     )
 
     # Relationship to a list of `Alias` records.
     aliases = sqlalchemy.orm.relationship(
         argument="Alias",
-        secondary="intervention_aliases",
+        secondary="clinicaltrials.intervention_aliases",
     )
 
     # Set table arguments.
@@ -2278,7 +2278,7 @@ class MeshTerm(Base, OrmBase):
     # Relationship to a list of `Study` records.
     studies = sqlalchemy.orm.relationship(
         argument="Study",
-        secondary="study_mesh_terms",
+        secondary="clinicaltrials.study_mesh_terms",
         back_populates="mesh_terms"
     )
 
@@ -2419,7 +2419,7 @@ class Participant(Base, OrmBase):
     # Relationship to a `Milestone` record.
     milestones = sqlalchemy.orm.relationship(
         argument="Milestone",
-        secondary="milestone_participants",
+        secondary="clinicaltrials.milestone_participants",
     )
 
     # Set table arguments.
@@ -2453,7 +2453,7 @@ class Milestone(Base, OrmBase):
     # Relationship to a list of `Participant` records.
     participants = sqlalchemy.orm.relationship(
         argument="Participant",
-        secondary="milestone_participants",
+        secondary="clinicaltrials.milestone_participants",
     )
 
     # Set table arguments.
@@ -2552,13 +2552,13 @@ class Period(Base, OrmBase):
     # Relationship to a list of `Milestone` records.
     milestones = sqlalchemy.orm.relationship(
         argument="Milestone",
-        secondary="period_milestones",
+        secondary="clinicaltrials.period_milestones",
     )
 
     # Relationship to a list of `DropWithdrawReason` records.
     drop_withdraw_reasons = sqlalchemy.orm.relationship(
         argument="DropWithdrawReason",
-        secondary="period_drop_withdraw_reasons",
+        secondary="clinicaltrials.period_drop_withdraw_reasons",
     )
 
     # Set table arguments.
@@ -2675,13 +2675,13 @@ class ParticipantFlow(Base, OrmBase):
     # Relationship to a list of `Group` records.
     groups = sqlalchemy.orm.relationship(
         argument="Group",
-        secondary="participant_flow_groups",
+        secondary="clinicaltrials.participant_flow_groups",
     )
 
     # Relationship to a list of `Period` records.
     periods = sqlalchemy.orm.relationship(
         argument="Period",
-        secondary="participant_flow_periods",
+        secondary="clinicaltrials.participant_flow_periods",
     )
 
     # Set table arguments.
@@ -2793,19 +2793,19 @@ class Baseline(Base, OrmBase):
     # Relationship to a list of `Group` records.
     groups = sqlalchemy.orm.relationship(
         argument="Group",
-        secondary="baseline_groups",
+        secondary="clinicaltrials.baseline_groups",
     )
 
     # Relationship to a list of `MeasureAnalyzed` records.
     measure_analyzeds = sqlalchemy.orm.relationship(
         argument="MeasureAnalyzed",
-        secondary="baseline_measure_analyzeds",
+        secondary="clinicaltrials.baseline_measure_analyzeds",
     )
 
     # Relationship to a list of `Measures` records.
     measures = sqlalchemy.orm.relationship(
         argument="Measure",
-        secondary="baseline_measures",
+        secondary="clinicaltrials.baseline_measures",
     )
 
     # Set table arguments.
@@ -3017,7 +3017,7 @@ class Event(Base, OrmBase):
     # Relationship to a list of `EventCount` records.
     counts = sqlalchemy.orm.relationship(
         argument="EventCount",
-        secondary="event_event_counts",
+        secondary="clinicaltrials.event_event_counts",
     )
 
     # Set table arguments.
@@ -3088,7 +3088,7 @@ class EventCategory(Base, OrmBase):
     # Relationship to a list of `Event` records.
     events = sqlalchemy.orm.relationship(
         argument="Event",
-        secondary="event_category_events",
+        secondary="clinicaltrials.event_category_events",
     )
 
     # Set table arguments.
@@ -3177,7 +3177,7 @@ class EventList(Base, OrmBase):
     # Relationship to a list of `EventCategory` records.
     event_categories = sqlalchemy.orm.relationship(
         argument="EventCategory",
-        secondary="event_list_categories",
+        secondary="clinicaltrials.event_list_categories",
     )
 
     # Set table arguments.
@@ -3257,7 +3257,7 @@ class ReportedEvent(Base, OrmBase):
     # Relationship to a list of `Group` records.
     groups = sqlalchemy.orm.relationship(
         argument="Group",
-        secondary="reported_event_groups",
+        secondary="clinicaltrials.reported_event_groups",
     )
 
     # Foreign key to an event-list ID.
@@ -3477,7 +3477,7 @@ class Study(Base, OrmBase):
     # Relationship to a list of `Alias` records.
     aliases = sqlalchemy.orm.relationship(
         argument="Alias",
-        secondary="study_aliases",
+        secondary="clinicaltrials.study_aliases",
     )
 
     # Referring to the value of the `<brief_title>` element.
@@ -3504,7 +3504,7 @@ class Study(Base, OrmBase):
     # Relationship to a list of `Sponsor` records.
     sponsors = sqlalchemy.orm.relationship(
         argument="Sponsor",
-        secondary="study_sponsors",
+        secondary="clinicaltrials.study_sponsors",
         back_populates="studies",
     )
 
@@ -3648,7 +3648,7 @@ class Study(Base, OrmBase):
     # Relationship to a list of `ProtocolOutcome` records.
     outcomes = sqlalchemy.orm.relationship(
         argument="ProtocolOutcome",
-        secondary="study_outcomes",
+        secondary="clinicaltrials.study_outcomes",
     )
 
     # Foreign key to the enrollment ID.
@@ -3666,20 +3666,20 @@ class Study(Base, OrmBase):
     # Relationship to a list of `Condition` records.
     conditions = sqlalchemy.orm.relationship(
         argument="Condition",
-        secondary="study_conditions",
+        secondary="clinicaltrials.study_conditions",
         back_populates="studies",
     )
 
     # Relationship to a list of `ArmGroup` records.
     arm_groups = sqlalchemy.orm.relationship(
         argument="ArmGroup",
-        secondary="study_arm_groups",
+        secondary="clinicaltrials.study_arm_groups",
     )
 
     # Relationship to a list of `Intervention` records.
     interventions = sqlalchemy.orm.relationship(
         argument="Intervention",
-        secondary="study_interventions",
+        secondary="clinicaltrials.study_interventions",
     )
 
     # Referring to the value of the `<biospec_retention>` element.
@@ -3712,7 +3712,7 @@ class Study(Base, OrmBase):
     # Relationship to a list of `Investigator` records.
     investigators = sqlalchemy.orm.relationship(
         argument="Investigator",
-        secondary="study_investigators",
+        secondary="clinicaltrials.study_investigators",
     )
 
     # Foreign key to a contact ID of 'primary' type.
@@ -3744,7 +3744,7 @@ class Study(Base, OrmBase):
     # Relationship to a list of `Location` records.
     locations = sqlalchemy.orm.relationship(
         argument="Location",
-        secondary="study_locations",
+        secondary="clinicaltrials.study_locations",
         back_populates="studies"
     )
 
@@ -3755,7 +3755,7 @@ class Study(Base, OrmBase):
     # Relationship to a list of `Reference` records.
     references = sqlalchemy.orm.relationship(
         argument="Reference",
-        secondary="study_references",
+        secondary="clinicaltrials.study_references",
     )
 
     # Foreign key to the study-dates ID.
@@ -3787,14 +3787,14 @@ class Study(Base, OrmBase):
     # Relationship to a list of `Keyword` records.
     keywords = sqlalchemy.orm.relationship(
         argument="Keyword",
-        secondary="study_keywords",
+        secondary="clinicaltrials.study_keywords",
         back_populates="studies",
     )
 
     # Relationship to a list of `MeshTerm` records.
     mesh_terms = sqlalchemy.orm.relationship(
         argument="MeshTerm",
-        secondary="study_mesh_terms",
+        secondary="clinicaltrials.study_mesh_terms",
         back_populates="studies",
     )
 
@@ -3813,7 +3813,7 @@ class Study(Base, OrmBase):
     # Relationship to a list of `StudyDoc` records.
     study_docs = sqlalchemy.orm.relationship(
         argument="StudyDoc",
-        secondary="study_study_docs",
+        secondary="clinicaltrials.study_study_docs",
     )
 
     # TODO: clinical_results
