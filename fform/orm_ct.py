@@ -437,7 +437,7 @@ class Contact(Base, OrmBase):
 
     # Foreign key to the person ID.
     person_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("persons.person_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.persons.person_id"),
         name="person_id",
         nullable=False,
     )
@@ -529,7 +529,7 @@ class Investigator(Base, OrmBase):
 
     # Foreign key to the person ID.
     person_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("persons.person_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.persons.person_id"),
         name="person_id",
         nullable=False,
     )
@@ -581,11 +581,11 @@ class Investigator(Base, OrmBase):
         "affiliation",
     )
     def update_md5(self, key, value):
-        attrs = {
+        attrs = dict({
             "person_id": self.person_id,
             "role": self.role,
             "affiliation": self.affiliation,
-        }
+        })
         attrs[key] = value
 
         # Retrieve the full concatenated name.
@@ -619,7 +619,7 @@ class Location(Base, OrmBase):
 
     # Foreign key to the facility ID.
     facility_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("facilities.facility_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.facilities.facility_id"),
         name="facility_id",
         nullable=True,
     )
@@ -635,14 +635,14 @@ class Location(Base, OrmBase):
 
     # Foreign key to the primary contact ID.
     contact_primary_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("contacts.contact_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.contacts.contact_id"),
         name="contact_primary_id",
         nullable=True,
     )
 
     # Foreign key to the backup contact ID.
     contact_backup_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("contacts.contact_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.contacts.contact_id"),
         name="contact_backup_id",
         nullable=True,
     )
@@ -701,14 +701,14 @@ class LocationInvestigator(Base, OrmBase):
 
     # Foreign key to the location ID.
     location_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("locations.location_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.locations.location_id"),
         name="location_id",
         nullable=False,
     )
 
     # Foreign key to the investigator ID.
     investigator_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("investigators.investigator_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.investigators.investigator_id"),
         name="investigator_id",
         nullable=False,
     )
@@ -1155,14 +1155,14 @@ class AnalysisGroup(Base, OrmBase):
 
     # Foreign key to the analysis ID.
     analysis_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("analyses.analysis_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.analyses.analysis_id"),
         name="analysis_id",
         nullable=False,
     )
 
     # Foreign key to the group ID.
     group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("groups.group_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
         name="group_id",
         nullable=False,
     )
@@ -1188,7 +1188,7 @@ class MeasureCount(Base, OrmBase):
 
     # Foreign key to the group ID.
     group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("groups.group_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
         name="group_id",
         nullable=False,
     )
@@ -1259,14 +1259,18 @@ class MeasureAnalyzedCount(Base, OrmBase):
 
     # Foreign key to the analysis ID.
     measure_analyzed_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measure_analyzeds.measure_analyzed_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.measure_analyzeds.measure_analyzed_id"
+        ),
         name="measure_analyzed_id",
         nullable=False,
     )
 
     # Foreign key to the measure-count ID.
     measure_count_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measure_counts.measure_count_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.measure_counts.measure_count_id"
+        ),
         name="measure_count_id",
         nullable=False,
     )
@@ -1294,7 +1298,7 @@ class Measurement(Base, OrmBase):
 
     # Foreign key to the group ID.
     group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("groups.group_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
         name="group_id",
         nullable=False,
     )
@@ -1390,14 +1394,16 @@ class MeasureCategoryMeasurement(Base, OrmBase):
 
     # Foreign key to the measure-category ID.
     measure_category_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measure_categories.measure_category_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.measure_categories.measure_category_id"
+        ),
         name="measure_category_id",
         nullable=False,
     )
 
     # Foreign key to the measurement ID.
     measurement_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measurements.measurement_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.measurements.measurement_id"),
         name="measurement_id",
         nullable=False,
     )
@@ -1459,14 +1465,18 @@ class MeasureClassAnalyzed(Base, OrmBase):
 
     # Foreign key to the measure-class ID.
     measure_class_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measure_classes.measure_class_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.measure_classes.measure_class_id"
+        ),
         name="measure_class_id",
         nullable=False,
     )
 
     # Foreign key to the measure-analyzed ID.
     measure_analyzed_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measure_analyzeds.measure_analyzed_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.measure_analyzeds.measure_analyzed_id"
+        ),
         name="measure_analyzed_id",
         nullable=False,
     )
@@ -1495,14 +1505,18 @@ class MeasureClassCategories(Base, OrmBase):
 
     # Foreign key to the measure-class ID.
     measure_class_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measure_classes.measure_class_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.measure_classes.measure_class_id"
+        ),
         name="measure_class_id",
         nullable=False,
     )
 
     # Foreign key to the measure-category ID.
     measure_category_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measure_categories.measure_category_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.measure_categories.measure_category_id"
+        ),
         name="measure_category_id",
         nullable=False,
     )
@@ -1612,14 +1626,16 @@ class MeasureMeasureAnalyzed(Base, OrmBase):
 
     # Foreign key to the measure ID.
     measure_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measures.measure_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.measures.measure_id"),
         name="measure_id",
         nullable=False,
     )
 
     # Foreign key to the measure-analyzed ID.
     measure_analyzed_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measure_analyzeds.measure_analyzed_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.measure_analyzeds.measure_analyzed_id"
+        ),
         name="measure_analyzed_id",
         nullable=False,
     )
@@ -1647,14 +1663,16 @@ class MeasureMeasureClass(Base, OrmBase):
 
     # Foreign key to the measure ID.
     measure_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measures.measure_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.measures.measure_id"),
         name="measure_id",
         nullable=False,
     )
 
     # Foreign key to the measure-class ID.
     measure_class_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measure_classes.measure_class_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.measure_classes.measure_class_id"
+        ),
         name="measure_class_id",
         nullable=False,
     )
@@ -1726,7 +1744,7 @@ class ResultOutcome(Base, OrmBase):
 
     # Foreign key to the measure ID.
     measure_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measures.measure_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.measures.measure_id"),
         name="measure_id",
         nullable=False,
     )
@@ -1765,14 +1783,16 @@ class ResultOutcomeGroup(Base, OrmBase):
 
     # Foreign key to the resut-outcome ID.
     result_outcome_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("result_outcomes.result_outcome_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.result_outcomes.result_outcome_id"
+        ),
         name="result_outcome_id",
         nullable=False,
     )
 
     # Foreign key to the group ID.
     group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("groups.group_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
         name="group_id",
         nullable=False,
     )
@@ -1983,14 +2003,14 @@ class InterventionAlias(Base, OrmBase):
 
     # Foreign key to the intervention ID.
     intervention_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("interventions.intervention_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.interventions.intervention_id"),
         name="intervention_id",
         nullable=False,
     )
 
     # Foreign key to the alias ID.
     alias_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("aliases.alias_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.aliases.alias_id"),
         name="alias_id",
         nullable=False,
     )
@@ -2020,14 +2040,14 @@ class InterventionArmGroup(Base, OrmBase):
 
     # Foreign key to the intervention ID.
     intervention_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("interventions.intervention_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.interventions.intervention_id"),
         name="intervention_id",
         nullable=False,
     )
 
     # Foreign key to the arm-group ID.
     arm_group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("arm_groups.arm_group_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.arm_groups.arm_group_id"),
         name="arm_group_id",
         nullable=False,
     )
@@ -2384,7 +2404,7 @@ class Participant(Base, OrmBase):
 
     # Foreign key to the group ID.
     group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("groups.group_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
         name="group_id",
         nullable=False,
     )
@@ -2487,14 +2507,14 @@ class MilestoneParticipant(Base, OrmBase):
 
     # Foreign key to the milestone ID.
     milestone_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("milestones.milestone_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.milestones.milestone_id"),
         name="milestone_id",
         nullable=False,
     )
 
     # Foreign key to the participant ID.
     participant_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("participants.participant_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.participants.participant_id"),
         name="participant_id",
         nullable=False,
     )
@@ -2564,14 +2584,14 @@ class PeriodMilestone(Base, OrmBase):
 
     # Foreign key to the period ID.
     period_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("periods.period_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.periods.period_id"),
         name="period_id",
         nullable=False,
     )
 
     # Foreign key to the milestone ID.
     milestone_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("milestones.milestone_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.milestones.milestone_id"),
         name="milestone_id",
         nullable=False,
     )
@@ -2601,7 +2621,7 @@ class PeriodDropWithdrawReason(Base, OrmBase):
 
     # Foreign key to the period ID.
     period_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("periods.period_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.periods.period_id"),
         name="period_id",
         nullable=False,
     )
@@ -2687,14 +2707,16 @@ class ParticipantFlowGroup(Base, OrmBase):
 
     # Foreign key to the participant-flow ID.
     participant_flow_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("participant_flows.participant_flow_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.participant_flows.participant_flow_id"
+        ),
         name="participant_flow_id",
         nullable=False,
     )
 
     # Foreign key to the group ID.
     group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("groups.group_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
         name="group_id",
         nullable=False,
     )
@@ -2724,14 +2746,16 @@ class ParticipantFlowPeriod(Base, OrmBase):
 
     # Foreign key to the participant-flow ID.
     participant_flow_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("participant_flows.participant_flow_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.participant_flows.participant_flow_id"
+        ),
         name="participant_flow_id",
         nullable=False,
     )
 
     # Foreign key to the period ID.
     period_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("periods.period_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.periods.period_id"),
         name="period_id",
         nullable=False,
     )
@@ -2807,14 +2831,14 @@ class BaselineGroup(Base, OrmBase):
 
     # Foreign key to the baseline ID.
     baseline_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("baselines.baseline_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.baselines.baseline_id"),
         name="baseline_id",
         nullable=False,
     )
 
     # Foreign key to the group ID.
     group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("groups.group_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
         name="group_id",
         nullable=False,
     )
@@ -2844,14 +2868,16 @@ class BaselineMeasureAnalyzed(Base, OrmBase):
 
     # Foreign key to the baseline ID.
     baseline_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("baselines.baseline_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.baselines.baseline_id"),
         name="baseline_id",
         nullable=False,
     )
 
     # Foreign key to the measure-analyzed ID.
     measure_analyzed_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measure_analyzeds.measure_analyzed_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.measure_analyzeds.measure_analyzed_id"
+        ),
         name="measure_analyzed_id",
         nullable=False,
     )
@@ -2881,14 +2907,14 @@ class BaselineMeasure(Base, OrmBase):
 
     # Foreign key to the baseline ID.
     baseline_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("baselines.baseline_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.baselines.baseline_id"),
         name="baseline_id",
         nullable=False,
     )
 
     # Foreign key to the measure ID.
     measure_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("measures.measure_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.measures.measure_id"),
         name="measure_id",
         nullable=False,
     )
@@ -2918,7 +2944,7 @@ class EventCount(Base, OrmBase):
 
     # Foreign key to the group ID.
     group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("groups.group_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
         name="group_id",
         nullable=False,
     )
@@ -3017,14 +3043,14 @@ class EventEventCount(Base, OrmBase):
 
     # Foreign key to the event ID.
     event_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("events.event_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.events.event_id"),
         name="event_id",
         nullable=False,
     )
 
     # Foreign key to the event-count ID.
     event_count_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("event_counts.event_count_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.event_counts.event_count_id"),
         name="event_count_id",
         nullable=False,
     )
@@ -3088,14 +3114,16 @@ class EventCategoryEvent(Base, OrmBase):
 
     # Foreign key to the event-category ID.
     event_category_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("event_categories.event_category_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.event_categories.event_category_id"
+        ),
         name="event_category_id",
         nullable=False,
     )
 
     # Foreign key to the event ID.
     event_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("events.event_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.events.event_id"),
         name="event_id",
         nullable=False,
     )
@@ -3175,14 +3203,16 @@ class EventListCategories(Base, OrmBase):
 
     # Foreign key to the event-list ID.
     event_list_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("event_lists.event_list_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.event_lists.event_list_id"),
         name="event_list_id",
         nullable=False,
     )
 
     # Foreign key to the event-category ID.
     event_category_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("event_categories.event_category_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.event_categories.event_category_id"
+        ),
         name="event_category_id",
         nullable=False,
     )
@@ -3232,14 +3262,14 @@ class ReportedEvent(Base, OrmBase):
 
     # Foreign key to an event-list ID.
     serious_event_list_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("event_lists.event_list_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.event_lists.event_list_id"),
         name="serious_event_list_id",
         nullable=False,
     )
 
     # Foreign key to an event-list ID.
     other_event_list_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("event_lists.event_list_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.event_lists.event_list_id"),
         name="other_event_list_id",
         nullable=False,
     )
@@ -3279,14 +3309,16 @@ class ReportedEventGroup(Base, OrmBase):
 
     # Foreign key to the reported-event ID.
     reported_event_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("reported_events.reported_event_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.reported_events.reported_event_id"
+        ),
         name="reported_event_id",
         nullable=False,
     )
 
     # Foreign key to the group ID.
     group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("groups.group_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
         name="group_id",
         nullable=False,
     )
@@ -3485,7 +3517,9 @@ class Study(Base, OrmBase):
 
     # Foreign key to the oversight-info ID.
     oversight_info_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("oversight_infos.oversight_info_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.oversight_infos.oversight_info_id"
+        ),
         name="oversight_info_id",
         nullable=True,
     )
@@ -3592,7 +3626,9 @@ class Study(Base, OrmBase):
 
     # Foreign key to the study-design-info ID.
     study_design_info_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("study_design_infos.study_design_info_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.study_design_infos.study_design_info_id"
+        ),
         name="study_design_info_id",
         nullable=True,
     )
@@ -3617,7 +3653,7 @@ class Study(Base, OrmBase):
 
     # Foreign key to the enrollment ID.
     enrollment_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("enrollments.enrollment_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.enrollments.enrollment_id"),
         name="enrollment_id",
         nullable=True,
     )
@@ -3663,7 +3699,7 @@ class Study(Base, OrmBase):
 
     # Foreign key to the elligibility ID.
     eligibility_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("eligibilities.eligibility_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.eligibilities.eligibility_id"),
         name="eligibility_id",
         nullable=True,
     )
@@ -3681,7 +3717,7 @@ class Study(Base, OrmBase):
 
     # Foreign key to a contact ID of 'primary' type.
     contact_primary_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("contacts.contact_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.contacts.contact_id"),
         name="contact_primary_id",
         nullable=True,
     )
@@ -3694,7 +3730,7 @@ class Study(Base, OrmBase):
 
     # Foreign key to a contact ID of 'backup' type.
     contact_backup_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("contacts.contact_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.contacts.contact_id"),
         name="contact_backup_id",
         nullable=True,
     )
@@ -3724,7 +3760,7 @@ class Study(Base, OrmBase):
 
     # Foreign key to the study-dates ID.
     study_dates_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("study_dates.study_dates_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.study_dates.study_dates_id"),
         name="study_dates_id",
         nullable=False,
     )
@@ -3736,7 +3772,9 @@ class Study(Base, OrmBase):
 
     # Foreign key to a responsible-party ID.
     responsible_party_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("responsible_parties.responsible_party_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.responsible_parties.responsible_party_id"
+        ),
         name="responsible_party_id",
         nullable=True,
     )
@@ -3762,7 +3800,7 @@ class Study(Base, OrmBase):
 
     # Foreign key to a patient-data ID.
     patient_data_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("patient_datas.patient_data_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.patient_datas.patient_data_id"),
         name="patient_data_id",
         nullable=True,
     )
@@ -3803,14 +3841,14 @@ class StudyAlias(Base, OrmBase):
 
     # Foreign key to the study ID.
     study_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("studies.study_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
     )
 
     # Foreign key to the alias ID.
     alias_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("aliases.alias_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.aliases.alias_id"),
         name="alias_id",
         nullable=False,
     )
@@ -3840,14 +3878,14 @@ class StudySponsor(Base, OrmBase):
 
     # Foreign key to the study ID.
     study_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("studies.study_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
     )
 
     # Foreign key to the sponsor ID.
     sponsor_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("sponsors.sponsor_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.sponsors.sponsor_id"),
         name="sponsor_id",
         nullable=False,
     )
@@ -3885,14 +3923,16 @@ class StudyOutcome(Base, OrmBase):
 
     # Foreign key to the study ID.
     study_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("studies.study_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
     )
 
     # Foreign key to the protocol-outcome ID.
     protocol_outcome_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("protocol_outcomes.protocol_outcome_id"),
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.protocol_outcomes.protocol_outcome_id"
+        ),
         name="protocol_outcome_id",
         nullable=False,
     )
@@ -3930,14 +3970,14 @@ class StudyCondition(Base, OrmBase):
 
     # Foreign key to the study ID.
     study_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("studies.study_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
     )
 
     # Foreign key to the condition ID.
     condition_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("conditions.condition_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.conditions.condition_id"),
         name="condition_id",
         nullable=False,
     )
@@ -3967,14 +4007,14 @@ class StudyArmGroup(Base, OrmBase):
 
     # Foreign key to the study ID.
     study_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("studies.study_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
     )
 
     # Foreign key to the arm-group ID.
     arm_group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("arm_groups.arm_group_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.arm_groups.arm_group_id"),
         name="arm_group_id",
         nullable=False,
     )
@@ -4004,14 +4044,14 @@ class StudyIntervention(Base, OrmBase):
 
     # Foreign key to the study ID.
     study_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("studies.study_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
     )
 
     # Foreign key to the intervention ID.
     intervention_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("interventions.intervention_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.interventions.intervention_id"),
         name="intervention_id",
         nullable=False,
     )
@@ -4041,14 +4081,14 @@ class StudyInvestigator(Base, OrmBase):
 
     # Foreign key to the study ID.
     study_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("studies.study_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
     )
 
     # Foreign key to the investigator ID.
     investigator_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("investigators.investigator_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.investigators.investigator_id"),
         name="investigator_id",
         nullable=False,
     )
@@ -4078,14 +4118,14 @@ class StudyLocation(Base, OrmBase):
 
     # Foreign key to the study ID.
     study_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("studies.study_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
     )
 
     # Foreign key to the location ID.
     location_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("locations.location_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.locations.location_id"),
         name="location_id",
         nullable=False,
     )
@@ -4115,14 +4155,14 @@ class StudyReference(Base, OrmBase):
 
     # Foreign key to the study ID.
     study_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("studies.study_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
     )
 
     # Foreign key to the reference ID.
     reference_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("references.reference_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.references.reference_id"),
         name="reference_id",
         nullable=False,
     )
@@ -4160,14 +4200,14 @@ class StudyKeyword(Base, OrmBase):
 
     # Foreign key to the study ID.
     study_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("studies.study_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
     )
 
     # Foreign key to the keyword ID.
     keyword_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("keywords.keyword_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.keywords.keyword_id"),
         name="keyword_id",
         nullable=False,
     )
@@ -4197,14 +4237,14 @@ class StudyMeshTerm(Base, OrmBase):
 
     # Foreign key to the study ID.
     study_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("studies.study_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
     )
 
     # Foreign key to the mesh-term ID.
     mesh_term_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("mesh_terms.mesh_term_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.mesh_terms.mesh_term_id"),
         name="mesh_term_id",
         nullable=False,
     )
@@ -4242,14 +4282,14 @@ class StudyStudyDoc(Base, OrmBase):
 
     # Foreign key to the study ID.
     study_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("studies.study_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
     )
 
     # Foreign key to the study-doc ID.
     study_doc_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("study_docs.study_doc_id"),
+        sqlalchemy.ForeignKey("clinicaltrials.study_docs.study_doc_id"),
         name="study_doc_id",
         nullable=False,
     )
