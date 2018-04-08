@@ -6,9 +6,6 @@
 import pytest
 
 
-from fform import fform
-
-
 @pytest.fixture
 def response():
     """Sample pytest fixture.
