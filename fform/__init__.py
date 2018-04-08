@@ -10,4 +10,4 @@ from fform import loggers
 from fform import utils
 from fform import orm_base
 from fform import dal_base
-from fform import ct
+from fform.ct import orm

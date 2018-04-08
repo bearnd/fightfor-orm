@@ -9,27 +9,27 @@ import sqlalchemy.orm
 import sqlalchemy.types
 
 from fform.orm_base import Base, OrmBase
-from fform.ct.orm_enums import AgencyClassType
-from fform.ct.orm_enums import SponsorType
-from fform.ct.orm_enums import RecruitmentStatusType
-from fform.ct.orm_enums import RoleType
-from fform.ct.orm_enums import NonInferiorityType
-from fform.ct.orm_enums import AnalysisDispersionType
-from fform.ct.orm_enums import NumSidesType
-from fform.ct.orm_enums import OutcomeType
-from fform.ct.orm_enums import MeasureParameterType
-from fform.ct.orm_enums import ActualType
-from fform.ct.orm_enums import InterventionType
-from fform.ct.orm_enums import SamplingMethodType
-from fform.ct.orm_enums import GenderType
-from fform.ct.orm_enums import ResponsiblePartyType
-from fform.ct.orm_enums import EventAssessmentType
-from fform.ct.orm_enums import OverallStatusType
-from fform.ct.orm_enums import PhaseType
-from fform.ct.orm_enums import StudyType
-from fform.ct.orm_enums import BiospecRetentionType
-from fform.ct.orm_enums import ReferenceType
-from fform.ct.orm_enums import MeshTermType
+from fform.orm_enums import AgencyClassType
+from fform.orm_enums import SponsorType
+from fform.orm_enums import RecruitmentStatusType
+from fform.orm_enums import RoleType
+from fform.orm_enums import NonInferiorityType
+from fform.orm_enums import AnalysisDispersionType
+from fform.orm_enums import NumSidesType
+from fform.orm_enums import OutcomeType
+from fform.orm_enums import MeasureParameterType
+from fform.orm_enums import ActualType
+from fform.orm_enums import InterventionType
+from fform.orm_enums import SamplingMethodType
+from fform.orm_enums import GenderType
+from fform.orm_enums import ResponsiblePartyType
+from fform.orm_enums import EventAssessmentType
+from fform.orm_enums import OverallStatusType
+from fform.orm_enums import PhaseType
+from fform.orm_enums import StudyType
+from fform.orm_enums import BiospecRetentionType
+from fform.orm_enums import ReferenceType
+from fform.orm_enums import MeshTermType
 
 
 class Sponsor(Base, OrmBase):
