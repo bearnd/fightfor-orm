@@ -2629,7 +2629,7 @@ class PeriodDropWithdrawReason(Base, OrmBase):
     # Foreign key to the milestone ID.
     drop_withdraw_reason_id = sqlalchemy.Column(
         sqlalchemy.ForeignKey(
-            "drop_withdraw_reasons.drop_withdraw_reason_id"
+            "clinicaltrials.drop_withdraw_reasons.drop_withdraw_reason_id"
         ),
         name="drop_withdraw_reason_id",
         nullable=False,
@@ -3613,7 +3613,7 @@ class Study(Base, OrmBase):
     # Foreign key to the expanded-access-info ID.
     expanded_access_info_id = sqlalchemy.Column(
         sqlalchemy.ForeignKey(
-            "expanded_access_infos.expanded_access_info_id"
+            "clinicaltrials.expanded_access_infos.expanded_access_info_id"
         ),
         name="expanded_access_info_id",
         nullable=True,
