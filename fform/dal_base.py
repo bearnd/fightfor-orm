@@ -13,6 +13,39 @@ import decorator
 import sqlalchemy
 import sqlalchemy.orm
 
+from fform.loggers import create_logger
+
+
+def with_session_scope(**dec_kwargs):
+    """Decorator factory, takes arguments accepted by the `session_scope` method
+    of the `self` object of its wrapped function.
+
+    This allows methods to declare that they want a session context, support a
+    default way to make one, but still allow the caller to pass a preexisting
+    session and control transaction scope.
+
+    Note:
+        Wrapped function must accept a defaultable `session` parameter, as well
+        as a `self` parameter supporting the `sesson_scope` method.
+
+        If call to wrapped function doesn't pass a session, will create a new
+        session according to the args passed to the decorator factory.
+        Otherwise, will leave session alone and become a noop.
+    """
+
+    @decorator.decorator
+    def wrapper(target, *args, **kwargs):
+        kwargs = inspect.getcallargs(target, *args, **kwargs)
+
+        if "session" in kwargs and kwargs["session"]:
+            return target(**kwargs)
+        else:
+            with kwargs["self"].session_scope(**dec_kwargs) as session:
+                kwargs["session"] = session
+                return target(**kwargs)
+
+    return wrapper
+
 
 class DalBase(object):
     """Basic Python boilerplate for interaction with an SQL database.
@@ -159,32 +192,104 @@ class DalBase(object):
             session.close()
 
 
-def with_session_scope(**dec_kwargs):
-    """Decorator factory, takes arguments accepted by the `session_scope` method
-    of the `self` object of its wrapped function.
+class DalFightForBase(DalBase):
+    def __init__(
+        self,
+        sql_username,
+        sql_password,
+        sql_host,
+        sql_port,
+        sql_db,
+        *args,
+        **kwargs
+    ):
 
-    This allows methods to declare that they want a session context, support a
-    default way to make one, but still allow the caller to pass a preexisting
-    session and control transaction scope.
+        self.logger = create_logger(
+            logger_name=type(self).__name__,
+            logger_level=kwargs.get("logger_level", "DEBUG")
+        )
 
-    Note:
-        Wrapped function must accept a defaultable `session` parameter, as well
-        as a `self` parameter supporting the `sesson_scope` method.
+        super(DalFightForBase, self).__init__(
+            sql_username=sql_username,
+            sql_password=sql_password,
+            sql_host=sql_host,
+            sql_port=sql_port,
+            sql_db=sql_db,
+            *args,
+            **kwargs
+        )
 
-        If call to wrapped function doesn't pass a session, will create a new
-        session according to the args passed to the decorator factory.
-        Otherwise, will leave session alone and become a noop.
-    """
+    @with_session_scope()
+    def get_by_md5(
+        self,
+        orm_class,
+        md5: bytes,
+        session: sqlalchemy.orm.Session = None,
+    ):
+        """Retrieves an object of a class derived off `OrmBase` through its MD5.
 
-    @decorator.decorator
-    def wrapper(target, *args, **kwargs):
-        kwargs = inspect.getcallargs(target, *args, **kwargs)
+        Args:
+            md5 (bytes): The MD5 has of the `OrmBase` record to be retrieved.
+            orm_class: An object of a class derived off `OrmBase` implementing
+                an `md5` attribute.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
 
-        if "session" in kwargs and kwargs["session"]:
-            return target(**kwargs)
-        else:
-            with kwargs["self"].session_scope(**dec_kwargs) as session:
-                kwargs["session"] = session
-                return target(**kwargs)
+        Returns:
+            The matching `OrmBase` record object or `None` if no such record
+                exists.
+        """
 
-    return wrapper
+        query = session.query(orm_class)
+        query = query.filter(orm_class.md5 == md5)
+
+        obj = query.one_or_none()
+
+        return obj
+
+    @with_session_scope()
+    def get_by_attrs(
+        self,
+        orm_class,
+        attrs_names_values: dict,
+        session: sqlalchemy.orm.Session = None,
+    ):
+        """Retrieves the record object of `orm_class` type through attribute
+        name-value pairs.
+
+        Note:
+            This method should only be used through unique attributes/fields as
+            it uses the `one_or_none` retrieval method and will raise an
+            exception should multiple records with a given attribute value be
+            found.
+
+        Args:
+            orm_class: An object of a class derived off `OrmBase` implementing
+                an `md5` attribute.
+            attrs_names_values (dict): A dictionary of attribute name-value
+                pairs to be used in filtering out a single record.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            orm_class: The record object of type `orm_class` matching the
+                attribute name-value pairs and `None` if no record exists.
+
+        Raises:
+            sqlalchemy.orm.exc.MultipleResultsFound: Raised when multiple
+                records were found with the given attribute(s).
+        """
+
+        query = session.query(orm_class)
+        for attr_name, attr_value in attrs_names_values.items():
+            query = query.filter(
+                getattr(orm_class, attr_name) == attr_value
+            )
+
+        obj = query.one_or_none()
+
+        return obj
