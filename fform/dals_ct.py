@@ -7,8 +7,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.dialects.postgresql import Insert
 from sqlalchemy.engine.result import ResultProxy
 
-from fform.loggers import create_logger
-from fform.dal_base import DalBase
+from fform.dal_base import DalFightForBase
 from fform.dal_base import with_session_scope
 from fform.orm_ct import Sponsor
 from fform.orm_ct import Keyword
@@ -58,29 +57,28 @@ from fform.orm_ct import StudyKeyword
 from fform.orm_ct import StudyMeshTerm
 from fform.orm_ct import StudyStudyDoc
 from fform.orm_ct import StudyDates
-from fform.orm_enums import AgencyClassType
-from fform.orm_enums import SponsorType
-from fform.orm_enums import RoleType
-from fform.orm_enums import RecruitmentStatusType
-from fform.orm_enums import NonInferiorityType
-from fform.orm_enums import AnalysisDispersionType
-from fform.orm_enums import NumSidesType
-from fform.orm_enums import OutcomeType
-from fform.orm_enums import ActualType
-from fform.orm_enums import InterventionType
-from fform.orm_enums import SamplingMethodType
-from fform.orm_enums import GenderType
-from fform.orm_enums import ResponsiblePartyType
-from fform.orm_enums import OverallStatusType
-from fform.orm_enums import PhaseType
-from fform.orm_enums import StudyType
-from fform.orm_enums import BiospecRetentionType
-from fform.orm_enums import MeshTermType
-from fform.orm_enums import ReferenceType
+from fform.orm_ct import AgencyClassType
+from fform.orm_ct import SponsorType
+from fform.orm_ct import RoleType
+from fform.orm_ct import RecruitmentStatusType
+from fform.orm_ct import NonInferiorityType
+from fform.orm_ct import AnalysisDispersionType
+from fform.orm_ct import NumSidesType
+from fform.orm_ct import OutcomeType
+from fform.orm_ct import InterventionType
+from fform.orm_ct import SamplingMethodType
+from fform.orm_ct import GenderType
+from fform.orm_ct import ResponsiblePartyType
+from fform.orm_ct import OverallStatusType
+from fform.orm_ct import PhaseType
+from fform.orm_ct import StudyType
+from fform.orm_ct import BiospecRetentionType
+from fform.orm_ct import MeshTermType
+from fform.orm_ct import ReferenceType
 from fform.utils import return_first_item
 
 
-class DalClinicalTrials(DalBase):
+class DalClinicalTrials(DalFightForBase):
     def __init__(
         self,
         sql_username,
@@ -92,11 +90,6 @@ class DalClinicalTrials(DalBase):
         **kwargs
     ):
 
-        self.logger = create_logger(
-            logger_name=type(self).__name__,
-            logger_level=kwargs.get("logger_level", "DEBUG")
-        )
-
         super(DalClinicalTrials, self).__init__(
             sql_username=sql_username,
             sql_password=sql_password,
@@ -106,81 +99,6 @@ class DalClinicalTrials(DalBase):
             *args,
             **kwargs
         )
-
-    @with_session_scope()
-    def get_by_md5(
-        self,
-        orm_class,
-        md5: bytes,
-        session: sqlalchemy.orm.Session = None,
-    ):
-        """Retrieves an object of a class derived off `OrmBase` through its MD5.
-
-        Args:
-            md5 (bytes): The MD5 has of the `OrmBase` record to be retrieved.
-            orm_class: An object of a class derived off `OrmBase` implementing
-                an `md5` attribute.
-            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
-                through which the record will be added. Defaults to `None` in
-                which case a new session is automatically created and terminated
-                upon completion.
-
-        Returns:
-            The matching `OrmBase` record object or `None` if no such record
-                exists.
-        """
-
-        query = session.query(orm_class)
-        query = query.filter(orm_class.md5 == md5)
-
-        obj = query.one_or_none()
-
-        return obj
-
-    @with_session_scope()
-    def get_by_attrs(
-        self,
-        orm_class,
-        attrs_names_values: dict,
-        session: sqlalchemy.orm.Session = None,
-    ):
-        """Retrieves the record object of `orm_class` type through attribute
-        name-value pairs.
-
-        Note:
-            This method should only be used through unique attributes/fields as
-            it uses the `one_or_none` retrieval method and will raise an
-            exception should multiple records with a given attribute value be
-            found.
-
-        Args:
-            orm_class: An object of a class derived off `OrmBase` implementing
-                an `md5` attribute.
-            attrs_names_values (dict): A dictionary of attribute name-value
-                pairs to be used in filtering out a single record.
-            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
-                through which the record will be added. Defaults to `None` in
-                which case a new session is automatically created and terminated
-                upon completion.
-
-        Returns:
-            orm_class: The record object of type `orm_class` matching the
-                attribute name-value pairs and `None` if no record exists.
-
-        Raises:
-            sqlalchemy.orm.exc.MultipleResultsFound: Raised when multiple
-                records were found with the given attribute(s).
-        """
-
-        query = session.query(orm_class)
-        for attr_name, attr_value in attrs_names_values.items():
-            query = query.filter(
-                getattr(orm_class, attr_name) == attr_value
-            )
-
-        obj = query.one_or_none()
-
-        return obj
 
     @return_first_item
     @with_session_scope()
@@ -207,16 +125,17 @@ class DalClinicalTrials(DalBase):
 
         # Create and populate a `Sponsor` object so that we can retrieve the
         # MD5 hash.
-        sponsor_obj = Sponsor()
-        sponsor_obj.agency = agency
-        sponsor_obj.agency_class = agency_class
+        obj = Sponsor()
+        obj.agency = agency
+        obj.agency_class = agency_class
 
+        # Upsert the `Sponsor` record.
         statement = insert(
             Sponsor,
             values={
                 "agency": agency,
                 "class": agency_class,
-                "md5": sponsor_obj.md5,
+                "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -225,12 +144,12 @@ class DalClinicalTrials(DalBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            sponsor_obj = self.get_by_md5(
+            obj = self.get_by_md5(
                 orm_class=Sponsor,
-                md5=sponsor_obj.md5,
+                md5=obj.md5,
                 session=session,
             )  # type: Sponsor
-            return sponsor_obj.sponsor_id
+            return obj.sponsor_id
 
     @return_first_item
     @with_session_scope()
@@ -254,14 +173,15 @@ class DalClinicalTrials(DalBase):
 
         # Create and populate a `Person` object so that we can retrieve the
         # MD5 hash.
-        keyword_obj = Keyword()
-        keyword_obj.keyword = keyword
+        obj = Keyword()
+        obj.keyword = keyword
 
+        # Upsert the `Keyword` record.
         statement = insert(
             Keyword,
             values={
                 "keyword": keyword,
-                "md5": keyword_obj.md5
+                "md5": obj.md5
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -270,12 +190,12 @@ class DalClinicalTrials(DalBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            keyword_obj = self.get_by_md5(
+            obj = self.get_by_md5(
                 orm_class=Keyword,
-                md5=keyword_obj.md5,
+                md5=obj.md5,
                 session=session,
             )  # type: Keyword
-            return keyword_obj.keyword_id
+            return obj.keyword_id
 
     @return_first_item
     @with_session_scope()
@@ -299,14 +219,14 @@ class DalClinicalTrials(DalBase):
 
         # Create and populate a `Condition` object so that we can retrieve the
         # MD5 hash.
-        condition_obj = Condition()
-        condition_obj.condition = condition
+        obj = Condition()
+        obj.condition = condition
 
         statement = insert(
             Condition,
             values={
                 "condition": condition,
-                "md5": condition_obj.md5,
+                "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -315,12 +235,12 @@ class DalClinicalTrials(DalBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            condition_obj = self.get_by_md5(
+            obj = self.get_by_md5(
                 orm_class=Condition,
-                md5=condition_obj.md5,
+                md5=obj.md5,
                 session=session,
             )  # type: Condition
-            return condition_obj.condition_id
+            return obj.condition_id
 
     @return_first_item
     @with_session_scope()
@@ -352,12 +272,12 @@ class DalClinicalTrials(DalBase):
 
         # Create and populate a `Facility` object so that we can retrieve the
         # MD5 hash.
-        facility_obj = Facility()
-        facility_obj.name = name,
-        facility_obj.city = city
-        facility_obj.state = state
-        facility_obj.zip_code = zip_code
-        facility_obj.country = country
+        obj = Facility()
+        obj.name = name,
+        obj.city = city
+        obj.state = state
+        obj.zip_code = zip_code
+        obj.country = country
 
         statement = insert(
             Facility,
@@ -367,7 +287,7 @@ class DalClinicalTrials(DalBase):
                 "state": state,
                 "zip_code": zip_code,
                 "country": country,
-                "md5": facility_obj.md5,
+                "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -376,12 +296,12 @@ class DalClinicalTrials(DalBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            facility_obj = self.get_by_md5(
+            obj = self.get_by_md5(
                 orm_class=Facility,
-                md5=facility_obj.md5,
+                md5=obj.md5,
                 session=session,
             )  # type: Facility
-            return facility_obj.facility_id
+            return obj.facility_id
 
     @return_first_item
     @with_session_scope()
@@ -411,11 +331,11 @@ class DalClinicalTrials(DalBase):
 
         # Create and populate a `Person` object so that we can retrieve the
         # MD5 hash.
-        person_obj = Person()
-        person_obj.name_first = name_first
-        person_obj.name_middle = name_middle
-        person_obj.name_last = name_last
-        person_obj.degrees = degrees
+        obj = Person()
+        obj.name_first = name_first
+        obj.name_middle = name_middle
+        obj.name_last = name_last
+        obj.degrees = degrees
 
         statement = insert(
             Person,
@@ -424,7 +344,7 @@ class DalClinicalTrials(DalBase):
                 "name_middle": name_middle,
                 "name_last": name_last,
                 "degrees": degrees,
-                "md5": person_obj.md5,
+                "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -433,12 +353,12 @@ class DalClinicalTrials(DalBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            person_obj = self.get_by_md5(
+            obj = self.get_by_md5(
                 orm_class=Person,
-                md5=person_obj.md5,
+                md5=obj.md5,
                 session=session,
             )  # type: Person
-            return person_obj.person_id
+            return obj.person_id
 
     @return_first_item
     @with_session_scope()
@@ -468,11 +388,11 @@ class DalClinicalTrials(DalBase):
 
         # Create and populate a `Contact` object so that we can retrieve the
         # MD5 hash.
-        contact_obj = Contact()
-        contact_obj.person_id = person_id
-        contact_obj.phone = phone
-        contact_obj.phone_ext = phone_ext
-        contact_obj.email = email
+        obj = Contact()
+        obj.person_id = person_id
+        obj.phone = phone
+        obj.phone_ext = phone_ext
+        obj.email = email
 
         statement = insert(
             Contact,
@@ -481,7 +401,7 @@ class DalClinicalTrials(DalBase):
                 "phone": phone,
                 "phone_ext": phone_ext,
                 "email": email,
-                "md5": contact_obj.md5,
+                "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -490,12 +410,12 @@ class DalClinicalTrials(DalBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            contact_obj = self.get_by_md5(
+            obj = self.get_by_md5(
                 orm_class=Contact,
-                md5=contact_obj.md5,
+                md5=obj.md5,
                 session=session,
             )  # type: Contact
-            return contact_obj.contact_id
+            return obj.contact_id
 
     @return_first_item
     @with_session_scope()
@@ -523,10 +443,10 @@ class DalClinicalTrials(DalBase):
 
         # Create and populate a `Investigator` object so that we can retrieve
         # the MD5 hash.
-        investigator_obj = Investigator()
-        investigator_obj.person_id = person_id
-        investigator_obj.role = role
-        investigator_obj.affiliation = affiliation
+        obj = Investigator()
+        obj.person_id = person_id
+        obj.role = role
+        obj.affiliation = affiliation
 
         statement = insert(
             Investigator,
@@ -534,7 +454,7 @@ class DalClinicalTrials(DalBase):
                 "person_id": person_id,
                 "role": role,
                 "affiliation": affiliation,
-                "md5": investigator_obj.md5,
+                "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -543,12 +463,12 @@ class DalClinicalTrials(DalBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            investigator_obj = self.get_by_md5(
+            obj = self.get_by_md5(
                 orm_class=Investigator,
-                md5=investigator_obj.md5,
+                md5=obj.md5,
                 session=session,
             )  # type: Investigator
-            return investigator_obj.investigator_id
+            return obj.investigator_id
 
     @return_first_item
     @with_session_scope()
@@ -591,7 +511,7 @@ class DalClinicalTrials(DalBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            location_obj = self.get_by_attrs(
+            obj = self.get_by_attrs(
                 orm_class=Location,
                 attrs_names_values={
                     "facility_id": facility_id,
@@ -600,7 +520,7 @@ class DalClinicalTrials(DalBase):
                 },
                 session=session,
             )  # type: Location
-            return location_obj.location_id
+            return obj.location_id
 
     @return_first_item
     @with_session_scope()
@@ -1356,14 +1276,14 @@ class DalClinicalTrials(DalBase):
 
         # Create and populate a `Alias` object so that we can retrieve
         # the MD5 hash.
-        alias_obj = Alias()
-        alias_obj.alias = alias
+        obj = Alias()
+        obj.alias = alias
 
         statement = insert(
             Alias,
             values={
                 "alias": alias,
-                "md5": alias_obj.md5,
+                "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1374,7 +1294,7 @@ class DalClinicalTrials(DalBase):
         else:
             obj = self.get_by_md5(
                 orm_class=Alias,
-                md5=alias_obj.md5,
+                md5=obj.md5,
                 session=session,
             )  # type: Alias
             return obj.alias_id
@@ -1644,14 +1564,14 @@ class DalClinicalTrials(DalBase):
 
         # Create and populate a `MeshTerm` object so that we can retrieve the
         # MD5 hash.
-        mesh_term_obj = MeshTerm()
-        mesh_term_obj.term = term
+        obj = MeshTerm()
+        obj.term = term
 
         statement = insert(
             MeshTerm,
             values={
                 "term": term,
-                "md5": mesh_term_obj.md5,
+                "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1662,7 +1582,7 @@ class DalClinicalTrials(DalBase):
         else:
             obj = self.get_by_md5(
                 orm_class=MeshTerm,
-                md5=mesh_term_obj.md5,
+                md5=obj.md5,
                 session=session,
             )  # type: MeshTerm
             return obj.mesh_term_id
