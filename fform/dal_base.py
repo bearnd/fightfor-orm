@@ -229,7 +229,7 @@ class DalFightForBase(DalBase):
         """Retrieves an object of a class derived off `OrmBase` through its MD5.
 
         Args:
-            md5 (bytes): The MD5 has of the `OrmBase` record to be retrieved.
+            md5 (bytes): The MD5 of the `OrmBase` record to be retrieved.
             orm_class: An object of a class derived off `OrmBase` implementing
                 an `md5` attribute.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
