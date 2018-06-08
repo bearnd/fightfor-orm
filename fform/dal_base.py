@@ -8,6 +8,7 @@ interaction between SQLAlchemy and SQL-servers.
 
 import inspect
 import contextlib
+from typing import List
 
 import decorator
 import sqlalchemy
@@ -229,7 +230,7 @@ class DalFightForBase(DalBase):
         """Retrieves an object of a class derived off `OrmBase` through its MD5.
 
         Args:
-            md5 (bytes): The MD5 has of the `OrmBase` record to be retrieved.
+            md5 (bytes): The MD5 of the `OrmBase` record to be retrieved.
             orm_class: An object of a class derived off `OrmBase` implementing
                 an `md5` attribute.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
@@ -246,6 +247,38 @@ class DalFightForBase(DalBase):
         query = query.filter(orm_class.md5 == md5)
 
         obj = query.one_or_none()
+
+        return obj
+
+    @with_session_scope()
+    def bget_by_md5s(
+        self,
+        orm_class,
+        md5s: List[bytes],
+        session: sqlalchemy.orm.Session = None,
+    ):
+        """Retrieves a list of object of a class derived off `OrmBase` through
+        their MD5s.
+
+        Args:
+            md5s (list[bytes]): The MD5s of the `OrmBase` records to be
+                retrieved.
+            orm_class: An object of a class derived off `OrmBase` implementing
+                an `md5` attribute.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            The matching `OrmBase` record objects or an empty list if no such
+                records exist.
+        """
+
+        query = session.query(orm_class)
+        query = query.filter(orm_class.md5.in_(md5s))
+
+        obj = query.all()
 
         return obj
 

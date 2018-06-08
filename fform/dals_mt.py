@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import datetime
+from typing import List
 
 import sqlalchemy.orm
 from sqlalchemy.dialects.postgresql import insert
@@ -43,7 +44,11 @@ from fform.orm_mt import LexicalTagType
 from fform.orm_mt import EntryCombinationType
 from fform.orm_mt import DescriptorClassType
 from fform.orm_mt import SupplementalClassType
+from fform.orm_mt import DescriptorSynonym
+from fform.orm_mt import QualifierSynonym
+from fform.orm_mt import ConceptSynonym
 from fform.utils import return_first_item
+from fform.utils import lists_equal_length
 
 
 class DalMesh(DalFightForBase):
@@ -1594,3 +1599,115 @@ class DalMesh(DalFightForBase):
                 session=session,
             )  # type: SupplementalSource
             return obj.supplemental_source_id
+
+    @lists_equal_length
+    @with_session_scope()
+    def biodi_descriptor_synonyms(
+        self,
+        descriptor_id,
+        synonyms: List[str],
+        md5s: List[bytes],
+        session: sqlalchemy.orm.Session = None,
+    ) -> None:
+        """Creates new `DescriptorSynonym` records in an BIODI manner.
+
+        Args:
+            descriptor_id (int): The linked `Descriptor` record primary-key
+                ID.
+            synonyms (list[str]): The descriptor synonyms.
+            md5s (list[bytes]): The descriptor synonym MD5s.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+        """
+
+        statement = insert(
+            DescriptorSynonym,
+            values=list(
+                {
+                    "descriptor_id": descriptor_id,
+                    "synonym": synonym,
+                    "md5": md5,
+                } for synonym, md5 in zip(
+                    synonyms,
+                    md5s
+                )
+            )
+        ).on_conflict_do_nothing()
+
+        session.execute(statement)
+
+    @lists_equal_length
+    @with_session_scope()
+    def biodi_qualifier_synonyms(
+        self,
+        qualifier_id,
+        synonyms: List[str],
+        md5s: List[bytes],
+        session: sqlalchemy.orm.Session = None,
+    ) -> None:
+        """Creates new `QualifierSynonym` records in an BIODI manner.
+
+        Args:
+            qualifier_id (int): The linked `Qualifier` record primary-key ID.
+            synonyms (list[str]): The qualifier synonyms.
+            md5s (list[bytes]): The qualifier synonym MD5s.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+        """
+
+        statement = insert(
+            QualifierSynonym,
+            values=list(
+                {
+                    "qualifier_id": qualifier_id,
+                    "synonym": synonym,
+                    "md5": md5,
+                } for synonym, md5 in zip(
+                    synonyms,
+                    md5s
+                )
+            )
+        ).on_conflict_do_nothing()
+
+        session.execute(statement)
+
+    @lists_equal_length
+    @with_session_scope()
+    def biodi_concept_synonyms(
+        self,
+        concept_id,
+        synonyms: List[str],
+        md5s: List[bytes],
+        session: sqlalchemy.orm.Session = None,
+    ) -> None:
+        """Creates new `ConceptSynonym` records in an BIODI manner.
+
+        Args:
+            concept_id (int): The linked `Concept` record primary-key ID.
+            synonyms (list[str]): The concept synonyms.
+            md5s (list[bytes]): The concept synonym MD5s.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+        """
+
+        statement = insert(
+            ConceptSynonym,
+            values=list(
+                {
+                    "concept_id": concept_id,
+                    "synonym": synonym,
+                    "md5": md5,
+                } for synonym, md5 in zip(
+                    synonyms,
+                    md5s
+                )
+            )
+        ).on_conflict_do_nothing()
+
+        session.execute(statement)
