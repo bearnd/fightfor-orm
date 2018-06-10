@@ -7,8 +7,9 @@ exception and allow for consistent error-handling across the application.
 """
 
 
-class InvalidArguments(Exception):
+class InvalidArgumentsError(Exception):
     """Exception raised when the arguments to a function/method call are
     invalid."""
     def __init__(self, message, *args):
-        super(InvalidArguments, self).__init__(message, *args)
+        super(InvalidArgumentsError, self).__init__(message, *args)
+
