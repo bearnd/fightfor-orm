@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.2
+
+- `orm_pubmed.py`: Fixed bug in the `ArticleAbstractText` class where the unique constraint was wrongly configured.
+
 ### v0.4.1
 
 - `orm_pubmed.py`: Fixed bug where default enum values were not renamed.
