@@ -13,3 +13,9 @@ class InvalidArgumentsError(Exception):
     def __init__(self, message, *args):
         super(InvalidArgumentsError, self).__init__(message, *args)
 
+
+class MissingAttributeError(Exception):
+    """Exception raised when the a defined ORM class does not define a given
+    attribute."""
+    def __init__(self, message, *args):
+        super(MissingAttributeError, self).__init__(message, *args)
