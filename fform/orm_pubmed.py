@@ -500,7 +500,7 @@ class ArticleAbstractText(Base, OrmBase):
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
-        sqlalchemy.UniqueConstraint("supplemental_id", "concept_id"),
+        sqlalchemy.UniqueConstraint("article_id", "abstract_text_id"),
         # Set table schema.
         {"schema": "pubmed"}
     )
