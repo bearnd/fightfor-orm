@@ -2,7 +2,7 @@
 
 import enum
 
-from fform.excs import InvalidArguments
+from fform.excs import InvalidArgumentsError
 
 
 class EnumBase(enum.Enum):
@@ -73,10 +73,10 @@ def lists_equal_length(func):
         # Check whether all the `list` objects have the same length.
         do_have_same_length = len(set(map(len, lists))) == 1
 
-        # Raise an `InvalidArguments` exception if there's a length mismatch.
+        # Raise an `InvalidArgumentsError` exception if there's a length mismatch.
         if not do_have_same_length:
             msg_fmt = "The argument lists must have the same length."
-            raise InvalidArguments(msg_fmt)
+            raise InvalidArgumentsError(msg_fmt)
 
         # Simply execute the decorated method with the provided arguments
         # and return the result.

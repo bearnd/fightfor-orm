@@ -111,9 +111,10 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=TreeNumber,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: TreeNumber
             return obj.tree_number_id
@@ -156,9 +157,10 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=ThesaurusId,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: ThesaurusId
             return obj.thesaurus_id_id
@@ -687,9 +689,10 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=PreviousIndexing,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: PreviousIndexing
             return obj.previous_indexing_id
@@ -1223,9 +1226,10 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=Source,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: Source
             return obj.source_id
