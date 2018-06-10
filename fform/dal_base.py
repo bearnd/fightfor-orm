@@ -283,6 +283,7 @@ class DalFightForBase(DalBase):
         orm_class: Type[OrmBase],
         attr_name: str,
         attr_values: List[Any],
+        do_sort: bool = True,
         session: sqlalchemy.orm.Session = None,
     ) -> List[Type[OrmBase]]:
         """Retrieves a list of record objects of `orm_class` type through the
@@ -295,6 +296,9 @@ class DalFightForBase(DalBase):
                 records.
             attr_values (list[Any]): The attribute values to be used in
                 filtering out the record.
+            do_sort (bool): Whether to sort the returned record objects by the
+                same order the attribute values have. Only applied when the
+                number of objects is the same as the number of attribute values.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
@@ -321,6 +325,16 @@ class DalFightForBase(DalBase):
         query = query.filter(getattr(orm_class, attr_name).in_(attr_values))
 
         objs = query.all()
+
+        # If sorting has been requested and the number of objects matches the
+        # number of attribute values, i.e., a record object was found for each
+        # combination of attribute values, then do the sorting.
+        if do_sort and len(objs) == len(list(attr_values)[0]):
+            objs = self.order_objs_by_attr(
+                objs=objs,
+                attr_name=attr_name,
+                attr_values=attr_values,
+            )
 
         return objs
 
