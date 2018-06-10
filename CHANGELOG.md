@@ -1,5 +1,18 @@
 ## Changelog
 
+### v0.4.0
+
+Issue No.5: Move the `pubmed-ingester` ORM and DALs to `fightfor-orm`:
+
+- `excs.py`: Renamed the `InvalidArguments` class to `InvalidArgumentsError`.
+- `excs.py`: Added a new `MissingAttributeError` class.
+- Updated the `DalFightForBase` class and removed the `get_by_md5` and `bget_by_md5s` methods which were replaced by attribute-agnostic variants.
+- `orm_base.py`: Updated the `OrmBase` class and added a new `pk_name` property which returns the name of the primary-key field of the ORM class.
+- `dal_base.py`: Updated the `DalFightForBase` class and added a new `order_objs_by_attr` method that orders a list of record objects by their attribute values.
+- `dal_base.py`: Updated the `bget_by_attr` method of the `DalFightForBase` class to allow for sorting of the returned record objects by the attribute values.
+- Added a new `orm_pubmed.py` module with the ORM classes ported from `pubmed-ingester`.
+- Added a new `dals_pubmed.py` module with the DAL class ported from `pubmed-ingester` and simplified using the classes and methods under the base-classes.
+
 ### v0.3.0
 
 - Added a new `excs.py` module with a custom exception class.
