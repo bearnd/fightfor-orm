@@ -2,7 +2,7 @@ urllib3==1.22
 pyasn1==0.3.7
 pyOpenSSL==17.3.0
 ndg-httpsclient==0.4.3
-colorlog==3.1.0
 decorator==4.1.2
 psycopg2==2.7.3.2
 SQLAlchemy==1.2.8
+colorlog==3.1.4
