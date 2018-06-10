@@ -8,13 +8,16 @@ interaction between SQLAlchemy and SQL-servers.
 
 import inspect
 import contextlib
-from typing import List
+from typing import Dict, List, Any, Type
 
 import decorator
 import sqlalchemy
 import sqlalchemy.orm
 
+from fform.orm_base import OrmBase
 from fform.loggers import create_logger
+from fform.excs import MissingAttributeError
+from fform.excs import InvalidArgumentsError
 
 
 def with_session_scope(**dec_kwargs):
@@ -221,74 +224,113 @@ class DalFightForBase(DalBase):
         )
 
     @with_session_scope()
-    def get_by_md5(
+    def get_by_attr(
         self,
-        orm_class,
-        md5: bytes,
+        orm_class: Type[OrmBase],
+        attr_name: str,
+        attr_value: Any,
         session: sqlalchemy.orm.Session = None,
-    ):
-        """Retrieves an object of a class derived off `OrmBase` through its MD5.
+    ) -> Type[OrmBase]:
+        """Retrieves the record object of `orm_class` type through the value of
+        a given attribute.
+
+        Note:
+            This method should only be used through a unique attribute as it
+            uses the `one_or_none` retrieval method and will raise an exception
+            should multiple records with a given attribute value be found.
 
         Args:
-            md5 (bytes): The MD5 of the `OrmBase` record to be retrieved.
-            orm_class: An object of a class derived off `OrmBase` implementing
-                an `md5` attribute.
+            orm_class (Type[OrmBase]): An object of a class derived off
+                `OrmBase` implementing the `attr_name` attribute.
+            attr_name (str): The attribute name to be used in filtering out a
+                single record.
+            attr_value (Any): The attribute value to be used in filtering out a
+                single record.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
                 upon completion.
 
         Returns:
-            The matching `OrmBase` record object or `None` if no such record
-                exists.
+            Type[OrmBase]: The record object of type `orm_class` matching the
+                attribute value and `None` if no record exists.
+
+        Raises:
+            MissingAttributeError: Raised when the `orm_class` does not define
+                the `attr_name` attribute.
+            sqlalchemy.orm.exc.MultipleResultsFound: Raised when multiple
+                records were found with the given attribute value.
         """
 
+        # Log an error and raise an exception if the `orm_class` does not define
+        # an `attr_name` attribute.
+        if not hasattr(orm_class, attr_name):
+            msg = "Class `{}` does not define attribute `{}`."
+            msg_fmt = msg.format(orm_class, attr_name)
+            self.logger.error(msg_fmt)
+            raise MissingAttributeError(msg_fmt)
+
         query = session.query(orm_class)
-        query = query.filter(orm_class.md5 == md5)
+        query = query.filter(getattr(orm_class, attr_name) == attr_value)
 
         obj = query.one_or_none()
 
         return obj
 
     @with_session_scope()
-    def bget_by_md5s(
+    def bget_by_attr(
         self,
-        orm_class,
-        md5s: List[bytes],
+        orm_class: Type[OrmBase],
+        attr_name: str,
+        attr_values: List[Any],
         session: sqlalchemy.orm.Session = None,
-    ):
-        """Retrieves a list of object of a class derived off `OrmBase` through
-        their MD5s.
+    ) -> List[Type[OrmBase]]:
+        """Retrieves a list of record objects of `orm_class` type through the
+        values of a given attribute.
 
         Args:
-            md5s (list[bytes]): The MD5s of the `OrmBase` records to be
-                retrieved.
-            orm_class: An object of a class derived off `OrmBase` implementing
-                an `md5` attribute.
+            orm_class (Type[OrmBase]): An object of a class derived off
+                `OrmBase` implementing the `attr_name` attribute.
+            attr_name (str): The attribute name to be used in filtering out the
+                records.
+            attr_values (list[Any]): The attribute values to be used in
+                filtering out the record.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
                 upon completion.
 
         Returns:
-            The matching `OrmBase` record objects or an empty list if no such
-                records exist.
+            List[Type[OrmBase]]: The record objects of type `orm_class`
+                matching the attribute values.
+
+        Raises:
+            MissingAttributeError: Raised when the `orm_class` does not define
+                the `attr_name` attribute.
         """
 
+        # Log an error and raise an exception if the `orm_class` does not define
+        # an `attr_name` attribute.
+        if not hasattr(orm_class, attr_name):
+            msg = "Class `{}` does not define attribute `{}`."
+            msg_fmt = msg.format(orm_class, attr_name)
+            self.logger.error(msg_fmt)
+            raise MissingAttributeError(msg_fmt)
+
         query = session.query(orm_class)
-        query = query.filter(orm_class.md5.in_(md5s))
+        query = query.filter(getattr(orm_class, attr_name).in_(attr_values))
 
-        obj = query.all()
+        objs = query.all()
 
-        return obj
+        return objs
 
     @with_session_scope()
     def get_by_attrs(
         self,
-        orm_class,
-        attrs_names_values: dict,
+        orm_class: Type[OrmBase],
+        attrs_names_values: Dict[str, Any],
         session: sqlalchemy.orm.Session = None,
-    ):
+    ) -> Type[OrmBase]:
         """Retrieves the record object of `orm_class` type through attribute
         name-value pairs.
 
@@ -299,23 +341,34 @@ class DalFightForBase(DalBase):
             found.
 
         Args:
-            orm_class: An object of a class derived off `OrmBase` implementing
-                an `md5` attribute.
-            attrs_names_values (dict): A dictionary of attribute name-value
-                pairs to be used in filtering out a single record.
+            orm_class (Type[OrmBase]): An object of a class derived off
+                `OrmBase` implementing the defined attributes.
+            attrs_names_values (Dict[str, Any]): A dictionary of attribute
+                name:value pairs to be used in filtering out a single record.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
                 upon completion.
 
         Returns:
-            orm_class: The record object of type `orm_class` matching the
+            Type[OrmBase]: The record object of type `orm_class` matching the
                 attribute name-value pairs and `None` if no record exists.
 
         Raises:
+            MissingAttributeError: Raised when the `orm_class` does not define
+                any of the the `attrs_names_values` attributes (keys).
             sqlalchemy.orm.exc.MultipleResultsFound: Raised when multiple
                 records were found with the given attribute(s).
         """
+
+        # Log an error and raise an exception if the `orm_class` does not define
+        # any of the `attrs_names_values` attributes (keys).
+        for attr_name in attrs_names_values.keys():
+            if not hasattr(orm_class, attr_name):
+                msg = "Class `{}` does not define attribute `{}`."
+                msg_fmt = msg.format(orm_class, attr_name)
+                self.logger.error(msg_fmt)
+                raise MissingAttributeError(msg_fmt)
 
         query = session.query(orm_class)
         for attr_name, attr_value in attrs_names_values.items():
@@ -326,3 +379,67 @@ class DalFightForBase(DalBase):
         obj = query.one_or_none()
 
         return obj
+
+    @with_session_scope()
+    def bget_by_attrs(
+        self,
+        orm_class: Type[OrmBase],
+        attrs_names_values: Dict[str, List[Any]],
+        session: sqlalchemy.orm.Session = None,
+    ) -> List[Type[OrmBase]]:
+        """Retrieves a list of record objects of `orm_class` type through
+        attribute name-value pairs.
+
+        Args:
+            orm_class (Type[OrmBase]): An object of a class derived off
+                `OrmBase` implementing the `attr_name` attribute.
+            attrs_names_values (Dict[str, List[Any]]): A dictionary of attribute
+                name:list of values pairs to be used in filtering out the
+                records.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            List[Type[OrmBase]]: The record objects of type `orm_class`
+                matching the attribute values.
+
+        Raises:
+            MissingAttributeError: Raised when the `orm_class` does not define
+                any of the the `attrs_names_values` attributes (keys).
+            InvalidArgumentsError: Raised when the lists of values under the
+                attrs_names_values dictionary are not of the same length.
+        """
+
+        # Retrieve all attribute names.
+        attr_names = attrs_names_values.keys()
+
+        # Log an error and raise an exception if the `orm_class` does not define
+        # any of the `attrs_names_values` attributes (keys).
+        for attr_name in attr_names:
+            if not hasattr(orm_class, attr_name):
+                msg = "Class `{}` does not define attribute `{}`."
+                msg_fmt = msg.format(orm_class, attr_name)
+                self.logger.error(msg_fmt)
+                raise MissingAttributeError(msg_fmt)
+
+        # Retrieve all attribute value lists.
+        attr_values = attrs_names_values.values()
+
+        # Log an error and raise an exception if the list of values are not all
+        # of equal length.
+        if len(set(map(len, attr_values))) != 1:
+            msg_fmt = "The value lists must all be of equal length."
+            self.logger.error(msg_fmt)
+            raise InvalidArgumentsError(msg_fmt)
+
+        # Retrieve all attributes from the class.
+        attrs = [getattr(orm_class, attr_name) for attr_name in attr_names]
+
+        query = session.query(orm_class)
+        query = query.filter(sqlalchemy.tuple_(*attrs).in_(zip(*attr_values)))
+
+        objs = query.all()
+
+        return objs
