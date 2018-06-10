@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.3
+
+- `orm_pubmed.py`: Fixed bug in the `CitationIdentifier` class where the unique constraint was erroneously configured.
+
 ### v0.4.2
 
 - `orm_pubmed.py`: Fixed bug in the `ArticleAbstractText` class where the unique constraint was wrongly configured.
