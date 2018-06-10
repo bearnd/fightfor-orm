@@ -796,7 +796,7 @@ class CitationIdentifier(Base, OrmBase):
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
-        sqlalchemy.UniqueConstraint("citation_id", "identifier_id"),
+        sqlalchemy.UniqueConstraint("citation_id", "identifier"),
         # Set table schema.
         {"schema": "pubmed"}
     )
