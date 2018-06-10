@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.1
+
+- `orm_pubmed.py`: Fixed bug where default enum values were not renamed.
+
 ### v0.4.0
 
 Issue No.5: Move the `pubmed-ingester` ORM and DALs to `fightfor-orm`:

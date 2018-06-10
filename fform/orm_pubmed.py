@@ -84,7 +84,7 @@ class AbstractText(Base, OrmBase):
         name="category",
         type_=sqlalchemy.types.Enum(AbstractTextCategory),
         nullable=True,
-        default=AbstractTextCategory.unassigned,
+        default=AbstractTextCategory.UNASSIGNED,
         index=True
     )
 
@@ -1392,7 +1392,7 @@ class Journal(Base, OrmBase):
         name="issn_type",
         type_=sqlalchemy.types.Enum(JournalIssnType),
         nullable=True,
-        default=JournalIssnType.undetermined
+        default=JournalIssnType.UNDETERMINED
     )
 
     # Full journal title (referring to the `<Title>` element).
