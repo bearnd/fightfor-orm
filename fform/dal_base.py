@@ -443,3 +443,58 @@ class DalFightForBase(DalBase):
         objs = query.all()
 
         return objs
+
+    def order_objs_by_attr(
+        self,
+        objs: List[Type[OrmBase]],
+        attr_name: str,
+        attr_values: List[Any]
+    ) -> List[Type[OrmBase]]:
+        """Matches a list of record objects of a class derived off `OrmBase`
+        through a given attribute against a list of attribute values.
+
+        Args:
+            objs (List[Type[OrmBase]]): The list of record objects of a class
+                derived off `OrmBase` that define the `attr_name` attribute.
+            attr_name (str): The attribute to perform the matching against.
+            attr_values (List[Any]): The values of the `attr_name` attribute
+                through which the matching will be performed.
+
+        Returns:
+            List[Type[OrmBase]]: The record objects in order matching the
+                attribute values.
+
+        Raises:
+            MissingAttributeError: Raised when the `orm_class` does not define
+                any of the the `attrs_names_values` attributes (keys).
+            InvalidArgumentsError: Raised when the lists of values under the
+                attrs_names_values dictionary are not of the same length.
+        """
+
+        # Log an error and raise an exception if any of the `objs` do not define
+        # the `attr_name` attribute.
+        for obj in objs:
+            if not hasattr(obj, attr_name):
+                msg = "Class `{}` does not define attribute `{}`."
+                msg_fmt = msg.format(obj.__class__, attr_name)
+                self.logger.error(msg_fmt)
+                raise MissingAttributeError(msg_fmt)
+
+        # Log an error and raise an exception if the `objs` and `attr_values`
+        # lists are not of equal length.
+        if len(objs) != len(attr_values):
+            msg_fmt = ("The `objs` and `attr_values` lists must be of equal "
+                       "length.")
+            self.logger.error(msg_fmt)
+            raise InvalidArgumentsError(msg_fmt)
+
+        # Iterate over the `objs` and `attr_values` and match them creating a
+        # list of record objects in the order of the attribute values.
+        objs_ordered = []
+        for attr_value in attr_values:
+            for obj in objs:
+                if getattr(obj, attr_name) == attr_value:
+                    objs_ordered.append(obj)
+                    continue
+
+        return objs_ordered
