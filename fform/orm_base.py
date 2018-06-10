@@ -161,6 +161,18 @@ class OrmBase(object):
 
         return results
 
+    @property
+    def pk_name(self) -> str:
+        """Returns the name of the class' primary-key field.
+
+        Returns:
+            str: The name of the class' primary-key field.
+        """
+
+        pk_name = sqlalchemy.inspect(self.__class__).primary_key[0]
+
+        return pk_name
+
     def to_string(self, deep=False):
         """"""
 
