@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.5
+
+- `orm_ct.py`: Added missing schema in the `AnalysisGroup` class.
+
 ### v0.4.4
 
 - `orm_pubmed.py`: Added schema name to the foreign key and relationship definitions.
