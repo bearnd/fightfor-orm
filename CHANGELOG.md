@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.4
+
+- `orm_pubmed.py`: Added schema name to the foreign key and relationship definitions.
+
 ### v0.4.3
 
 - `orm_pubmed.py`: Fixed bug in the `CitationIdentifier` class where the unique constraint was erroneously configured.
