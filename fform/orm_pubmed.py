@@ -107,7 +107,7 @@ class AbstractText(Base, OrmBase):
     # Relationship to an `Article` record.
     article = sqlalchemy.orm.relationship(
         argument="Article",
-        secondary="article_abstract_texts",
+        secondary="pubmed.article_abstract_texts",
         back_populates="abstract_texts"
     )
 
@@ -238,14 +238,14 @@ class Affiliation(Base, OrmBase):
     # Relationship to a list of `Author` records.
     authors = sqlalchemy.orm.relationship(
         argument="Author",
-        secondary="article_author_affiliations",
+        secondary="pubmed.article_author_affiliations",
         back_populates="affiliations",
     )
 
     # Relationship to a list of `Article` records.
     articles = sqlalchemy.orm.relationship(
         argument="Article",
-        secondary="article_author_affiliations",
+        secondary="pubmed.article_author_affiliations",
         back_populates="affiliations",
     )
 
@@ -336,7 +336,7 @@ class Article(Base, OrmBase):
 
     # Foreign key to the journal this article was published under.
     journal_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("journals.journal_id"),
+        sqlalchemy.ForeignKey("pubmed.journals.journal_id"),
         name="journal_id",
         nullable=False
     )
@@ -401,14 +401,14 @@ class Article(Base, OrmBase):
     # Relationship to a list of `AbstractText` records.
     abstract_texts = sqlalchemy.orm.relationship(
         argument="AbstractText",
-        secondary="article_abstract_texts",
+        secondary="pubmed.article_abstract_texts",
         back_populates="article"
     )
 
     # Relationship to a list of `Author` records.
     authors = sqlalchemy.orm.relationship(
         argument="Author",
-        secondary="article_author_affiliations",
+        secondary="pubmed.article_author_affiliations",
         back_populates="articles",
     )
 
@@ -421,21 +421,21 @@ class Article(Base, OrmBase):
     # Relationship to a list of `Grant` records.
     grants = sqlalchemy.orm.relationship(
         argument="Grant",
-        secondary="article_grants",
+        secondary="pubmed.article_grants",
         back_populates="articles"
     )
 
     # Relationship to a list of `PublicationType` records.
     publication_types = sqlalchemy.orm.relationship(
         argument="PublicationType",
-        secondary="article_publication_types",
+        secondary="pubmed.article_publication_types",
         back_populates="articles"
     )
 
     # Relationship to a list of `Author` records.
     affiliations = sqlalchemy.orm.relationship(
         argument="Affiliation",
-        secondary="article_author_affiliations",
+        secondary="pubmed.article_author_affiliations",
         back_populates="articles",
     )
 
@@ -478,14 +478,14 @@ class ArticleAbstractText(Base, OrmBase):
 
     # Foreign key to the article ID.
     article_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("articles.article_id"),
+        sqlalchemy.ForeignKey("pubmed.articles.article_id"),
         name="article_id",
         nullable=False,
     )
 
     # Foreign key to the author ID.
     abstract_text_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("abstract_texts.abstract_text_id"),
+        sqlalchemy.ForeignKey("pubmed.abstract_texts.abstract_text_id"),
         name="abstract_text_id",
         nullable=False,
     )
@@ -523,21 +523,21 @@ class ArticleAuthorAffiliation(Base, OrmBase):
 
     # Foreign key to the article ID.
     article_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("articles.article_id"),
+        sqlalchemy.ForeignKey("pubmed.articles.article_id"),
         name="article_id",
         nullable=False
     )
 
     # Foreign key to the author ID.
     author_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("authors.author_id"),
+        sqlalchemy.ForeignKey("pubmed.authors.author_id"),
         name="author_id",
         nullable=False
     )
 
     # Foreign key to the author ID.
     affiliation_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("affiliations.affiliation_id"),
+        sqlalchemy.ForeignKey("pubmed.affiliations.affiliation_id"),
         name="affiliation_id",
         nullable=True
     )
@@ -579,21 +579,21 @@ class ArticleDatabankAccessionNumber(Base, OrmBase):
 
     # Foreign key to the article ID.
     article_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("articles.article_id"),
+        sqlalchemy.ForeignKey("pubmed.articles.article_id"),
         name="article_id",
         nullable=False,
     )
 
     # Foreign key to the databank ID.
     databank_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("databanks.databank_id"),
+        sqlalchemy.ForeignKey("pubmed.databanks.databank_id"),
         name="databank_id",
         nullable=False,
     )
 
     # Foreign key to the accession number ID.
     accession_number_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("accession_numbers.accession_number_id"),
+        sqlalchemy.ForeignKey("pubmed.accession_numbers.accession_number_id"),
         name="accession_number_id",
         nullable=False,
     )
@@ -633,14 +633,14 @@ class ArticleGrant(Base, OrmBase):
 
     # Foreign key to the article ID.
     article_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("articles.article_id"),
+        sqlalchemy.ForeignKey("pubmed.articles.article_id"),
         name="article_id",
         nullable=False,
     )
 
     # Foreign key to the grant ID.
     grant_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("grants.grant_id"),
+        sqlalchemy.ForeignKey("pubmed.grants.grant_id"),
         name="grant_id",
         nullable=False
     )
@@ -670,14 +670,14 @@ class CitationChemical(Base, OrmBase):
 
     # Foreign key to the citation ID.
     citation_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("citations.citation_id"),
+        sqlalchemy.ForeignKey("pubmed.citations.citation_id"),
         name="citation_id",
         nullable=False,
     )
 
     # Foreign key to the chemical ID.
     chemical_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("chemicals.chemical_id"),
+        sqlalchemy.ForeignKey("pubmed.chemicals.chemical_id"),
         name="chemical_id",
         nullable=False,
     )
@@ -708,14 +708,14 @@ class CitationDescriptorQualifier(Base, OrmBase):
 
     # Foreign key to the citation ID.
     citation_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("citations.citation_id"),
+        sqlalchemy.ForeignKey("pubmed.citations.citation_id"),
         name="citation_id",
         nullable=False,
     )
 
     # Foreign key to the descriptor ID.
     descriptor_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("descriptors.descriptor_id"),
+        sqlalchemy.ForeignKey("pubmed.descriptors.descriptor_id"),
         name="descriptor_id",
         nullable=False,
     )
@@ -730,7 +730,7 @@ class CitationDescriptorQualifier(Base, OrmBase):
 
     # Foreign key to the qualifier ID.
     qualifier_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("qualifiers.qualifier_id"),
+        sqlalchemy.ForeignKey("pubmed.qualifiers.qualifier_id"),
         name="qualifier_id",
         nullable=True,
     )
@@ -772,7 +772,7 @@ class CitationIdentifier(Base, OrmBase):
 
     # Foreign key to the citation ID.
     citation_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("citations.citation_id"),
+        sqlalchemy.ForeignKey("pubmed.citations.citation_id"),
         name="citation_id",
         nullable=False,
     )
@@ -818,14 +818,14 @@ class CitationKeyword(Base, OrmBase):
 
     # Foreign key to the citation ID.
     citation_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("citations.citation_id"),
+        sqlalchemy.ForeignKey("pubmed.citations.citation_id"),
         name="citation_id",
         nullable=False,
     )
 
     # Foreign key to the keyword ID.
     keyword_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("keywords.keyword_id"),
+        sqlalchemy.ForeignKey("pubmed.keywords.keyword_id"),
         name="keyword_id",
         nullable=False,
     )
@@ -855,14 +855,14 @@ class ArticlePublicationType(Base, OrmBase):
 
     # Foreign key to the article ID.
     article_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("articles.article_id"),
+        sqlalchemy.ForeignKey("pubmed.articles.article_id"),
         name="article_id",
         nullable=False,
     )
 
     # Foreign key to the publication type ID.
     publication_type_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("publication_types.publication_type_id"),
+        sqlalchemy.ForeignKey("pubmed.publication_types.publication_type_id"),
         name="publication_type_id",
         nullable=False,
     )
@@ -952,14 +952,14 @@ class Author(Base, OrmBase):
     # Relationship to a list of `Article` records.
     articles = sqlalchemy.orm.relationship(
         argument="Article",
-        secondary="article_author_affiliations",
+        secondary="pubmed.article_author_affiliations",
         back_populates="authors"
     )
 
     # Relationship to a list of `Affiliation` records.
     affiliations = sqlalchemy.orm.relationship(
         argument="Affiliation",
-        secondary="article_author_affiliations",
+        secondary="pubmed.article_author_affiliations",
         back_populates="authors"
     )
 
@@ -1053,7 +1053,7 @@ class Chemical(Base, OrmBase):
     # Relationship to a list of `Citation` records.
     citations = sqlalchemy.orm.relationship(
         argument="Citation",
-        secondary="citation_chemicals",
+        secondary="pubmed.citation_chemicals",
         back_populates="chemicals"
     )
 
@@ -1110,14 +1110,14 @@ class Citation(Base, OrmBase):
 
     # Foreign key to the article ID.
     article_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("articles.article_id"),
+        sqlalchemy.ForeignKey("pubmed.articles.article_id"),
         name="article_id",
         nullable=False,
     )
 
     # Foreign key to the journal info ID.
     journal_info_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("journal_infos.journal_info_id"),
+        sqlalchemy.ForeignKey("pubmed.journal_infos.journal_info_id"),
         name="journal_info_id",
         nullable=False,
     )
@@ -1148,14 +1148,14 @@ class Citation(Base, OrmBase):
     # Relationship to a list of `Chemical` records.
     chemicals = sqlalchemy.orm.relationship(
         argument="Chemical",
-        secondary="citation_chemicals",
+        secondary="pubmed.citation_chemicals",
         back_populates="citations"
     )
 
     # Relationship to a list of `Keyword` records.
     keywords = sqlalchemy.orm.relationship(
         argument="Keyword",
-        secondary="citation_keywords",
+        secondary="pubmed.citation_keywords",
         back_populates="citations"
     )
 
@@ -1322,7 +1322,7 @@ class Grant(Base, OrmBase):
     # Relationship to a list of `Article` records.
     articles = sqlalchemy.orm.relationship(
         argument="Article",
-        secondary="article_grants",
+        secondary="pubmed.article_grants",
         back_populates="grants"
     )
 
@@ -1541,7 +1541,7 @@ class Keyword(Base, OrmBase):
     # Relationship to a list of `Citation` records.
     citations = sqlalchemy.orm.relationship(
         argument="Citation",
-        secondary="citation_keywords",
+        secondary="pubmed.citation_keywords",
         back_populates="keywords",
     )
 
@@ -1602,7 +1602,7 @@ class PublicationType(Base, OrmBase):
     # Relationship to a list of `Article` records.
     articles = sqlalchemy.orm.relationship(
         argument="Article",
-        secondary="article_publication_types",
+        secondary="pubmed.article_publication_types",
         back_populates="publication_types"
     )
 
