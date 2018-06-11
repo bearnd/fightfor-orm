@@ -1406,8 +1406,12 @@ class AnalysisGroup(Base, OrmBase):
         nullable=False,
     )
 
+    # Set table arguments.
     __table_args__ = (
+        # Set unique constraint.
         sqlalchemy.UniqueConstraint('analysis_id', 'group_id'),
+        # Set table schema.
+        {"schema": "clinicaltrials"}
     )
 
 
