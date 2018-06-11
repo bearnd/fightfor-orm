@@ -4,9 +4,7 @@ from __future__ import unicode_literals
 
 import hashlib
 
-import sqlalchemy
 import sqlalchemy.orm
-import sqlalchemy.types
 
 from fform.orm_base import Base, OrmBase
 from fform.utils import EnumBase
