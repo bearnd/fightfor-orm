@@ -1,5 +1,10 @@
 ## Changelog
 
+### v0.4.6
+
+- `orm_mt.py`: Added a new `SupplementalSynonym` class representing a new `supplemental_synonyms` table to store synonyms for `Supplemental` entities.
+- `dals_mt.py`: Added a new `biodi_supplemental_synonyms` method to the `DalMesh` class to store `SupplementalSynonym` records.
+
 ### v0.4.5
 
 - `orm_ct.py`: Added missing schema in the `AnalysisGroup` class.
