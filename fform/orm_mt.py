@@ -1846,3 +1846,63 @@ class ConceptSynonym(Base, OrmBase):
         self.md5 = md5
 
         return value
+
+
+class SupplementalSynonym(Base, OrmBase):
+    """Table of MeSH supplemental synonyms as defined in the UMLS."""
+
+    # Set table name.
+    __tablename__ = "supplemental_synonyms"
+
+    # Autoincrementing primary key ID.
+    supplemental_synonym_id = sqlalchemy.Column(
+        name="supplemental_synonym_id",
+        type_=sqlalchemy.types.BigInteger(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the concept ID.
+    supplemental_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("mesh.supplementals.supplemental_id"),
+        name="supplemental_id",
+        nullable=False,
+    )
+
+    # The descriptor synonym.
+    synonym = sqlalchemy.Column(
+        name="synonym",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+    )
+
+    # MD5 hash of the synonym.
+    md5 = sqlalchemy.Column(
+        name="md5",
+        type_=sqlalchemy.types.Binary(),
+        index=True,
+        nullable=False,
+    )
+
+    # Set table arguments.
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint('supplemental_id', 'md5'),
+        # Set table schema.
+        {"schema": "mesh"}
+    )
+
+    @sqlalchemy.orm.validates("synonym")
+    def update_md5(self, key, value):
+        # Dumb hack to make the linter shut up that the `key` isn't used.
+        assert key
+
+        # Encode the synonym to UTF8 (in case it contains unicode characters).
+        synonym_encoded = str(value).encode("utf-8")
+
+        # Calculate the MD5 hash of the encoded synonym and store under the
+        # `md5` attribute.
+        md5 = hashlib.md5(synonym_encoded).digest()
+        self.md5 = md5
+
+        return value
