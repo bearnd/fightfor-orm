@@ -47,6 +47,7 @@ from fform.orm_mt import SupplementalClassType
 from fform.orm_mt import DescriptorSynonym
 from fform.orm_mt import QualifierSynonym
 from fform.orm_mt import ConceptSynonym
+from fform.orm_mt import SupplementalSynonym
 from fform.utils import return_first_item
 from fform.utils import lists_equal_length
 
@@ -1705,6 +1706,44 @@ class DalMesh(DalFightForBase):
             values=list(
                 {
                     "concept_id": concept_id,
+                    "synonym": synonym,
+                    "md5": md5,
+                } for synonym, md5 in zip(
+                    synonyms,
+                    md5s
+                )
+            )
+        ).on_conflict_do_nothing()
+
+        session.execute(statement)
+
+    @lists_equal_length
+    @with_session_scope()
+    def biodi_supplemental_synonyms(
+        self,
+        supplemental_id,
+        synonyms: List[str],
+        md5s: List[bytes],
+        session: sqlalchemy.orm.Session = None,
+    ) -> None:
+        """Creates new `SupplementalSynonym` records in an BIODI manner.
+
+        Args:
+            supplemental_id (int): The linked `Supplemental` record primary-key
+                ID.
+            synonyms (list[str]): The supplemental synonyms.
+            md5s (list[bytes]): The supplemental synonym MD5s.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+        """
+
+        statement = insert(
+            SupplementalSynonym,
+            values=list(
+                {
+                    "supplemental_id": supplemental_id,
                     "synonym": synonym,
                     "md5": md5,
                 } for synonym, md5 in zip(
