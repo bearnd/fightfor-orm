@@ -1713,6 +1713,7 @@ class DescriptorSynonym(Base, OrmBase):
             'ix_mesh_descriptor_synonyms_synonym_trgm',
             sqlalchemy.text("synonym gin_trgm_ops"),
             postgresql_using='gin',
+            postgresql_ops={"description": "gin_trgm_ops"},
         ),
         # Set table schema.
         {"schema": "mesh"}
@@ -1779,6 +1780,7 @@ class QualifierSynonym(Base, OrmBase):
             'ix_mesh_qualifier_synonyms_synonym_trgm',
             sqlalchemy.text("synonym gin_trgm_ops"),
             postgresql_using='gin',
+            postgresql_ops={"description": "gin_trgm_ops"},
         ),
         # Set table schema.
         {"schema": "mesh"}
@@ -1845,6 +1847,7 @@ class SupplementalSynonym(Base, OrmBase):
             'ix_mesh_supplemental_synonyms_synonym_trgm',
             sqlalchemy.text("synonym gin_trgm_ops"),
             postgresql_using='gin',
+            postgresql_ops={"description": "gin_trgm_ops"},
         ),
         # Set table schema.
         {"schema": "mesh"}
