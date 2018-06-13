@@ -1,5 +1,16 @@
 ## Changelog
 
+### v0.5.0
+
+Issue No.33: Remove the `concept_synonyms` table:
+
+- `orm_mt.py`: Removed the `ConceptSynonym` class (and therefore the `concept_synonyms` table).
+- `dals_mt.py`: Removed the `biodi_concept_synonyms.py` method from the `DalMesh` class.
+
+Issue No. 35: Add `pg_tgrm` index to synonym columns:
+
+- `orm_mt.py`: Added Trigram indices to the remaining synonym tables.
+
 ### v0.4.6
 
 - `orm_mt.py`: Added a new `SupplementalSynonym` class representing a new `supplemental_synonyms` table to store synonyms for `Supplemental` entities.
