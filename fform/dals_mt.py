@@ -1682,43 +1682,6 @@ class DalMesh(DalFightForBase):
 
     @lists_equal_length
     @with_session_scope()
-    def biodi_concept_synonyms(
-        self,
-        concept_id,
-        synonyms: List[str],
-        md5s: List[bytes],
-        session: sqlalchemy.orm.Session = None,
-    ) -> None:
-        """Creates new `ConceptSynonym` records in an BIODI manner.
-
-        Args:
-            concept_id (int): The linked `Concept` record primary-key ID.
-            synonyms (list[str]): The concept synonyms.
-            md5s (list[bytes]): The concept synonym MD5s.
-            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
-                through which the record will be added. Defaults to `None` in
-                which case a new session is automatically created and terminated
-                upon completion.
-        """
-
-        statement = insert(
-            ConceptSynonym,
-            values=list(
-                {
-                    "concept_id": concept_id,
-                    "synonym": synonym,
-                    "md5": md5,
-                } for synonym, md5 in zip(
-                    synonyms,
-                    md5s
-                )
-            )
-        ).on_conflict_do_nothing()
-
-        session.execute(statement)
-
-    @lists_equal_length
-    @with_session_scope()
     def biodi_supplemental_synonyms(
         self,
         supplemental_id,
