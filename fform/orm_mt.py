@@ -616,6 +616,12 @@ class Qualifier(Base, OrmBase):
         back_populates="qualifiers",
     )
 
+    # Relationship to a list of `QualifierSynonym` records.
+    synonyms = sqlalchemy.orm.relationship(
+        argument="QualifierSynonym",
+        back_populates="qualifier",
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -961,6 +967,12 @@ class Descriptor(Base, OrmBase):
         argument="Concept",
         secondary="mesh.descriptor_concepts",
         back_populates="descriptors",
+    )
+
+    # Relationship to a list of `DescriptorSynonym` records.
+    synonyms = sqlalchemy.orm.relationship(
+        argument="DescriptorSynonym",
+        back_populates="descriptor",
     )
 
     # Set table arguments.
@@ -1416,6 +1428,12 @@ class Supplemental(Base, OrmBase):
         back_populates="supplementals",
     )
 
+    # Relationship to a list of `SupplementalSynonym` records.
+    synonyms = sqlalchemy.orm.relationship(
+        argument="SupplementalSynonym",
+        back_populates="supplemental",
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -1704,6 +1722,12 @@ class DescriptorSynonym(Base, OrmBase):
         nullable=False,
     )
 
+    # Relationship to a `Descriptor` record.
+    descriptor = sqlalchemy.orm.relationship(
+        argument="Descriptor",
+        back_populates="synonyms",
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
@@ -1771,6 +1795,12 @@ class QualifierSynonym(Base, OrmBase):
         nullable=False,
     )
 
+    # Relationship to a `Qualifier` record.
+    qualifier = sqlalchemy.orm.relationship(
+        argument="Qualifier",
+        back_populates="synonyms",
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
@@ -1836,6 +1866,12 @@ class SupplementalSynonym(Base, OrmBase):
         type_=sqlalchemy.types.Binary(),
         index=True,
         nullable=False,
+    )
+
+    # Relationship to a `Supplemental` record.
+    supplemental = sqlalchemy.orm.relationship(
+        argument="Supplemental",
+        back_populates="synonyms",
     )
 
     # Set table arguments.

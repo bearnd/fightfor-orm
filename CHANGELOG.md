@@ -1,5 +1,11 @@
 ## Changelog
 
+### v0.6.0
+
+Issue No.38: Add synonym relationships to the corresponding MeSH entity classes:
+
+- `orm_my.py`: Added relationships between the synonym tables and the MeSH entity tables they refer to.
+
 ### v0.5.0
 
 Issue No.33: Remove the `concept_synonyms` table:
