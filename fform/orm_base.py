@@ -9,6 +9,7 @@ import binascii
 import sqlalchemy
 import sqlalchemy.sql.sqltypes
 import sqlalchemy.types
+from sqlalchemy.sql.schema import Column
 
 import uuid
 import decimal
@@ -161,6 +162,40 @@ class OrmBase(object):
 
         return results
 
+    @classmethod
+    def get_pk(cls) -> Column:
+        """Returns the class' primary-key attribute.
+
+        Returns:
+            Column: The class' primary-key attribute.
+        """
+
+        pk = sqlalchemy.inspect(cls).primary_key[0]
+
+        return pk
+
+    @classmethod
+    def get_pk_name(cls) -> str:
+        """Returns the name of the class' primary-key field.
+
+        Returns:
+            str: The name of the class' primary-key field.
+        """
+
+        pk = cls.get_pk()
+
+        return pk.name
+
+    @property
+    def pk(self) -> Column:
+        """Returns the class' primary-key attribute.
+
+        Returns:
+            Column: The class' primary-key attribute.
+        """
+
+        return self.get_pk()
+
     @property
     def pk_name(self) -> str:
         """Returns the name of the class' primary-key field.
@@ -169,9 +204,9 @@ class OrmBase(object):
             str: The name of the class' primary-key field.
         """
 
-        pk_name = sqlalchemy.inspect(self.__class__).primary_key[0]
+        pk = self.get_pk()
 
-        return pk_name
+        return pk.name
 
     def to_string(self, deep=False):
         """"""
