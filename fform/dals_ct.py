@@ -2011,14 +2011,14 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_study_mesh_term(
+    def iodu_study_mesh_term(
         self,
         study_id: int,
         mesh_term_id: int,
         mesh_term_type: MeshTermType,
         session: sqlalchemy.orm.Session = None,
     ) -> int:
-        """Creates a new `StudyMeshTerm` record in an IODI manner.
+        """Creates a new `StudyMeshTerm` record in an IODU manner.
 
         Args:
             study_id (int): The linked `Study` record primary-key ID.
@@ -2040,7 +2040,12 @@ class DalClinicalTrials(DalFightForBase):
                 "mesh_term_id": mesh_term_id,
                 "type": mesh_term_type,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        ).on_conflict_do_update(
+            index_elements=["study_id", "mesh_term_id"],
+            set_={
+                "type": mesh_term_type,
+            }
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
