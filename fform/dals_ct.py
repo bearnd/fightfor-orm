@@ -144,9 +144,10 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=Sponsor,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: Sponsor
             return obj.sponsor_id
@@ -190,9 +191,10 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=Keyword,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: Keyword
             return obj.keyword_id
@@ -235,9 +237,10 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=Condition,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: Condition
             return obj.condition_id
@@ -296,9 +299,10 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=Facility,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: Facility
             return obj.facility_id
@@ -353,9 +357,10 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=Person,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: Person
             return obj.person_id
@@ -410,9 +415,10 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=Contact,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: Contact
             return obj.contact_id
@@ -463,9 +469,10 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=Investigator,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: Investigator
             return obj.investigator_id
@@ -1292,9 +1299,10 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=Alias,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: Alias
             return obj.alias_id
@@ -1580,9 +1588,10 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_md5(
+            obj = self.get_by_attr(
                 orm_class=MeshTerm,
-                md5=obj.md5,
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: MeshTerm
             return obj.mesh_term_id
