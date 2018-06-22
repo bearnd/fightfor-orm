@@ -1578,14 +1578,14 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_study_sponsor(
+    def iodu_study_sponsor(
         self,
         study_id: int,
         sponsor_id: int,
         sponsor_type: SponsorType,
         session: sqlalchemy.orm.Session = None,
     ) -> int:
-        """Creates a new `StudySponsor` record in an IODI manner.
+        """Creates a new `StudySponsor` record in an IODU manner.
 
         Args:
             study_id (int): The linked `Study` record primary-key ID.
@@ -1608,7 +1608,12 @@ class DalClinicalTrials(DalFightForBase):
                 "sponsor_id": sponsor_id,
                 "type": sponsor_type,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        ).on_conflict_do_update(
+            index_elements=["study_id", "sponsor_id"],
+            set_={
+                "type": sponsor_type,
+            }
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
