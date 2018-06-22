@@ -224,6 +224,65 @@ class DalFightForBase(DalBase):
         )
 
     @with_session_scope()
+    def get(
+        self,
+        orm_class: Type[OrmBase],
+        pk: int,
+        session: sqlalchemy.orm.Session = None,
+    ) -> Type[OrmBase]:
+        """Retrieves the record object of `orm_class` type through the value of
+        its primary-key ID.
+
+        Args:
+            orm_class (Type[OrmBase]): An object of a class derived off
+                `OrmBase` implementing the `attr_name` attribute.
+            pk (int): The primary-key ID of the record to be retrieved.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be retrieved. Defaults to `None`
+                in which case a new session is automatically created and
+                terminated upon completion.
+
+        Returns:
+            Type[OrmBase]: The record object of type `orm_class` matching the
+                primary-key ID and `None` if no record exists.
+        """
+
+        query = session.query(orm_class)
+        query = query.filter(
+            getattr(orm_class, orm_class.get_pk_name()) == pk
+        )
+
+        obj = query.one_or_none()
+
+        return obj
+
+    @with_session_scope()
+    def delete(
+        self,
+        orm_class: Type[OrmBase],
+        pk: int,
+        session: sqlalchemy.orm.Session = None,
+    ) -> None:
+        """Deletes the underlying record corresponding to an object of
+        `orm_class` type through its primary-key ID.
+
+        Args:
+            orm_class (Type[OrmBase]): A class derived off `OrmBase` which
+                represents the record to be deleted.
+            pk (int): The primary-key ID of the record to be deleted.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be deleted. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+        """
+
+        query = session.query(orm_class)
+        query = query.filter(
+            getattr(orm_class, orm_class.get_pk_name()) == pk
+        )
+        query.delete()
+
+    @with_session_scope()
     def get_by_attr(
         self,
         orm_class: Type[OrmBase],
