@@ -1059,13 +1059,13 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_reference(
+    def iodu_reference(
         self,
         citation: str,
         pmid: int,
         session: sqlalchemy.orm.Session = None,
     ) -> int:
-        """Creates a new `Reference` record in an IODI manner.
+        """Creates a new `Reference` record in an IODU manner.
 
         Args:
             citation (str): The citation.
@@ -1085,7 +1085,12 @@ class DalClinicalTrials(DalFightForBase):
                 "citation": citation,
                 "pmid": pmid,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        ).on_conflict_do_update(
+            index_elements=["pmid"],
+            set_={
+                "citation": citation,
+            }
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
