@@ -1632,14 +1632,14 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_study_outcome(
+    def iodu_study_outcome(
         self,
         study_id: int,
         protocol_outcome_id: int,
         outcome_type: OutcomeType,
         session: sqlalchemy.orm.Session = None,
     ) -> int:
-        """Creates a new `StudyOutcome` record in an IODI manner.
+        """Creates a new `StudyOutcome` record in an IODU manner.
 
         Args:
             study_id (int): The linked `Study` record primary-key ID.
@@ -1662,7 +1662,12 @@ class DalClinicalTrials(DalFightForBase):
                 "protocol_outcome_id": protocol_outcome_id,
                 "type": outcome_type,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        ).on_conflict_do_update(
+            index_elements=["study_id", "protocol_outcome_id"],
+            set_={
+                "type": outcome_type,
+            }
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
