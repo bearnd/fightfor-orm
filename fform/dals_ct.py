@@ -467,7 +467,7 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_location(
+    def iodu_location(
         self,
         facility_id: int,
         status: RecruitmentStatusType,
@@ -475,7 +475,7 @@ class DalClinicalTrials(DalFightForBase):
         contact_backup_id: int,
         session: sqlalchemy.orm.Session=None,
     ) -> int:
-        """Creates a new `Location` record in an IODI manner.
+        """Creates a new `Location` record in an IODU manner.
 
         Args:
             facility_id (int): The linked `Facility` record primary-key ID.
@@ -499,7 +499,16 @@ class DalClinicalTrials(DalFightForBase):
                 "contact_primary_id": contact_primary_id,
                 "contact_backup_id": contact_backup_id,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        ).on_conflict_do_update(
+            index_elements=[
+                "facility_id",
+                "contact_primary_id",
+                "contact_backup_id",
+            ],
+            set_={
+                "status": status,
+            }
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
