@@ -328,10 +328,15 @@ class Sponsor(Base, OrmBase):
         "agency_class",
     )
     def update_md5(self, key, value):
-        attrs = dict({
+
+        # Enforce lowercasing of the value in order to avoid needless
+        # duplication when the keyword is provided with different casing.
+        value = value.lower() if value else None
+
+        attrs = {
             "agency": self.agency,
             "agency_class": self.agency_class,
-        })
+        }
         attrs[key] = value
 
         # Retrieve the full concatenated name.
@@ -399,6 +404,10 @@ class Keyword(Base, OrmBase):
         # Dumb hack to make the linter shut up that the `key` isn't used.
         assert key
 
+        # Enforce lowercasing of the value in order to avoid needless
+        # duplication when the keyword is provided with different casing.
+        value = value.lower() if value else None
+
         # Encode the keyword to UTF8 (in case it contains unicode characters).
         keyword_encoded = str(value).encode("utf-8")
 
@@ -459,6 +468,10 @@ class Condition(Base, OrmBase):
     def update_md5(self, key, value):
         # Dumb hack to make the linter shut up that the `key` isn't used.
         assert key
+
+        # Enforce lowercasing of the value in order to avoid needless
+        # duplication when the keyword is provided with different casing.
+        value = value.lower() if value else None
 
         # Encode the condition to UTF8 (in case it contains unicode characters).
         condition_encoded = str(value).encode("utf-8")
@@ -548,21 +561,21 @@ class Facility(Base, OrmBase):
         "country",
     )
     def update_md5(self, key, value):
-        attrs = dict({
+        attrs = {
             "name": self.name,
             "city": self.city,
             "state": self.state,
             "zip_code": self.zip_code,
             "country": self.country,
-        })
+        }
         attrs[key] = value
 
         # Retrieve the full concatenated name.
         name = " ".join([str(value) for value in attrs.values()])
 
-        # Encode the full concatenated name to UTF8 (in case it contains
-        # unicode characters).
-        name_encoded = name.encode("utf-8")
+        # Lowercase and encode the full concatenated name to UTF8 (in case it
+        # contains unicode characters).
+        name_encoded = name.lower().encode("utf-8")
 
         # Calculate the MD5 hash of the encoded full concatenated name and store
         # it under the `md5` attribute.
@@ -637,20 +650,20 @@ class Person(Base, OrmBase):
         "degrees",
     )
     def update_md5(self, key, value):
-        attrs = dict({
+        attrs = {
             "name_first": self.name_first,
             "name_middle": self.name_middle,
             "name_last": self.name_last,
             "degrees": self.degrees,
-        })
+        }
         attrs[key] = value
 
         # Retrieve the full concatenated name.
         name = " ".join([str(value) for value in attrs.values()])
 
-        # Encode the full concatenated name to UTF8 (in case it contains
-        # unicode characters).
-        name_encoded = name.encode("utf-8")
+        # Lowercase and encode the full concatenated name to UTF8 (in case it
+        # contains unicode characters).
+        name_encoded = name.lower().encode("utf-8")
 
         # Calculate the MD5 hash of the encoded full concatenated name and store
         # it under the `md5` attribute.
@@ -729,12 +742,18 @@ class Contact(Base, OrmBase):
         "email",
     )
     def update_md5(self, key, value):
-        attrs = dict({
+
+        # Enforce lowercasing of the email value in order to avoid needless
+        # duplication when the keyword is provided with different casing.
+        if key == "email":
+            value = value.lower() if value else None
+
+        attrs = {
             "person_id": self.person_id,
             "phone": self.phone,
             "phone_ext": self.phone_ext,
             "email": self.email,
-        })
+        }
         attrs[key] = value
 
         # Retrieve the full concatenated name.
@@ -820,11 +839,11 @@ class Investigator(Base, OrmBase):
         "affiliation",
     )
     def update_md5(self, key, value):
-        attrs = dict({
+        attrs = {
             "person_id": self.person_id,
             "role": self.role,
             "affiliation": self.affiliation,
-        })
+        }
         attrs[key] = value
 
         # Retrieve the full concatenated name.
@@ -1184,869 +1203,6 @@ class ProtocolOutcome(Base, OrmBase):
     }
 
 
-class Group(Base, OrmBase):
-    """Table of `<group>` elements records."""
-
-    # Set table name.
-    __tablename__ = "groups"
-
-    # Autoincrementing primary key ID.
-    group_id = sqlalchemy.Column(
-        name="group_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the value of the `group_id` attribute of the `<group>`
-    # element.
-    identifier = sqlalchemy.Column(
-        name="identifier",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=False,
-    )
-
-    # Referring to the `<title>` element.
-    title = sqlalchemy.Column(
-        name="title",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<description>` element.
-    description = sqlalchemy.Column(
-        name="description",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class Analysis(Base, OrmBase):
-    """Table of `<analysis>` element records."""
-
-    # Set table name.
-    __tablename__ = "analyses"
-
-    # Autoincrementing primary key ID.
-    analysis_id = sqlalchemy.Column(
-        name="analysis_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the `<groups_desc>` element.
-    groups_desc = sqlalchemy.Column(
-        name="groups_desc",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<non_inferiority_type>` element.
-    non_inferiority_type = sqlalchemy.Column(
-        name="non_inferiority_type",
-        type_=sqlalchemy.types.Enum(NonInferiorityType),
-        nullable=True,
-        default=None,
-        index=True
-    )
-
-    # Referring to the `<non_inferiority_desc>` element.
-    non_inferiority_desc = sqlalchemy.Column(
-        name="non_inferiority_desc",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<p_value>` element.
-    p_value = sqlalchemy.Column(
-        name="p_value",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<p_value_desc>` element.
-    p_value_desc = sqlalchemy.Column(
-        name="p_value_desc",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<method>` element.
-    method = sqlalchemy.Column(
-        name="method",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<method_desc>` element.
-    method_desc = sqlalchemy.Column(
-        name="method_desc",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<param_type>` element.
-    param_type = sqlalchemy.Column(
-        name="param_type",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<param_value>` element.
-    param_value = sqlalchemy.Column(
-        name="param_value",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<dispersion_type>` element.
-    dispersion_type = sqlalchemy.Column(
-        name="dispersion_type",
-        type_=sqlalchemy.types.Enum(AnalysisDispersionType),
-        nullable=True,
-        default=None,
-        index=True
-    )
-
-    # Referring to the `<dispersion_value>` element.
-    dispersion_value = sqlalchemy.Column(
-        name="dispersion_value",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<ci_percent>` element.
-    ci_percent = sqlalchemy.Column(
-        name="ci_percent",
-        type_=sqlalchemy.types.Float(),
-        nullable=True,
-    )
-
-    # Referring to the `<ci_n_sides>` element.
-    ci_n_sides = sqlalchemy.Column(
-        name="ci_n_sides",
-        type_=sqlalchemy.types.Enum(NumSidesType),
-        nullable=True,
-    )
-
-    # Referring to the `<ci_lower_limit>` element.
-    ci_lower_limit = sqlalchemy.Column(
-        name="ci_lower_limit",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<ci_upper_limit>` element.
-    ci_upper_limit = sqlalchemy.Column(
-        name="ci_upper_limit",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<ci_upper_limit_na_comment>` element.
-    ci_upper_limit_na_comment = sqlalchemy.Column(
-        name="ci_upper_limit_na_comment",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<estimate_desc>` element.
-    estimate_desc = sqlalchemy.Column(
-        name="estimate_desc",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<other_analysis_desc>` element.
-    other_analysis_desc = sqlalchemy.Column(
-        name="other_analysis_desc",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class AnalysisGroup(Base, OrmBase):
-    """Associative table between `Analysis` and `Group` records."""
-
-    # Set table name.
-    __tablename__ = "analysis_groups"
-
-    # Autoincrementing primary key ID.
-    analysis_group_id = sqlalchemy.Column(
-        name="analysis_group_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the analysis ID.
-    analysis_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.analyses.analysis_id"),
-        name="analysis_id",
-        nullable=False,
-    )
-
-    # Foreign key to the group ID.
-    group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
-        name="group_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('analysis_id', 'group_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
-
-
-class MeasureCount(Base, OrmBase):
-    """Table of `<measure_count>` element records."""
-
-    # Set table name.
-    __tablename__ = "measure_counts"
-
-    # Autoincrementing primary key ID.
-    measure_count_id = sqlalchemy.Column(
-        name="measure_count_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the group ID.
-    group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
-        name="group_id",
-        nullable=False,
-    )
-
-    # Referring to the `<value>` element.
-    value = sqlalchemy.Column(
-        name="value",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class MeasureAnalyzed(Base, OrmBase):
-    """Table of `<measure_analyzed>` element records."""
-
-    # Set table name.
-    __tablename__ = "measure_analyzeds"
-
-    # Autoincrementing primary key ID.
-    measure_analyzed_id = sqlalchemy.Column(
-        name="measure_analyzed_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the `<units>` element.
-    units = sqlalchemy.Column(
-        name="units",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<scope>` element.
-    scope = sqlalchemy.Column(
-        name="scope",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class MeasureAnalyzedCount(Base, OrmBase):
-    """Associative table between `MeasureAnalyzed` and `MeasureCount`
-    records."""
-
-    # Set table name.
-    __tablename__ = "measure_analyzed_counts"
-
-    # Autoincrementing primary key ID.
-    measure_analyzed_count_id = sqlalchemy.Column(
-        name="measure_analyzed_count_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the analysis ID.
-    measure_analyzed_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.measure_analyzeds.measure_analyzed_id"
-        ),
-        name="measure_analyzed_id",
-        nullable=False,
-    )
-
-    # Foreign key to the measure-count ID.
-    measure_count_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.measure_counts.measure_count_id"
-        ),
-        name="measure_count_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class Measurement(Base, OrmBase):
-    """Table of `<measurement>` element records."""
-
-    # Set table name.
-    __tablename__ = "measurements"
-
-    # Autoincrementing primary key ID.
-    measurement_id = sqlalchemy.Column(
-        name="measurement_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the group ID.
-    group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
-        name="group_id",
-        nullable=False,
-    )
-
-    # Referring to the value of the `value` attribute.
-    value = sqlalchemy.Column(
-        name="value",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the value of the `spread` attribute.
-    spread = sqlalchemy.Column(
-        name="spread",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the value of the `lower_limit` attribute.
-    lower_limit = sqlalchemy.Column(
-        name="lower_limit",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the value of the `upper_limit` attribute.
-    upper_limit = sqlalchemy.Column(
-        name="upper_limit",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Relationship to a `MeasureCategory` record.
-    measure_category = sqlalchemy.orm.relationship(
-        argument="MeasureCategory",
-        secondary="clinicaltrials.measure_category_measurements",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class MeasureCategory(Base, OrmBase):
-    """Table of `<measure_category>` element records."""
-
-    # Set table name.
-    __tablename__ = "measure_categories"
-
-    # Autoincrementing primary key ID.
-    measure_category_id = sqlalchemy.Column(
-        name="measure_category_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the `<title>` element.
-    title = sqlalchemy.Column(
-        name="title",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Relationship to a list of `Measurement` records.
-    measurements = sqlalchemy.orm.relationship(
-        argument="Measurement",
-        secondary="clinicaltrials.measure_category_measurements",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class MeasureCategoryMeasurement(Base, OrmBase):
-    """Associative table between `MeasureCategory` and `Measurement` records."""
-
-    # Set table name.
-    __tablename__ = "measure_category_measurements"
-
-    # Autoincrementing primary key ID.
-    measure_category_measurement_id = sqlalchemy.Column(
-        name="measure_category_measurement_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the measure-category ID.
-    measure_category_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.measure_categories.measure_category_id"
-        ),
-        name="measure_category_id",
-        nullable=False,
-    )
-
-    # Foreign key to the measurement ID.
-    measurement_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.measurements.measurement_id"),
-        name="measurement_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class MeasureClass(Base, OrmBase):
-    """Table of `<measure_class>` element records."""
-
-    # Set table name.
-    __tablename__ = "measure_classes"
-
-    # Autoincrementing primary key ID.
-    measure_class_id = sqlalchemy.Column(
-        name="measure_class_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Relationship to a list of `MeasureAnalyzed` records.
-    measure_analyzeds = sqlalchemy.orm.relationship(
-        argument="MeasureAnalyzed",
-        secondary="clinicaltrials.measure_class_analyzeds",
-    )
-
-    # Relationship to a list of `MeasureCategory` records.
-    measure_categories = sqlalchemy.orm.relationship(
-        argument="MeasureCategory",
-        secondary="clinicaltrials.measure_class_categories",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class MeasureClassAnalyzed(Base, OrmBase):
-    """Associative table between `MeasureClass` and `MeasureAnalyzed`
-    records."""
-
-    # Set table name.
-    __tablename__ = "measure_class_analyzeds"
-
-    # Autoincrementing primary key ID.
-    measure_class_analyzed_id = sqlalchemy.Column(
-        name="measure_class_analyzed_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the measure-class ID.
-    measure_class_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.measure_classes.measure_class_id"
-        ),
-        name="measure_class_id",
-        nullable=False,
-    )
-
-    # Foreign key to the measure-analyzed ID.
-    measure_analyzed_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.measure_analyzeds.measure_analyzed_id"
-        ),
-        name="measure_analyzed_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class MeasureClassCategories(Base, OrmBase):
-    """Associative table between `MeasureClass` and `MeasureCategory`
-    records."""
-
-    # Set table name.
-    __tablename__ = "measure_class_categories"
-
-    # Autoincrementing primary key ID.
-    measure_class_category_id = sqlalchemy.Column(
-        name="measure_class_category_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the measure-class ID.
-    measure_class_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.measure_classes.measure_class_id"
-        ),
-        name="measure_class_id",
-        nullable=False,
-    )
-
-    # Foreign key to the measure-category ID.
-    measure_category_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.measure_categories.measure_category_id"
-        ),
-        name="measure_category_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class Measure(Base, OrmBase):
-    """Table of `<measure>` element records."""
-
-    # Set table name.
-    __tablename__ = "measures"
-
-    # Autoincrementing primary key ID.
-    measure_id = sqlalchemy.Column(
-        name="measure_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the `<title>` element.
-    title = sqlalchemy.Column(
-        name="title",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=False,
-    )
-
-    # Referring to the `<description>` element.
-    description = sqlalchemy.Column(
-        name="description",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<population>` element.
-    population = sqlalchemy.Column(
-        name="population",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<units>` element.
-    units = sqlalchemy.Column(
-        name="units",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<param>` element.
-    parameter = sqlalchemy.Column(
-        name="parameter",
-        type_=sqlalchemy.types.Enum(MeasureParameterType),
-        nullable=False,
-    )
-
-    # Referring to the `<dispersion>` element.
-    dispersion = sqlalchemy.Column(
-        name="dispersion",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<units_analyzed>` element.
-    units_analyzed = sqlalchemy.Column(
-        name="units_analyzed",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Relationship to a list of `MeasureAnalyzed` records.
-    measure_analyzeds = sqlalchemy.orm.relationship(
-        argument="MeasureAnalyzed",
-        secondary="clinicaltrials.measure_measure_analyzeds",
-    )
-
-    # Relationship to a list of `MeasureClass` records.
-    measure_classes = sqlalchemy.orm.relationship(
-        argument="MeasureClass",
-        secondary="clinicaltrials.measure_measure_classes",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class MeasureMeasureAnalyzed(Base, OrmBase):
-    """Associative table between `Measure` and `MeasureAnalyzed` records."""
-
-    # Set table name.
-    __tablename__ = "measure_measure_analyzeds"
-
-    # Autoincrementing primary key ID.
-    measure_measure_analyzed_id = sqlalchemy.Column(
-        name="measure_measure_analyzed_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the measure ID.
-    measure_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.measures.measure_id"),
-        name="measure_id",
-        nullable=False,
-    )
-
-    # Foreign key to the measure-analyzed ID.
-    measure_analyzed_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.measure_analyzeds.measure_analyzed_id"
-        ),
-        name="measure_analyzed_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class MeasureMeasureClass(Base, OrmBase):
-    """Associative table between `Measure` and `MeasureClass` records."""
-
-    # Set table name.
-    __tablename__ = "measure_measure_classes"
-
-    # Autoincrementing primary key ID.
-    measure_measure_class_id = sqlalchemy.Column(
-        name="measure_measure_class_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the measure ID.
-    measure_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.measures.measure_id"),
-        name="measure_id",
-        nullable=False,
-    )
-
-    # Foreign key to the measure-class ID.
-    measure_class_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.measure_classes.measure_class_id"
-        ),
-        name="measure_class_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class ResultOutcome(Base, OrmBase):
-    """Table of `<results_outcome>` element records."""
-
-    # Set table name.
-    __tablename__ = "result_outcomes"
-
-    # Autoincrementing primary key ID.
-    result_outcome_id = sqlalchemy.Column(
-        name="result_outcome_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the `<type>` element.
-    outcome_type = sqlalchemy.Column(
-        name="type",
-        type_=sqlalchemy.types.Enum(OutcomeType),
-        nullable=False,
-    )
-
-    # Referring to the `<title>` element.
-    title = sqlalchemy.Column(
-        name="title",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=False,
-    )
-
-    # Referring to the `<description>` element.
-    description = sqlalchemy.Column(
-        name="description",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<time_frame>` element.
-    time_frame = sqlalchemy.Column(
-        name="time_frame",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the `<safety_issue>` element.
-    safety_issue = sqlalchemy.Column(
-        name="safety_issue",
-        type_=sqlalchemy.types.Boolean(),
-        nullable=True
-    )
-
-    # TODO: posting_date_type
-
-    # Referring to the `<population>` element.
-    population = sqlalchemy.Column(
-        name="population",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Foreign key to the measure ID.
-    measure_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.measures.measure_id"),
-        name="measure_id",
-        nullable=False,
-    )
-
-    # Relationship to a list of `Group` records.
-    groups = sqlalchemy.orm.relationship(
-        argument="Group",
-        secondary="clinicaltrials.result_outcome_groups",
-    )
-
-    # Relationship to a `Measure` record.
-    measure = sqlalchemy.orm.relationship(
-        argument="Measure",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class ResultOutcomeGroup(Base, OrmBase):
-    """Associative table between `ResultOutcome` and `Group` records."""
-
-    # Set table name.
-    __tablename__ = "result_outcome_groups"
-
-    # Autoincrementing primary key ID.
-    result_outcome_group_id = sqlalchemy.Column(
-        name="result_outcome_group_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the resut-outcome ID.
-    result_outcome_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.result_outcomes.result_outcome_id"
-        ),
-        name="result_outcome_id",
-        nullable=False,
-    )
-
-    # Foreign key to the group ID.
-    group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
-        name="group_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
 class Enrollment(Base, OrmBase):
     """Table of `<enrollment>` element records."""
 
@@ -2159,6 +1315,15 @@ class Intervention(Base, OrmBase):
         nullable=True,
     )
 
+    # MD5 hash of the keyword.
+    md5 = sqlalchemy.Column(
+        name="md5",
+        type_=sqlalchemy.types.Binary(),
+        unique=True,
+        index=True,
+        nullable=False,
+    )
+
     # Relationship to a list of `ArmGroup` records.
     arm_groups = sqlalchemy.orm.relationship(
         argument="ArmGroup",
@@ -2176,6 +1341,33 @@ class Intervention(Base, OrmBase):
         # Set table schema.
         "schema": "clinicaltrials"
     }
+
+    @sqlalchemy.orm.validates(
+        "intervention_type",
+        "name",
+        "description",
+    )
+    def update_md5(self, key, value):
+        attrs = {
+            "intervention_type": self.intervention_type,
+            "name": self.name,
+            "description": self.description,
+        }
+        attrs[key] = value
+
+        # Retrieve the full concatenated name.
+        name = " ".join([str(value) for value in attrs.values()])
+
+        # Lowercase and encode the full concatenated name to UTF8 (in case it
+        # contains unicode characters).
+        name_encoded = name.lower().encode("utf-8")
+
+        # Calculate the MD5 hash of the encoded full concatenated name and store
+        # it under the `md5` attribute.
+        md5 = hashlib.md5(name_encoded).digest()
+        self.md5 = md5
+
+        return value
 
 
 class Alias(Base, OrmBase):
@@ -2218,6 +1410,10 @@ class Alias(Base, OrmBase):
     def update_md5(self, key, value):
         # Dumb hack to make the linter shut up that the `key` isn't used.
         assert key
+
+        # Enforce lowercasing of the value in order to avoid needless
+        # duplication when the keyword is provided with different casing.
+        value = value.lower() if value else None
 
         # Encode the alias to UTF8 (in case it contains unicode characters).
         alias_encoded = str(value).encode("utf-8")
@@ -2360,7 +1556,6 @@ class Eligibility(Base, OrmBase):
         nullable=True,
     )
 
-    # TODO: convert ages to floats
     # Referring to the value of the `<minimum_age>` element.
     minimum_age = sqlalchemy.Column(
         name="minimum_age",
@@ -2536,8 +1731,9 @@ class MeshTerm(Base, OrmBase):
         # Dumb hack to make the linter shut up that the `key` isn't used.
         assert key
 
-        # Encode the term to UTF8 (in case it contains unicode characters).
-        term_encoded = str(value).encode("utf-8")
+        # Lowercase and encode the term to UTF8 (in case it contains unicode
+        # characters).
+        term_encoded = str(value).lower().encode("utf-8")
 
         # Calculate the MD5 hash of the encoded term and store under the
         # `md5` attribute.
@@ -2582,6 +1778,7 @@ class PatientData(Base, OrmBase):
     }
 
 
+# TODO: Issue No.50
 class StudyDoc(Base, OrmBase):
     """Table of `<study_doc>` element records."""
 
@@ -2629,950 +1826,6 @@ class StudyDoc(Base, OrmBase):
         # Set table schema.
         "schema": "clinicaltrials"
     }
-
-
-class Participant(Base, OrmBase):
-    """Table of `<participants>` element records."""
-
-    # Set table name.
-    __tablename__ = "participants"
-
-    # Autoincrementing primary key ID.
-    participant_id = sqlalchemy.Column(
-        name="participant_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the group ID.
-    group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
-        name="group_id",
-        nullable=False,
-    )
-
-    # Referring to the value of the `<count>` element.
-    count = sqlalchemy.Column(
-        name="count",
-        type_=sqlalchemy.types.Integer(),
-        nullable=True,
-    )
-
-    # Relationship to a `Milestone` record.
-    milestones = sqlalchemy.orm.relationship(
-        argument="Milestone",
-        secondary="clinicaltrials.milestone_participants",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class Milestone(Base, OrmBase):
-    """Table of `<milestone>` element records."""
-
-    # Set table name.
-    __tablename__ = "milestones"
-
-    # Autoincrementing primary key ID.
-    milestone_id = sqlalchemy.Column(
-        name="milestone_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the value of the `<title>` element.
-    title = sqlalchemy.Column(
-        name="title",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Relationship to a list of `Participant` records.
-    participants = sqlalchemy.orm.relationship(
-        argument="Participant",
-        secondary="clinicaltrials.milestone_participants",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class DropWithdrawReason(Base, OrmBase):
-    """Table of `<drop_withdraw_reason>` element records."""
-
-    # Set table name.
-    __tablename__ = "drop_withdraw_reasons"
-
-    # Autoincrementing primary key ID.
-    drop_withdraw_reason_id = sqlalchemy.Column(
-        name="drop_withdraw_reason_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the value of the `<title>` element.
-    title = sqlalchemy.Column(
-        name="title",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class MilestoneParticipant(Base, OrmBase):
-    """Associative table between `Milestone` and `Participant` records."""
-
-    # Set table name.
-    __tablename__ = "milestone_participants"
-
-    # Autoincrementing primary key ID.
-    milestone_participant_id = sqlalchemy.Column(
-        name="milestone_participant_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the milestone ID.
-    milestone_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.milestones.milestone_id"),
-        name="milestone_id",
-        nullable=False,
-    )
-
-    # Foreign key to the participant ID.
-    participant_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.participants.participant_id"),
-        name="participant_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('milestone_id', 'participant_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
-
-
-class Period(Base, OrmBase):
-    """Table of `<period>` element records."""
-
-    # Set table name.
-    __tablename__ = "periods"
-
-    # Autoincrementing primary key ID.
-    period_id = sqlalchemy.Column(
-        name="period_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the value of the `<title>` element.
-    title = sqlalchemy.Column(
-        name="title",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=False,
-    )
-
-    # Relationship to a list of `Milestone` records.
-    milestones = sqlalchemy.orm.relationship(
-        argument="Milestone",
-        secondary="clinicaltrials.period_milestones",
-    )
-
-    # Relationship to a list of `DropWithdrawReason` records.
-    drop_withdraw_reasons = sqlalchemy.orm.relationship(
-        argument="DropWithdrawReason",
-        secondary="clinicaltrials.period_drop_withdraw_reasons",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class PeriodMilestone(Base, OrmBase):
-    """Associative table between `Period` and `Milestone` records."""
-
-    # Set table name.
-    __tablename__ = "period_milestones"
-
-    # Autoincrementing primary key ID.
-    period_milestone_id = sqlalchemy.Column(
-        name="period_milestone_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the period ID.
-    period_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.periods.period_id"),
-        name="period_id",
-        nullable=False,
-    )
-
-    # Foreign key to the milestone ID.
-    milestone_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.milestones.milestone_id"),
-        name="milestone_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('period_id', 'milestone_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
-
-
-class PeriodDropWithdrawReason(Base, OrmBase):
-    """Associative table between `Period` and `DropWithdrawReason` records."""
-
-    # Set table name.
-    __tablename__ = "period_drop_withdraw_reasons"
-
-    # Autoincrementing primary key ID.
-    period_drop_withdraw_reason_id = sqlalchemy.Column(
-        name="period_drop_withdraw_reason_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the period ID.
-    period_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.periods.period_id"),
-        name="period_id",
-        nullable=False,
-    )
-
-    # Foreign key to the milestone ID.
-    drop_withdraw_reason_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.drop_withdraw_reasons.drop_withdraw_reason_id"
-        ),
-        name="drop_withdraw_reason_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('period_id', 'drop_withdraw_reason_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
-
-
-class ParticipantFlow(Base, OrmBase):
-    """Table of `<participant_flow>` element records."""
-
-    # Set table name.
-    __tablename__ = "participant_flows"
-
-    # Autoincrementing primary key ID.
-    participant_flow_id = sqlalchemy.Column(
-        name="participant_flow_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the value of the `<recruitment_details>` element.
-    recruitment_details = sqlalchemy.Column(
-        name="recruitment_details",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the value of the `<pre_assignment_details>` element.
-    pre_assignment_details = sqlalchemy.Column(
-        name="pre_assignment_details",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Relationship to a list of `Group` records.
-    groups = sqlalchemy.orm.relationship(
-        argument="Group",
-        secondary="clinicaltrials.participant_flow_groups",
-    )
-
-    # Relationship to a list of `Period` records.
-    periods = sqlalchemy.orm.relationship(
-        argument="Period",
-        secondary="clinicaltrials.participant_flow_periods",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class ParticipantFlowGroup(Base, OrmBase):
-    """Associative table between `ParticipantFlow` and `Group` records."""
-
-    # Set table name.
-    __tablename__ = "participant_flow_groups"
-
-    # Autoincrementing primary key ID.
-    participant_flow_group_id = sqlalchemy.Column(
-        name="participant_flow_group_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the participant-flow ID.
-    participant_flow_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.participant_flows.participant_flow_id"
-        ),
-        name="participant_flow_id",
-        nullable=False,
-    )
-
-    # Foreign key to the group ID.
-    group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
-        name="group_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('participant_flow_id', 'group_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
-
-
-class ParticipantFlowPeriod(Base, OrmBase):
-    """Associative table between `ParticipantFlow` and `Period` records."""
-
-    # Set table name.
-    __tablename__ = "participant_flow_periods"
-
-    # Autoincrementing primary key ID.
-    participant_flow_period_id = sqlalchemy.Column(
-        name="participant_flow_period_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the participant-flow ID.
-    participant_flow_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.participant_flows.participant_flow_id"
-        ),
-        name="participant_flow_id",
-        nullable=False,
-    )
-
-    # Foreign key to the period ID.
-    period_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.periods.period_id"),
-        name="period_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('participant_flow_id', 'period_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
-
-
-class Baseline(Base, OrmBase):
-    """Table of `<baseline>` element records."""
-
-    # Set table name.
-    __tablename__ = "baselines"
-
-    # Autoincrementing primary key ID.
-    baseline_id = sqlalchemy.Column(
-        name="baseline_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the value of the `<population>` element.
-    population = sqlalchemy.Column(
-        name="population",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Relationship to a list of `Group` records.
-    groups = sqlalchemy.orm.relationship(
-        argument="Group",
-        secondary="clinicaltrials.baseline_groups",
-    )
-
-    # Relationship to a list of `MeasureAnalyzed` records.
-    measure_analyzeds = sqlalchemy.orm.relationship(
-        argument="MeasureAnalyzed",
-        secondary="clinicaltrials.baseline_measure_analyzeds",
-    )
-
-    # Relationship to a list of `Measures` records.
-    measures = sqlalchemy.orm.relationship(
-        argument="Measure",
-        secondary="clinicaltrials.baseline_measures",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class BaselineGroup(Base, OrmBase):
-    """Associative table between `Baseline` and `Group` records."""
-
-    # Set table name.
-    __tablename__ = "baseline_groups"
-
-    # Autoincrementing primary key ID.
-    baseline_group_id = sqlalchemy.Column(
-        name="baseline_group_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the baseline ID.
-    baseline_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.baselines.baseline_id"),
-        name="baseline_id",
-        nullable=False,
-    )
-
-    # Foreign key to the group ID.
-    group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
-        name="group_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('baseline_id', 'group_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
-
-
-class BaselineMeasureAnalyzed(Base, OrmBase):
-    """Associative table between `Baseline` and `MeasureAnalyzed` records."""
-
-    # Set table name.
-    __tablename__ = "baseline_measure_analyzeds"
-
-    # Autoincrementing primary key ID.
-    baseline_measure_analyzed_id = sqlalchemy.Column(
-        name="baseline_measure_analyzed_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the baseline ID.
-    baseline_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.baselines.baseline_id"),
-        name="baseline_id",
-        nullable=False,
-    )
-
-    # Foreign key to the measure-analyzed ID.
-    measure_analyzed_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.measure_analyzeds.measure_analyzed_id"
-        ),
-        name="measure_analyzed_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('baseline_id', 'measure_analyzed_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
-
-
-class BaselineMeasure(Base, OrmBase):
-    """Associative table between `Baseline` and `Measure` records."""
-
-    # Set table name.
-    __tablename__ = "baseline_measures"
-
-    # Autoincrementing primary key ID.
-    baseline_measure_id = sqlalchemy.Column(
-        name="baseline_measure_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the baseline ID.
-    baseline_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.baselines.baseline_id"),
-        name="baseline_id",
-        nullable=False,
-    )
-
-    # Foreign key to the measure ID.
-    measure_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.measures.measure_id"),
-        name="measure_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('baseline_id', 'measure_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
-
-
-class EventCount(Base, OrmBase):
-    """Table of `<event_count>` element records."""
-
-    # Set table name.
-    __tablename__ = "event_counts"
-
-    # Autoincrementing primary key ID.
-    event_count_id = sqlalchemy.Column(
-        name="event_count_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the group ID.
-    group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
-        name="group_id",
-        nullable=False,
-    )
-
-    # Referring to the value of the `<subjects_affected>` element.
-    subjects_affected = sqlalchemy.Column(
-        name="subjects_affected",
-        type_=sqlalchemy.types.Integer(),
-        nullable=True,
-    )
-
-    # Referring to the value of the `<subjects_at_risk>` element.
-    subjects_at_risk = sqlalchemy.Column(
-        name="subjects_at_risk",
-        type_=sqlalchemy.types.Integer(),
-        nullable=True,
-    )
-
-    # Referring to the value of the `<events>` element.
-    events = sqlalchemy.Column(
-        name="events",
-        type_=sqlalchemy.types.Integer(),
-        nullable=True,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class Event(Base, OrmBase):
-    """Table of `<event>` element records."""
-
-    # Set table name.
-    __tablename__ = "events"
-
-    # Autoincrementing primary key ID.
-    event_id = sqlalchemy.Column(
-        name="event_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the value of the `<sub_title>` element.
-    sub_title = sqlalchemy.Column(
-        name="sub_title",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the value of the `<assessment>` element.
-    assessment = sqlalchemy.Column(
-        name="assessment",
-        type_=sqlalchemy.types.Enum(EventAssessmentType),
-        nullable=True,
-        default=None,
-        index=True
-    )
-
-    # Referring to the value of the `<description>` element.
-    description = sqlalchemy.Column(
-        name="description",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Relationship to a list of `EventCount` records.
-    counts = sqlalchemy.orm.relationship(
-        argument="EventCount",
-        secondary="clinicaltrials.event_event_counts",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class EventEventCount(Base, OrmBase):
-    """Associative table between `Event` and `EventCount` records."""
-
-    # Set table name.
-    __tablename__ = "event_event_counts"
-
-    # Autoincrementing primary key ID.
-    event_event_count_id = sqlalchemy.Column(
-        name="event_event_count_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the event ID.
-    event_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.events.event_id"),
-        name="event_id",
-        nullable=False,
-    )
-
-    # Foreign key to the event-count ID.
-    event_count_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.event_counts.event_count_id"),
-        name="event_count_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('event_id', 'event_count_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
-
-
-class EventCategory(Base, OrmBase):
-    """Table of `<event_category>` element records."""
-
-    # Set table name.
-    __tablename__ = "event_categories"
-
-    # Autoincrementing primary key ID.
-    event_category_id = sqlalchemy.Column(
-        name="event_category_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the value of the `<title>` element.
-    title = sqlalchemy.Column(
-        name="title",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Relationship to a list of `Event` records.
-    events = sqlalchemy.orm.relationship(
-        argument="Event",
-        secondary="clinicaltrials.event_category_events",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class EventCategoryEvent(Base, OrmBase):
-    """Associative table between `EventCategory` and `Event` records."""
-
-    # Set table name.
-    __tablename__ = "event_category_events"
-
-    # Autoincrementing primary key ID.
-    event_category_event_id = sqlalchemy.Column(
-        name="event_category_event_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the event-category ID.
-    event_category_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.event_categories.event_category_id"
-        ),
-        name="event_category_id",
-        nullable=False,
-    )
-
-    # Foreign key to the event ID.
-    event_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.events.event_id"),
-        name="event_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('event_category_id', 'event_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
-
-
-class EventList(Base, OrmBase):
-    """Table of `<events>` element records."""
-
-    # Set table name.
-    __tablename__ = "event_lists"
-
-    # Autoincrementing primary key ID.
-    event_list_id = sqlalchemy.Column(
-        name="event_list_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the value of the `<frequency_threshold>` element.
-    frequency_threshold = sqlalchemy.Column(
-        name="frequency_threshold",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the value of the `<default_vocab>` element.
-    default_vocab = sqlalchemy.Column(
-        name="default_vocab",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the value of the `<default_assessment>` element.
-    default_assessment = sqlalchemy.Column(
-        name="default_assessment",
-        type_=sqlalchemy.types.Enum(EventAssessmentType),
-        nullable=True,
-        default=None,
-        index=True
-    )
-
-    # Relationship to a list of `EventCategory` records.
-    event_categories = sqlalchemy.orm.relationship(
-        argument="EventCategory",
-        secondary="clinicaltrials.event_list_categories",
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class EventListCategories(Base, OrmBase):
-    """Associative table between `EventList` and `EventCategory` records."""
-
-    # Set table name.
-    __tablename__ = "event_list_categories"
-
-    # Autoincrementing primary key ID.
-    event_list_category_id = sqlalchemy.Column(
-        name="event_list_category_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the event-list ID.
-    event_list_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.event_lists.event_list_id"),
-        name="event_list_id",
-        nullable=False,
-    )
-
-    # Foreign key to the event-category ID.
-    event_category_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.event_categories.event_category_id"
-        ),
-        name="event_category_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('event_list_id', 'event_category_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
-
-
-class ReportedEvent(Base, OrmBase):
-    """Table of `<reported_events>` element records."""
-
-    # Set table name.
-    __tablename__ = "reported_events"
-
-    # Autoincrementing primary key ID.
-    reported_event_id = sqlalchemy.Column(
-        name="reported_event_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the value of the `<time_frame>` element.
-    time_frame = sqlalchemy.Column(
-        name="time_frame",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Referring to the value of the `<desc>` element.
-    desc = sqlalchemy.Column(
-        name="desc",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
-    )
-
-    # Relationship to a list of `Group` records.
-    groups = sqlalchemy.orm.relationship(
-        argument="Group",
-        secondary="clinicaltrials.reported_event_groups",
-    )
-
-    # Foreign key to an event-list ID.
-    serious_event_list_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.event_lists.event_list_id"),
-        name="serious_event_list_id",
-        nullable=False,
-    )
-
-    # Foreign key to an event-list ID.
-    other_event_list_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.event_lists.event_list_id"),
-        name="other_event_list_id",
-        nullable=False,
-    )
-
-    # Relationship to a `EventList` record for the 'serious events'.
-    serious_event_list = sqlalchemy.orm.relationship(
-        argument="EventList",
-        foreign_keys=serious_event_list_id
-    )
-
-    # Relationship to a `EventList` record for the 'other events'.
-    other_event_list = sqlalchemy.orm.relationship(
-        argument="EventList",
-        foreign_keys=other_event_list_id
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials"
-    }
-
-
-class ReportedEventGroup(Base, OrmBase):
-    """Associative table between `ReportedEvent` and `Group` records."""
-
-    # Set table name.
-    __tablename__ = "reported_event_groups"
-
-    # Autoincrementing primary key ID.
-    reported_event_group_id = sqlalchemy.Column(
-        name="reported_event_group_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the reported-event ID.
-    reported_event_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "clinicaltrials.reported_events.reported_event_id"
-        ),
-        name="reported_event_id",
-        nullable=False,
-    )
-
-    # Foreign key to the group ID.
-    group_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.groups.group_id"),
-        name="group_id",
-        nullable=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('reported_event_id', 'group_id'),
-        # Set table schema.
-        {"schema": "clinicaltrials"}
-    )
 
 
 class StudyDates(Base, OrmBase):
@@ -3990,10 +2243,6 @@ class Study(Base, OrmBase):
         secondary="clinicaltrials.study_locations",
         back_populates="studies"
     )
-
-    # TODO: location_countries
-    # TODO: removed_countries
-    # Skipping link`
 
     # Relationship to a list of `Reference` records.
     references = sqlalchemy.orm.relationship(
