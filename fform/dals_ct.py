@@ -273,7 +273,7 @@ class DalClinicalTrials(DalFightForBase):
         # Create and populate a `Facility` object so that we can retrieve the
         # MD5 hash.
         obj = Facility()
-        obj.name = name,
+        obj.name = name
         obj.city = city
         obj.state = state
         obj.zip_code = zip_code
