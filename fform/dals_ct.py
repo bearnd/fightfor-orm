@@ -1913,14 +1913,14 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_study_reference(
+    def iodu_study_reference(
         self,
         study_id: int,
         reference_id: int,
         reference_type: ReferenceType,
         session: sqlalchemy.orm.Session = None,
     ) -> int:
-        """Creates a new `StudyReference` record in an IODI manner.
+        """Creates a new `StudyReference` record in an IODU manner.
 
         Args:
             study_id (int): The linked `Study` record primary-key ID.
@@ -1942,7 +1942,12 @@ class DalClinicalTrials(DalFightForBase):
                 "reference_id": reference_id,
                 "type": reference_type,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        ).on_conflict_do_update(
+            index_elements=["study_id", "reference_id"],
+            set_={
+                "type": reference_type,
+            }
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
