@@ -1,0 +1,56 @@
+---
+
+# Define the encrypted SQL password variable outside the nested structures due
+# to the issue described in https://stackoverflow
+# .com/questions/50770524/ansible-vault-inline-variable-with-to-nice-json
+# -unexpected-templating-type-erro
+sql_password: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    36613434343264353038346435623630343138653265633565376264363763363338366631363966
+    6261383464316463613236333839376166663130373033630a353835313761333862626530333533
+    35383138353564323563663738323133363033653537316132613730356463626138313162626365
+    3038343936346639350a353730303261616133393964383136616465663866383561383132353937
+    63623361383765343966353637333963656434386233356530616366336432313561306161363765
+    3930383561386431303163333564616234316263316134363134
+
+# PostgreSQL Server Settings.
+postgresql_python_library: "python-psycopg2"
+
+# PostgreSQL Server Databases.
+postgresql_databases:
+  - name: "fightfor"
+    port: 5432
+  - name: "test"
+    port: 5432
+# PostgreSQL Server Users.
+postgresql_users:
+  - name: "fform"
+    password: "{{ sql_password }}"
+    port: 5432
+
+app_fightfor_orm:
+
+  # Application user settings.
+  user: fform
+  group: fform
+
+  # Application directories.
+  config_dir: /etc/fightfor-orm
+  share_dir: /usr/local/share/fightfor-orm
+  run_dir: /var/run/fightfor-orm
+  log_dir: /var/log/fightfor-orm
+  virtual_env_dir: /usr/local/share/fightfor-orm/venvs/fightfor-orm
+
+  # Application Configuration Settings.
+  config:
+
+    dev:
+      # General Settings.
+      logger_level: DEBUG
+
+      # PostgreSQL Server Configuration Settings.
+      sql_host: "localhost"
+      sql_port: 5432
+      sql_username: "fform"
+      sql_password: "{{ sql_password }}"
+      sql_db: "fightfor"
