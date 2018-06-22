@@ -1356,7 +1356,7 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_study(
+    def iodu_study(
         self,
         org_study_id: str,
         secondary_id: str,
@@ -1391,7 +1391,7 @@ class DalClinicalTrials(DalFightForBase):
         patient_data_id: int,
         session: sqlalchemy.orm.Session = None,
     ) -> int:
-        """Creates a new `Study` record in an IODI manner.
+        """Creates a new `Study` record in an IODU manner.
 
         Args:
             org_study_id (str): The organizational study ID.
@@ -1482,18 +1482,51 @@ class DalClinicalTrials(DalFightForBase):
                 "responsible_party_id": responsible_party_id,
                 "patient_data_id": patient_data_id,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        ).on_conflict_do_update(
+            index_elements=["nct_id"],
+            set_={
+                "org_study_id": org_study_id,
+                "secondary_id": secondary_id,
+                "brief_title": brief_title,
+                "acronym": acronym,
+                "official_title": official_title,
+                "source": source,
+                "oversight_info_id": oversight_info_id,
+                "brief_summary": brief_summary,
+                "detailed_description": detailed_description,
+                "overall_status": overall_status,
+                "last_known_status": last_known_status,
+                "why_stopped": why_stopped,
+                "start_date": start_date,
+                "completion_date": completion_date,
+                "primary_completion_date": primary_completion_date,
+                "verification_date": verification_date,
+                "phase": phase,
+                "study_type": study_type,
+                "expanded_access_info_id": expanded_access_info_id,
+                "study_design_info_id": study_design_info_id,
+                "target_duration": target_duration,
+                "enrollment_id": enrollment_id,
+                "biospec_retention": biospec_retention,
+                "biospec_description": biospec_description,
+                "eligibility_id": eligibility_id,
+                "contact_primary_id": contact_primary_id,
+                "contact_backup_id": contact_backup_id,
+                "study_dates_id": study_dates_id,
+                "responsible_party_id": responsible_party_id,
+                "patient_data_id": patient_data_id,
+            }
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_attrs(
+            obj = self.get_by_attr(
                 orm_class=Study,
-                attrs_names_values={
-                    "nct_id": nct_id,
-                },
+                attr_name="nct_id",
+                attr_value=nct_id,
                 session=session,
             )  # type: Study
             return obj.study_id
