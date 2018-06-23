@@ -121,8 +121,8 @@ class DalClinicalTrials(DalFightForBase):
         statement = insert(
             Sponsor,
             values={
-                "agency": agency,
-                "class": agency_class,
+                "agency": obj.agency,
+                "class": obj.agency_class,
                 "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
@@ -169,7 +169,7 @@ class DalClinicalTrials(DalFightForBase):
         statement = insert(
             Keyword,
             values={
-                "keyword": keyword,
+                "keyword": obj.keyword,
                 "md5": obj.md5
             }
         ).on_conflict_do_nothing()  # type: Insert
@@ -215,7 +215,7 @@ class DalClinicalTrials(DalFightForBase):
         statement = insert(
             Condition,
             values={
-                "condition": condition,
+                "condition": obj.condition,
                 "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
@@ -273,11 +273,11 @@ class DalClinicalTrials(DalFightForBase):
         statement = insert(
             Facility,
             values={
-                "name": name,
-                "city": city,
-                "state": state,
-                "zip_code": zip_code,
-                "country": country,
+                "name": obj.name,
+                "city": obj.city,
+                "state": obj.state,
+                "zip_code": obj.zip_code,
+                "country": obj.country,
                 "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
@@ -332,10 +332,10 @@ class DalClinicalTrials(DalFightForBase):
         statement = insert(
             Person,
             values={
-                "name_first": name_first,
-                "name_middle": name_middle,
-                "name_last": name_last,
-                "degrees": degrees,
+                "name_first": obj.name_first,
+                "name_middle": obj.name_middle,
+                "name_last": obj.name_last,
+                "degrees": obj.degrees,
                 "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
@@ -390,10 +390,10 @@ class DalClinicalTrials(DalFightForBase):
         statement = insert(
             Contact,
             values={
-                "person_id": person_id,
-                "phone": phone,
-                "phone_ext": phone_ext,
-                "email": email,
+                "person_id": obj.person_id,
+                "phone": obj.phone,
+                "phone_ext": obj.phone_ext,
+                "email": obj.email,
                 "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
@@ -445,9 +445,9 @@ class DalClinicalTrials(DalFightForBase):
         statement = insert(
             Investigator,
             values={
-                "person_id": person_id,
-                "role": role,
-                "affiliation": affiliation,
+                "person_id": obj.person_id,
+                "role": obj.role,
+                "affiliation": obj.affiliation,
                 "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
@@ -491,13 +491,19 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Location` record.
         """
 
+        obj = Location()
+        obj.facility_id = facility_id
+        obj.status = status
+        obj.contact_primary_id = contact_primary_id
+        obj.contact_backup_id = contact_backup_id
+
         statement = insert(
             Location,
             values={
-                "facility_id": facility_id,
-                "status": status,
-                "contact_primary_id": contact_primary_id,
-                "contact_backup_id": contact_backup_id,
+                "facility_id": obj.facility_id,
+                "status": obj.status,
+                "contact_primary_id": obj.contact_primary_id,
+                "contact_backup_id": obj.contact_backup_id,
             }
         ).on_conflict_do_update(
             index_elements=[
@@ -506,7 +512,7 @@ class DalClinicalTrials(DalFightForBase):
                 "contact_backup_id",
             ],
             set_={
-                "status": status,
+                "status": obj.status,
             }
         )  # type: Insert
 
@@ -518,9 +524,9 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=Location,
                 attrs_names_values={
-                    "facility_id": facility_id,
-                    "contact_primary_id": contact_primary_id,
-                    "contact_backup_id": contact_backup_id,
+                    "facility_id": obj.facility_id,
+                    "contact_primary_id": obj.contact_primary_id,
+                    "contact_backup_id": obj.contact_backup_id,
                 },
                 session=session,
             )  # type: Location
@@ -549,11 +555,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `LocationInvestigator` record.
         """
 
+        obj = LocationInvestigator()
+        obj.location_id = location_id
+        obj.investigator_id = investigator_id
+
         statement = insert(
             LocationInvestigator,
             values={
-                "location_id": location_id,
-                "investigator_id": investigator_id,
+                "location_id": obj.location_id,
+                "investigator_id": obj.investigator_id,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -565,8 +575,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=LocationInvestigator,
                 attrs_names_values={
-                    "location_id": location_id,
-                    "investigator_id": investigator_id,
+                    "location_id": obj.location_id,
+                    "investigator_id": obj.investigator_id,
                 },
                 session=session,
             )  # type: LocationInvestigator
@@ -605,15 +615,23 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `OversightInfo` record.
         """
 
+        obj = OversightInfo()
+        obj.has_dmc = has_dmc
+        obj.is_fda_regulated_drug = is_fda_regulated_drug
+        obj.is_fda_regulated_device = is_fda_regulated_device
+        obj.is_unapproved_device = is_unapproved_device
+        obj.is_ppsd = is_ppsd
+        obj.is_us_export = is_us_export
+
         statement = insert(
             OversightInfo,
             values={
-                "has_dmc": has_dmc,
-                "is_fda_regulated_drug": is_fda_regulated_drug,
-                "is_fda_regulated_device": is_fda_regulated_device,
-                "is_unapproved_device": is_unapproved_device,
-                "is_ppsd": is_ppsd,
-                "is_us_export": is_us_export,
+                "has_dmc": obj.has_dmc,
+                "is_fda_regulated_drug": obj.is_fda_regulated_drug,
+                "is_fda_regulated_device": obj.is_fda_regulated_device,
+                "is_unapproved_device": obj.is_unapproved_device,
+                "is_ppsd": obj.is_ppsd,
+                "is_us_export": obj.is_us_export,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -648,12 +666,19 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `ExpandedAccessInfo` record.
         """
 
+        obj = ExpandedAccessInfo
+        obj.expanded_access_type_individual = expanded_access_type_individual
+        obj.expanded_access_type_intermediate = (
+            expanded_access_type_intermediate
+        )
+        obj.expanded_access_type_treatment = expanded_access_type_treatment
+
         statement = insert(
             ExpandedAccessInfo,
             values={
-                "individual": expanded_access_type_individual,
-                "intermediate": expanded_access_type_intermediate,
-                "treatment": expanded_access_type_treatment,
+                "individual": obj.expanded_access_type_individual,
+                "intermediate": obj.expanded_access_type_intermediate,
+                "treatment": obj.expanded_access_type_treatment,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -696,19 +721,29 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyDesignInfo` record.
         """
 
-        _dummy = intervention_model_description
+        obj = StudyDesignInfo
+        obj.allocation = allocation
+        obj.intervention_model = intervention_model
+        obj.intervention_model_description = intervention_model_description
+        obj.primary_purpose = primary_purpose
+        obj.observational_model = observational_model
+        obj.time_perspective = time_perspective
+        obj.masking = masking
+        obj.masking_description = masking_description
 
         statement = insert(
             StudyDesignInfo,
             values={
-                "allocation": allocation,
-                "intervention_model": intervention_model,
-                "intervention_model_description": _dummy,
-                "primary_purpose": primary_purpose,
-                "observational_model": observational_model,
-                "time_perspective": time_perspective,
-                "masking": masking,
-                "masking_description": masking_description,
+                "allocation": obj.allocation,
+                "intervention_model": obj.intervention_model,
+                "intervention_model_description": (
+                    obj.intervention_model_description
+                ),
+                "primary_purpose": obj.primary_purpose,
+                "observational_model": obj.observational_model,
+                "time_perspective": obj.time_perspective,
+                "masking": obj.masking,
+                "masking_description": obj.masking_description,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -740,19 +775,23 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `ProtocolOutcome` record.
         """
 
+        obj = ProtocolOutcome()
+        obj.measure = measure
+        obj.time_frame = time_frame
+        obj.description = description
+
         statement = insert(
             ProtocolOutcome,
             values={
-                "measure": measure,
-                "time_frame": time_frame,
-                "description": description,
+                "measure": obj.measure,
+                "time_frame": obj.time_frame,
+                "description": obj.description,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
         return result.inserted_primary_key
-
 
     @return_first_item
     @with_session_scope()
@@ -776,11 +815,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Enrollment` record.
         """
 
+        obj = Enrollment()
+        obj.value = value
+        obj.enrollment_type = enrollment_type
+
         statement = insert(
             Enrollment,
             values={
-                "value": value,
-                "type": enrollment_type,
+                "value": obj.value,
+                "type": obj.enrollment_type,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -811,6 +854,11 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `ArmGroup` record.
         """
+
+        obj = ArmGroup()
+        obj.label = label
+        obj.arm_group_type = arm_group_type
+        obj.description = description
 
         statement = insert(
             ArmGroup,
@@ -849,12 +897,17 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Intervention` record.
         """
 
+        obj = Intervention()
+        obj.intervention_type = intervention_type
+        obj.name = name
+        obj.description = description
+
         statement = insert(
             Intervention,
             values={
-                "type": intervention_type,
-                "name": name,
-                "description": description,
+                "type": obj.intervention_type,
+                "name": obj.name,
+                "description": obj.description,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -890,7 +943,7 @@ class DalClinicalTrials(DalFightForBase):
         statement = insert(
             Alias,
             values={
-                "alias": alias,
+                "alias": obj.alias,
                 "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
@@ -931,11 +984,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `InterventionAlias` record.
         """
 
+        obj = InterventionAlias()
+        obj.intervention_id = intervention_id
+        obj.alias_id = alias_id
+
         statement = insert(
             InterventionAlias,
             values={
-                "intervention_id": intervention_id,
-                "alias_id": alias_id,
+                "intervention_id": obj.intervention_id,
+                "alias_id": obj.alias_id,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -947,8 +1004,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=InterventionAlias,
                 attrs_names_values={
-                    "intervention_id": intervention_id,
-                    "alias_id": alias_id,
+                    "intervention_id": obj.intervention_id,
+                    "alias_id": obj.alias_id,
                 },
                 session=session,
             )  # type: InterventionAlias
@@ -977,11 +1034,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `InterventionArmGroup` record.
         """
 
+        obj = InterventionArmGroup()
+        obj.intervention_id = intervention_id
+        obj.arm_group_id = arm_group_id
+
         statement = insert(
             InterventionArmGroup,
             values={
-                "intervention_id": intervention_id,
-                "arm_group_id": arm_group_id,
+                "intervention_id": obj.intervention_id,
+                "arm_group_id": obj.arm_group_id,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -993,8 +1054,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=InterventionArmGroup,
                 attrs_names_values={
-                    "intervention_id": intervention_id,
-                    "arm_group_id": arm_group_id,
+                    "intervention_id": obj.intervention_id,
+                    "arm_group_id": obj.arm_group_id,
                 },
                 session=session,
             )  # type: InterventionArmGroup
@@ -1038,18 +1099,29 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Eligibility` record.
         """
 
+        obj = Eligibility()
+        obj.study_pop = study_pop
+        obj.sampling_method = sampling_method
+        obj.criteria = criteria
+        obj.gender = gender
+        obj.gender_based = gender_based
+        obj.gender_description = gender_description
+        obj.minimum_age = minimum_age
+        obj.maximum_age = maximum_age
+        obj.healthy_volunteers = healthy_volunteers
+
         statement = insert(
             Eligibility,
             values={
-                "study_pop": study_pop,
-                "sampling_method": sampling_method,
-                "criteria": criteria,
-                "gender": gender,
-                "gender_based": gender_based,
-                "gender_description": gender_description,
-                "minimum_age": minimum_age,
-                "maximum_age": maximum_age,
-                "healthy_volunteers": healthy_volunteers,
+                "study_pop": obj.study_pop,
+                "sampling_method": obj.sampling_method,
+                "criteria": obj.criteria,
+                "gender": obj.gender,
+                "gender_based": obj.gender_based,
+                "gender_description": obj.gender_description,
+                "minimum_age": obj.minimum_age,
+                "maximum_age": obj.maximum_age,
+                "healthy_volunteers": obj.healthy_volunteers,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1079,16 +1151,20 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Reference` record.
         """
 
+        obj = Reference()
+        obj.citation = citation
+        obj.pmid = pmid
+
         statement = insert(
             Reference,
             values={
-                "citation": citation,
-                "pmid": pmid,
+                "citation": obj.citation,
+                "pmid": obj.pmid,
             }
         ).on_conflict_do_update(
             index_elements=["pmid"],
             set_={
-                "citation": citation,
+                "citation": obj.citation,
             }
         )  # type: Insert
 
@@ -1100,7 +1176,7 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=Reference,
                 attrs_names_values={
-                    "pmid": pmid,
+                    "pmid": obj.pmid,
                 },
                 session=session,
             )  # type: Reference
@@ -1140,15 +1216,23 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `ResponsibleParty` record.
         """
 
+        obj = ResponsibleParty()
+        obj.name_title = name_title
+        obj.organization = organization
+        obj.responsible_party_type = responsible_party_type
+        obj.investigator_affiliation = investigator_affiliation
+        obj.investigator_full_name = investigator_full_name
+        obj.investigator_title = investigator_title
+
         statement = insert(
             ResponsibleParty,
             values={
-                "name_title": name_title,
-                "organization": organization,
-                "type": responsible_party_type,
-                "investigator_affiliation": investigator_affiliation,
-                "investigator_full_name": investigator_full_name,
-                "investigator_title": investigator_title,
+                "name_title": obj.name_title,
+                "organization": obj.organization,
+                "type": obj.responsible_party_type,
+                "investigator_affiliation": obj.investigator_affiliation,
+                "investigator_full_name": obj.investigator_full_name,
+                "investigator_title": obj.investigator_title,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1184,7 +1268,7 @@ class DalClinicalTrials(DalFightForBase):
         statement = insert(
             MeshTerm,
             values={
-                "term": term,
+                "term": obj.term,
                 "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
@@ -1224,11 +1308,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `PatientData` record.
         """
 
+        obj = PatientData()
+        obj.sharing_ipd = sharing_ipd
+        obj.ipd_description = ipd_description
+
         statement = insert(
             PatientData,
             values={
-                "sharing_ipd": sharing_ipd,
-                "ipd_description": ipd_description,
+                "sharing_ipd": obj.sharing_ipd,
+                "ipd_description": obj.ipd_description,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1262,13 +1350,19 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyDoc` record.
         """
 
+        obj = StudyDoc()
+        obj.doc_id = doc_id
+        obj.doc_type = doc_type
+        obj.doc_url = doc_url
+        obj.doc_comment = doc_comment
+
         statement = insert(
             StudyDoc,
             values={
-                "doc_id": doc_id,
-                "doc_type": doc_type,
-                "doc_url": doc_url,
-                "doc_comment": doc_comment,
+                "doc_id": obj.doc_id,
+                "doc_type": obj.doc_type,
+                "doc_url": obj.doc_url,
+                "doc_comment": obj.doc_comment,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1330,23 +1424,38 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyDates` record.
         """
 
-        _dummy = disposition_first_submitted_qc
+        obj = StudyDates()
+        obj.study_first_submitted = study_first_submitted
+        obj.study_first_submitted_qc = study_first_submitted_qc
+        obj.study_first_posted = study_first_posted
+        obj.results_first_submitted = results_first_submitted
+        obj.results_first_submitted_qc = results_first_submitted_qc
+        obj.results_first_posted = results_first_posted
+        obj.disposition_first_posted = disposition_first_posted
+        obj.disposition_first_submitted = disposition_first_submitted
+        obj.disposition_first_submitted_qc = disposition_first_submitted_qc
+        obj.disposition_first_posted = disposition_first_posted
+        obj.last_update_submitted = last_update_submitted
+        obj.last_update_submitted_qc = last_update_submitted_qc
+        obj.last_update_posted = last_update_posted
 
         statement = insert(
             StudyDates,
             values={
-                "study_first_submitted": study_first_submitted,
-                "study_first_submitted_qc": study_first_submitted_qc,
-                "study_first_posted": study_first_posted,
-                "results_first_submitted": results_first_submitted,
-                "results_first_submitted_qc": results_first_submitted_qc,
-                "results_first_posted": results_first_posted,
-                "disposition_first_submitted": disposition_first_submitted,
-                "disposition_first_submitted_qc": _dummy,
-                "disposition_first_posted": disposition_first_posted,
-                "last_update_submitted": last_update_submitted,
-                "last_update_submitted_qc": last_update_submitted_qc,
-                "last_update_posted": last_update_posted,
+                "study_first_submitted": obj.study_first_submitted,
+                "study_first_submitted_qc": obj.study_first_submitted_qc,
+                "study_first_posted": obj.study_first_posted,
+                "results_first_submitted": obj.results_first_submitted,
+                "results_first_submitted_qc": obj.results_first_submitted_qc,
+                "results_first_posted": obj.results_first_posted,
+                "disposition_first_submitted": obj.disposition_first_submitted,
+                "disposition_first_submitted_qc": (
+                    obj.disposition_first_submitted_qc
+                ),
+                "disposition_first_posted": obj.disposition_first_posted,
+                "last_update_submitted": obj.last_update_submitted,
+                "last_update_submitted_qc": obj.last_update_submitted_qc,
+                "last_update_posted": obj.last_update_posted,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1447,74 +1556,107 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Study` record.
         """
 
+        obj = Study()
+        obj.org_study_id = org_study_id
+        obj.secondary_id = secondary_id
+        obj.nct_id = nct_id
+        obj.brief_title = brief_title
+        obj.acronym = acronym
+        obj.official_title = official_title
+        obj.source = source
+        obj.oversight_info_id = oversight_info_id
+        obj.brief_summary = brief_summary
+        obj.detailed_description = detailed_description
+        obj.overall_status = overall_status
+        obj.last_known_status = last_known_status
+        obj.why_stopped = why_stopped
+        obj.start_date = start_date
+        obj.completion_date = completion_date
+        obj.primary_completion_date = primary_completion_date
+        obj.verification_date = verification_date
+        obj.phase = phase
+        obj.study_type = study_type
+        obj.expanded_access_info_id = expanded_access_info_id
+        obj.study_design_info_id = study_design_info_id
+        obj.target_duration = target_duration
+        obj.enrollment_id = enrollment_id
+        obj.biospec_retention = biospec_retention
+        obj.biospec_description = biospec_description
+        obj.eligibility_id = eligibility_id
+        obj.contact_primary_id = contact_primary_id
+        obj.contact_backup_id = contact_backup_id
+        obj.study_dates_id = study_dates_id
+        obj.responsible_party_id = responsible_party_id
+        obj.patient_data_id = patient_data_id
+
         statement = insert(
             Study,
             values={
-                "org_study_id": org_study_id,
-                "secondary_id": secondary_id,
-                "nct_id": nct_id,
-                "brief_title": brief_title,
-                "acronym": acronym,
-                "official_title": official_title,
-                "source": source,
-                "oversight_info_id": oversight_info_id,
-                "brief_summary": brief_summary,
-                "detailed_description": detailed_description,
-                "overall_status": overall_status,
-                "last_known_status": last_known_status,
-                "why_stopped": why_stopped,
-                "start_date": start_date,
-                "completion_date": completion_date,
-                "primary_completion_date": primary_completion_date,
-                "verification_date": verification_date,
-                "phase": phase,
-                "study_type": study_type,
-                "expanded_access_info_id": expanded_access_info_id,
-                "study_design_info_id": study_design_info_id,
-                "target_duration": target_duration,
-                "enrollment_id": enrollment_id,
-                "biospec_retention": biospec_retention,
-                "biospec_description": biospec_description,
-                "eligibility_id": eligibility_id,
-                "contact_primary_id": contact_primary_id,
-                "contact_backup_id": contact_backup_id,
-                "study_dates_id": study_dates_id,
-                "responsible_party_id": responsible_party_id,
-                "patient_data_id": patient_data_id,
+                "org_study_id": obj.org_study_id,
+                "secondary_id": obj.secondary_id,
+                "nct_id": obj.nct_id,
+                "brief_title": obj.brief_title,
+                "acronym": obj.acronym,
+                "official_title": obj.official_title,
+                "source": obj.source,
+                "oversight_info_id": obj.oversight_info_id,
+                "brief_summary": obj.brief_summary,
+                "detailed_description": obj.detailed_description,
+                "overall_status": obj.overall_status,
+                "last_known_status": obj.last_known_status,
+                "why_stopped": obj.why_stopped,
+                "start_date": obj.start_date,
+                "completion_date": obj.completion_date,
+                "primary_completion_date": obj.primary_completion_date,
+                "verification_date": obj.verification_date,
+                "phase": obj.phase,
+                "study_type": obj.study_type,
+                "expanded_access_info_id": obj.expanded_access_info_id,
+                "study_design_info_id": obj.study_design_info_id,
+                "target_duration": obj.target_duration,
+                "enrollment_id": obj.enrollment_id,
+                "biospec_retention": obj.biospec_retention,
+                "biospec_description": obj.biospec_description,
+                "eligibility_id": obj.eligibility_id,
+                "contact_primary_id": obj.contact_primary_id,
+                "contact_backup_id": obj.contact_backup_id,
+                "study_dates_id": obj.study_dates_id,
+                "responsible_party_id": obj.responsible_party_id,
+                "patient_data_id": obj.patient_data_id,
             }
         ).on_conflict_do_update(
             index_elements=["nct_id"],
             set_={
-                "org_study_id": org_study_id,
-                "secondary_id": secondary_id,
-                "brief_title": brief_title,
-                "acronym": acronym,
-                "official_title": official_title,
-                "source": source,
-                "oversight_info_id": oversight_info_id,
-                "brief_summary": brief_summary,
-                "detailed_description": detailed_description,
-                "overall_status": overall_status,
-                "last_known_status": last_known_status,
-                "why_stopped": why_stopped,
-                "start_date": start_date,
-                "completion_date": completion_date,
-                "primary_completion_date": primary_completion_date,
-                "verification_date": verification_date,
-                "phase": phase,
-                "study_type": study_type,
-                "expanded_access_info_id": expanded_access_info_id,
-                "study_design_info_id": study_design_info_id,
-                "target_duration": target_duration,
-                "enrollment_id": enrollment_id,
-                "biospec_retention": biospec_retention,
-                "biospec_description": biospec_description,
-                "eligibility_id": eligibility_id,
-                "contact_primary_id": contact_primary_id,
-                "contact_backup_id": contact_backup_id,
-                "study_dates_id": study_dates_id,
-                "responsible_party_id": responsible_party_id,
-                "patient_data_id": patient_data_id,
+                "org_study_id": obj.org_study_id,
+                "secondary_id": obj.secondary_id,
+                "brief_title": obj.brief_title,
+                "acronym": obj.acronym,
+                "official_title": obj.official_title,
+                "source": obj.source,
+                "oversight_info_id": obj.oversight_info_id,
+                "brief_summary": obj.brief_summary,
+                "detailed_description": obj.detailed_description,
+                "overall_status": obj.overall_status,
+                "last_known_status": obj.last_known_status,
+                "why_stopped": obj.why_stopped,
+                "start_date": obj.start_date,
+                "completion_date": obj.completion_date,
+                "primary_completion_date": obj.primary_completion_date,
+                "verification_date": obj.verification_date,
+                "phase": obj.phase,
+                "study_type": obj.study_type,
+                "expanded_access_info_id": obj.expanded_access_info_id,
+                "study_design_info_id": obj.study_design_info_id,
+                "target_duration": obj.target_duration,
+                "enrollment_id": obj.enrollment_id,
+                "biospec_retention": obj.biospec_retention,
+                "biospec_description": obj.biospec_description,
+                "eligibility_id": obj.eligibility_id,
+                "contact_primary_id": obj.contact_primary_id,
+                "contact_backup_id": obj.contact_backup_id,
+                "study_dates_id": obj.study_dates_id,
+                "responsible_party_id": obj.responsible_party_id,
+                "patient_data_id": obj.patient_data_id,
             }
         )  # type: Insert
 
@@ -1526,7 +1668,7 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attr(
                 orm_class=Study,
                 attr_name="nct_id",
-                attr_value=nct_id,
+                attr_value=obj.nct_id,
                 session=session,
             )  # type: Study
             return obj.study_id
@@ -1553,11 +1695,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyAlias` record.
         """
 
+        obj = StudyAlias()
+        obj.study_id = study_id
+        obj.alias_id = alias_id
+
         statement = insert(
             StudyAlias,
             values={
-                "study_id": study_id,
-                "alias_id": alias_id,
+                "study_id": obj.study_id,
+                "alias_id": obj.alias_id,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1569,8 +1715,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=StudyAlias,
                 attrs_names_values={
-                    "study_id": study_id,
-                    "alias_id": alias_id,
+                    "study_id": obj.study_id,
+                    "alias_id": obj.alias_id,
                 },
                 session=session,
             )  # type: StudyAlias
@@ -1601,17 +1747,22 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudySponsor` record.
         """
 
+        obj = StudySponsor()
+        obj.study_id = study_id
+        obj.sponsor_id = sponsor_id
+        obj.sponsor_type = sponsor_type
+
         statement = insert(
             StudySponsor,
             values={
-                "study_id": study_id,
-                "sponsor_id": sponsor_id,
-                "type": sponsor_type,
+                "study_id": obj.study_id,
+                "sponsor_id": obj.sponsor_id,
+                "type": obj.sponsor_type,
             }
         ).on_conflict_do_update(
             index_elements=["study_id", "sponsor_id"],
             set_={
-                "type": sponsor_type,
+                "type": obj.sponsor_type,
             }
         )  # type: Insert
 
@@ -1623,8 +1774,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=StudySponsor,
                 attrs_names_values={
-                    "study_id": study_id,
-                    "sponsor_id": sponsor_id,
+                    "study_id": obj.study_id,
+                    "sponsor_id": obj.sponsor_id,
                 },
                 session=session,
             )  # type: StudySponsor
@@ -1655,17 +1806,22 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyOutcome` record.
         """
 
+        obj = StudyOutcome()
+        obj.study_id = study_id
+        obj.protocol_outcome_id = protocol_outcome_id
+        obj.outcome_type = outcome_type
+
         statement = insert(
             StudyOutcome,
             values={
-                "study_id": study_id,
-                "protocol_outcome_id": protocol_outcome_id,
-                "type": outcome_type,
+                "study_id": obj.study_id,
+                "protocol_outcome_id": obj.protocol_outcome_id,
+                "type": obj.outcome_type,
             }
         ).on_conflict_do_update(
             index_elements=["study_id", "protocol_outcome_id"],
             set_={
-                "type": outcome_type,
+                "type": obj.outcome_type,
             }
         )  # type: Insert
 
@@ -1677,8 +1833,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=StudyOutcome,
                 attrs_names_values={
-                    "study_id": study_id,
-                    "protocol_outcome_id": protocol_outcome_id,
+                    "study_id": obj.study_id,
+                    "protocol_outcome_id": obj.protocol_outcome_id,
                 },
                 session=session,
             )  # type: StudyOutcome
@@ -1706,11 +1862,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyCondition` record.
         """
 
+        obj = StudyCondition()
+        obj.study_id = study_id
+        obj.condition_id = condition_id
+
         statement = insert(
             StudyCondition,
             values={
-                "study_id": study_id,
-                "condition_id": condition_id,
+                "study_id": obj.study_id,
+                "condition_id": obj.condition_id,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1722,8 +1882,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=StudyCondition,
                 attrs_names_values={
-                    "study_id": study_id,
-                    "condition_id": condition_id,
+                    "study_id": obj.study_id,
+                    "condition_id": obj.condition_id,
                 },
                 session=session,
             )  # type: StudyCondition
@@ -1751,11 +1911,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyArmGroup` record.
         """
 
+        obj = StudyArmGroup()
+        obj.study_id = study_id
+        obj.arm_group_id = arm_group_id
+
         statement = insert(
             StudyArmGroup,
             values={
-                "study_id": study_id,
-                "arm_group_id": arm_group_id,
+                "study_id": obj.study_id,
+                "arm_group_id": obj.arm_group_id,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1767,8 +1931,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=StudyArmGroup,
                 attrs_names_values={
-                    "study_id": study_id,
-                    "arm_group_id": arm_group_id,
+                    "study_id": obj.study_id,
+                    "arm_group_id": obj.arm_group_id,
                 },
                 session=session,
             )  # type: StudyArmGroup
@@ -1797,11 +1961,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyIntervention` record.
         """
 
+        obj = StudyIntervention()
+        obj.study_id = study_id
+        obj.intervention_id = intervention_id
+
         statement = insert(
             StudyIntervention,
             values={
-                "study_id": study_id,
-                "intervention_id": intervention_id,
+                "study_id": obj.study_id,
+                "intervention_id": obj.intervention_id,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1813,8 +1981,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=StudyIntervention,
                 attrs_names_values={
-                    "study_id": study_id,
-                    "intervention_id": intervention_id,
+                    "study_id": obj.study_id,
+                    "intervention_id": obj.intervention_id,
                 },
                 session=session,
             )  # type: StudyIntervention
@@ -1843,11 +2011,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyInvestigator` record.
         """
 
+        obj = StudyInvestigator()
+        obj.study_id = study_id
+        obj.investigator_id = investigator_id
+
         statement = insert(
             StudyInvestigator,
             values={
-                "study_id": study_id,
-                "investigator_id": investigator_id,
+                "study_id": obj.study_id,
+                "investigator_id": obj.investigator_id,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1859,8 +2031,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=StudyInvestigator,
                 attrs_names_values={
-                    "study_id": study_id,
-                    "investigator_id": investigator_id,
+                    "study_id": obj.study_id,
+                    "investigator_id": obj.investigator_id,
                 },
                 session=session,
             )  # type: StudyInvestigator
@@ -1888,11 +2060,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyLocation` record.
         """
 
+        obj = StudyLocation()
+        obj.study_id = study_id
+        obj.location_id = location_id
+
         statement = insert(
             StudyLocation,
             values={
-                "study_id": study_id,
-                "location_id": location_id,
+                "study_id": obj.study_id,
+                "location_id": obj.location_id,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -1904,8 +2080,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=StudyLocation,
                 attrs_names_values={
-                    "study_id": study_id,
-                    "location_id": location_id,
+                    "study_id": obj.study_id,
+                    "location_id": obj.location_id,
                 },
                 session=session,
             )  # type: StudyLocation
@@ -1935,17 +2111,22 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyReference` record.
         """
 
+        obj = StudyReference()
+        obj.study_id = study_id
+        obj.reference_id = reference_id
+        obj.reference_type = reference_type
+
         statement = insert(
             StudyReference,
             values={
-                "study_id": study_id,
-                "reference_id": reference_id,
-                "type": reference_type,
+                "study_id": obj.study_id,
+                "reference_id": obj.reference_id,
+                "type": obj.reference_type,
             }
         ).on_conflict_do_update(
             index_elements=["study_id", "reference_id"],
             set_={
-                "type": reference_type,
+                "type": obj.reference_type,
             }
         )  # type: Insert
 
@@ -1957,8 +2138,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=StudyReference,
                 attrs_names_values={
-                    "study_id": study_id,
-                    "reference_id": reference_id,
+                    "study_id": obj.study_id,
+                    "reference_id": obj.reference_id,
                 },
                 session=session,
             )  # type: StudyReference
@@ -1986,11 +2167,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyKeyword` record.
         """
 
+        obj = StudyKeyword()
+        obj.study_id = study_id
+        obj.keyword_id = keyword_id
+
         statement = insert(
             StudyKeyword,
             values={
-                "study_id": study_id,
-                "keyword_id": keyword_id,
+                "study_id": obj.study_id,
+                "keyword_id": obj.keyword_id,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -2002,8 +2187,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=StudyKeyword,
                 attrs_names_values={
-                    "study_id": study_id,
-                    "keyword_id": keyword_id,
+                    "study_id": obj.study_id,
+                    "keyword_id": obj.keyword_id,
                 },
                 session=session,
             )  # type: StudyKeyword
@@ -2033,17 +2218,22 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyMeshTerm` record.
         """
 
+        obj = StudyMeshTerm()
+        obj.study_id = study_id
+        obj.mesh_term_id = mesh_term_id
+        obj.mesh_term_type = mesh_term_type
+
         statement = insert(
             StudyMeshTerm,
             values={
-                "study_id": study_id,
-                "mesh_term_id": mesh_term_id,
-                "type": mesh_term_type,
+                "study_id": obj.study_id,
+                "mesh_term_id": obj.mesh_term_id,
+                "type": obj.mesh_term_type,
             }
         ).on_conflict_do_update(
             index_elements=["study_id", "mesh_term_id"],
             set_={
-                "type": mesh_term_type,
+                "type": obj.mesh_term_type,
             }
         )  # type: Insert
 
@@ -2055,8 +2245,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=StudyMeshTerm,
                 attrs_names_values={
-                    "study_id": study_id,
-                    "mesh_term_id": mesh_term_id,
+                    "study_id": obj.study_id,
+                    "mesh_term_id": obj.mesh_term_id,
                 },
                 session=session,
             )  # type: StudyMeshTerm
@@ -2084,11 +2274,15 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyStudyDoc` record.
         """
 
+        obj = StudyStudyDoc()
+        obj.study_id = study_id
+        obj.study_doc_id = study_doc_id
+
         statement = insert(
             StudyStudyDoc,
             values={
-                "study_id": study_id,
-                "study_doc_id": study_doc_id,
+                "study_id": obj.study_id,
+                "study_doc_id": obj.study_doc_id,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
@@ -2100,8 +2294,8 @@ class DalClinicalTrials(DalFightForBase):
             obj = self.get_by_attrs(
                 orm_class=StudyStudyDoc,
                 attrs_names_values={
-                    "study_id": study_id,
-                    "study_doc_id": study_doc_id,
+                    "study_id": obj.study_id,
+                    "study_doc_id": obj.study_doc_id,
                 },
                 session=session,
             )  # type: StudyStudyDoc
