@@ -1,5 +1,6 @@
 # coding: utf-8
 
+from typing import Union
 import datetime
 
 import sqlalchemy.orm
@@ -23,6 +24,7 @@ from fform.orm_ct import ExpandedAccessInfo
 from fform.orm_ct import StudyDesignInfo
 from fform.orm_ct import ProtocolOutcome
 from fform.orm_ct import Enrollment
+from fform.orm_ct import ActualType
 from fform.orm_ct import ArmGroup
 from fform.orm_ct import Intervention
 from fform.orm_ct import Alias
@@ -237,11 +239,11 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodi_facility(
         self,
-        name: str,
-        city: str,
-        state: str,
-        zip_code: str,
-        country: str,
+        name: Union[str, None],
+        city: Union[str, None],
+        state: Union[str, None],
+        zip_code: Union[str, None],
+        country: Union[str, None],
         session: sqlalchemy.orm.Session=None,
     ) -> int:
         """Creates a new `Facility` record in an IODI manner.
@@ -299,10 +301,10 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodi_person(
         self,
-        name_first: str,
-        name_middle: str,
-        name_last: str,
-        degrees: str,
+        name_first: Union[str, None],
+        name_middle: Union[str, None],
+        name_last: Union[str, None],
+        degrees: Union[str, None],
         session: sqlalchemy.orm.Session=None,
     ) -> int:
         """Creates a new `Person` record in an IODI manner.
@@ -358,9 +360,9 @@ class DalClinicalTrials(DalFightForBase):
     def iodi_contact(
         self,
         person_id: int,
-        phone: str,
-        phone_ext: str,
-        email: str,
+        phone: Union[str, None],
+        phone_ext: Union[str, None],
+        email: Union[str, None],
         session: sqlalchemy.orm.Session=None,
     ) -> int:
         """Creates a new `Contact` record in an IODI manner.
@@ -416,8 +418,8 @@ class DalClinicalTrials(DalFightForBase):
     def iodi_investigator(
         self,
         person_id: int,
-        role: RoleType,
-        affiliation: str,
+        role: Union[RoleType, None],
+        affiliation: Union[str, None],
         session: sqlalchemy.orm.Session=None,
     ) -> int:
         """Creates a new `Contact` record in an IODI manner.
@@ -469,10 +471,10 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodu_location(
         self,
-        facility_id: int,
-        status: RecruitmentStatusType,
-        contact_primary_id: int,
-        contact_backup_id: int,
+        facility_id: Union[int, None],
+        status: Union[RecruitmentStatusType, None],
+        contact_primary_id: Union[int, None],
+        contact_backup_id: Union[int, None],
         session: sqlalchemy.orm.Session=None,
     ) -> int:
         """Creates a new `Location` record in an IODU manner.
@@ -538,7 +540,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         location_id: int,
         investigator_id: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `LocationInvestigator` record in an IODI manner.
 
@@ -586,12 +588,12 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodi_oversight_info(
         self,
-        has_dmc: bool,
-        is_fda_regulated_drug: bool,
-        is_fda_regulated_device: bool,
-        is_unapproved_device: bool,
-        is_ppsd: bool,
-        is_us_export: bool,
+        has_dmc: Union[bool, None],
+        is_fda_regulated_drug: Union[bool, None],
+        is_fda_regulated_device: Union[bool, None],
+        is_unapproved_device: Union[bool, None],
+        is_ppsd: Union[bool, None],
+        is_us_export: Union[bool, None],
         session: sqlalchemy.orm.Session=None,
     ) -> int:
         """Creates a new `OversightInfo` record in an IODI manner.
@@ -643,9 +645,9 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodi_expanded_access_info(
         self,
-        expanded_access_type_individual: bool,
-        expanded_access_type_intermediate: bool,
-        expanded_access_type_treatment: bool,
+        expanded_access_type_individual: Union[bool, None],
+        expanded_access_type_intermediate: Union[bool, None],
+        expanded_access_type_treatment: Union[bool, None],
         session: sqlalchemy.orm.Session=None,
     ) -> int:
         """Creates a new `ExpandedAccessInfo` record in an IODI manner.
@@ -690,14 +692,14 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodi_study_design_info(
         self,
-        allocation: str,
-        intervention_model: str,
-        intervention_model_description: str,
-        primary_purpose: str,
-        observational_model: str,
-        time_perspective: str,
-        masking: str,
-        masking_description: str,
+        allocation: Union[str, None],
+        intervention_model: Union[str, None],
+        intervention_model_description: Union[str, None],
+        primary_purpose: Union[str, None],
+        observational_model: Union[str, None],
+        time_perspective: Union[str, None],
+        masking: Union[str, None],
+        masking_description: Union[str, None],
         session: sqlalchemy.orm.Session=None,
     ) -> int:
         """Creates a new `StudyDesignInfo` record in an IODI manner.
@@ -756,8 +758,8 @@ class DalClinicalTrials(DalFightForBase):
     def iodi_protocol_outcome(
         self,
         measure: str,
-        time_frame: str,
-        description: str,
+        time_frame: Union[str, None],
+        description: Union[str, None],
         session: sqlalchemy.orm.Session=None,
     ) -> int:
         """Creates a new `ProtocolOutcome` record in an IODI manner.
@@ -798,8 +800,8 @@ class DalClinicalTrials(DalFightForBase):
     def iodi_enrollment(
         self,
         value: str,
-        enrollment_type: int,
-        session: sqlalchemy.orm.Session = None,
+        enrollment_type: Union[ActualType, None],
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `Enrollment` record in an IODI manner.
 
@@ -836,9 +838,9 @@ class DalClinicalTrials(DalFightForBase):
     def iodi_arm_group(
         self,
         label: str,
-        arm_group_type: str,
-        description: str,
-        session: sqlalchemy.orm.Session = None,
+        arm_group_type: Union[str, None],
+        description: Union[str, None],
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `ArmGroup` record in an IODI manner.
 
@@ -879,8 +881,8 @@ class DalClinicalTrials(DalFightForBase):
         self,
         intervention_type: InterventionType,
         name: str,
-        description: str,
-        session: sqlalchemy.orm.Session = None,
+        description: Union[str, None],
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `Intervention` record in an IODI manner.
 
@@ -920,7 +922,7 @@ class DalClinicalTrials(DalFightForBase):
     def iodi_alias(
         self,
         alias: str,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `Alias` record in an IODI manner.
 
@@ -967,7 +969,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         intervention_id: int,
         alias_id: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `InterventionAlias` record in an IODI manner.
 
@@ -1017,7 +1019,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         intervention_id: int,
         arm_group_id: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `InterventionArmGroup` record in an IODI manner.
 
@@ -1065,16 +1067,16 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodi_eligibility(
         self,
-        study_pop: str,
-        sampling_method: SamplingMethodType,
-        criteria: str,
-        gender: GenderType,
-        gender_based: bool,
-        gender_description: str,
-        minimum_age: str,
-        maximum_age: str,
-        healthy_volunteers: str,
-        session: sqlalchemy.orm.Session = None,
+        study_pop: Union[str, None],
+        sampling_method: Union[SamplingMethodType, None],
+        criteria: Union[str, None],
+        gender: Union[GenderType, None],
+        gender_based: Union[bool, None],
+        gender_description: Union[str, None],
+        minimum_age: Union[str, None],
+        maximum_age: Union[str, None],
+        healthy_volunteers: Union[str, None],
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `Eligibility` record in an IODI manner.
 
@@ -1133,9 +1135,9 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodu_reference(
         self,
-        citation: str,
-        pmid: int,
-        session: sqlalchemy.orm.Session = None,
+        citation: Union[str, None],
+        pmid: Union[int, None],
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `Reference` record in an IODU manner.
 
@@ -1186,13 +1188,13 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodi_responsible_party(
         self,
-        name_title: str,
-        organization: str,
-        responsible_party_type: ResponsiblePartyType,
-        investigator_affiliation: str,
-        investigator_full_name: str,
-        investigator_title: str,
-        session: sqlalchemy.orm.Session = None,
+        name_title: Union[str, None],
+        organization: Union[str, None],
+        responsible_party_type: Union[ResponsiblePartyType, None],
+        investigator_affiliation: Union[str, None],
+        investigator_full_name: Union[str, None],
+        investigator_title: Union[str, None],
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `ResponsibleParty` record in an IODI manner.
 
@@ -1245,7 +1247,7 @@ class DalClinicalTrials(DalFightForBase):
     def iodi_mesh_term(
         self,
         term: str,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `MeshTerm` record in an IODI manner.
 
@@ -1291,8 +1293,8 @@ class DalClinicalTrials(DalFightForBase):
     def iodi_patient_data(
         self,
         sharing_ipd: str,
-        ipd_description: str,
-        session: sqlalchemy.orm.Session = None,
+        ipd_description: Union[str, None],
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `PatientData` record in an IODI manner.
 
@@ -1328,11 +1330,11 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodi_study_doc(
         self,
-        doc_id: str,
-        doc_type: str,
-        doc_url: str,
-        doc_comment: str,
-        session: sqlalchemy.orm.Session = None,
+        doc_id: Union[str, None],
+        doc_type: Union[str, None],
+        doc_url: Union[str, None],
+        doc_comment: Union[str, None],
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyDoc` record in an IODI manner.
 
@@ -1374,19 +1376,19 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodi_study_dates(
         self,
-        study_first_submitted: datetime.date,
-        study_first_submitted_qc: datetime.date,
-        study_first_posted: datetime.date,
-        results_first_submitted: datetime.date,
-        results_first_submitted_qc: datetime.date,
-        results_first_posted: datetime.date,
-        disposition_first_submitted: datetime.date,
-        disposition_first_submitted_qc: datetime.date,
-        disposition_first_posted: datetime.date,
-        last_update_submitted: datetime.date,
-        last_update_submitted_qc: datetime.date,
-        last_update_posted: datetime.date,
-        session: sqlalchemy.orm.Session = None,
+        study_first_submitted: Union[datetime.date, None],
+        study_first_submitted_qc: Union[datetime.date, None],
+        study_first_posted: Union[datetime.date, None],
+        results_first_submitted: Union[datetime.date, None],
+        results_first_submitted_qc: Union[datetime.date, None],
+        results_first_posted: Union[datetime.date, None],
+        disposition_first_submitted: Union[datetime.date, None],
+        disposition_first_submitted_qc: Union[datetime.date, None],
+        disposition_first_posted: Union[datetime.date, None],
+        last_update_submitted: Union[datetime.date, None],
+        last_update_submitted_qc: Union[datetime.date, None],
+        last_update_posted: Union[datetime.date, None],
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyDates` record in an IODI manner.
 
@@ -1467,38 +1469,38 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodu_study(
         self,
-        org_study_id: str,
-        secondary_id: str,
+        org_study_id: Union[str, None],
+        secondary_id: Union[str, None],
         nct_id: str,
         brief_title: str,
-        acronym: str,
-        official_title: str,
+        acronym: Union[str, None],
+        official_title: Union[str, None],
         source: str,
-        oversight_info_id: int,
-        brief_summary: str,
-        detailed_description: str,
+        oversight_info_id: Union[int, None],
+        brief_summary: Union[str, None],
+        detailed_description: Union[str, None],
         overall_status:  OverallStatusType,
-        last_known_status: OverallStatusType,
-        why_stopped: str,
-        start_date: datetime.date,
-        completion_date: datetime.date,
-        primary_completion_date: datetime.date,
-        verification_date: datetime.date,
+        last_known_status: Union[OverallStatusType, None],
+        why_stopped: Union[str, None],
+        start_date: Union[datetime.date, None],
+        completion_date: Union[datetime.date, None],
+        primary_completion_date: Union[datetime.date, None],
+        verification_date: Union[datetime.date, None],
         phase: PhaseType,
         study_type: StudyType,
-        expanded_access_info_id: int,
-        study_design_info_id: int,
-        target_duration: str,
-        enrollment_id: int,
-        biospec_retention: BiospecRetentionType,
-        biospec_description: str,
-        eligibility_id: int,
-        contact_primary_id: int,
-        contact_backup_id: int,
+        expanded_access_info_id: Union[int, None],
+        study_design_info_id: Union[int, None],
+        target_duration: Union[str, None],
+        enrollment_id: Union[int, None],
+        biospec_retention: Union[BiospecRetentionType, None],
+        biospec_description: Union[str, None],
+        eligibility_id: Union[int, None],
+        contact_primary_id: Union[int, None],
+        contact_backup_id: Union[int, None],
         study_dates_id: int,
-        responsible_party_id: int,
-        patient_data_id: int,
-        session: sqlalchemy.orm.Session = None,
+        responsible_party_id: Union[int, None],
+        patient_data_id: Union[int, None],
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `Study` record in an IODU manner.
 
@@ -1679,7 +1681,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         study_id: int,
         alias_id: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyAlias` record in an IODI manner.
 
@@ -1729,7 +1731,7 @@ class DalClinicalTrials(DalFightForBase):
         study_id: int,
         sponsor_id: int,
         sponsor_type: SponsorType,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudySponsor` record in an IODU manner.
 
@@ -1788,7 +1790,7 @@ class DalClinicalTrials(DalFightForBase):
         study_id: int,
         protocol_outcome_id: int,
         outcome_type: OutcomeType,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyOutcome` record in an IODU manner.
 
@@ -1846,7 +1848,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         study_id: int,
         condition_id: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyCondition` record in an IODI manner.
 
@@ -1895,7 +1897,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         study_id: int,
         arm_group_id: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyArmGroup` record in an IODI manner.
 
@@ -1944,7 +1946,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         study_id: int,
         intervention_id: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyIntervention` record in an IODI manner.
 
@@ -1994,7 +1996,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         study_id: int,
         investigator_id: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyInvestigator` record in an IODI manner.
 
@@ -2044,7 +2046,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         study_id: int,
         location_id: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyLocation` record in an IODI manner.
 
@@ -2094,7 +2096,7 @@ class DalClinicalTrials(DalFightForBase):
         study_id: int,
         reference_id: int,
         reference_type: ReferenceType,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyReference` record in an IODU manner.
 
@@ -2151,7 +2153,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         study_id: int,
         keyword_id: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyKeyword` record in an IODI manner.
 
@@ -2201,7 +2203,7 @@ class DalClinicalTrials(DalFightForBase):
         study_id: int,
         mesh_term_id: int,
         mesh_term_type: MeshTermType,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyMeshTerm` record in an IODU manner.
 
@@ -2258,7 +2260,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         study_id: int,
         study_doc_id: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Union[sqlalchemy.orm.Session, None] = None,
     ) -> int:
         """Creates a new `StudyStudyDoc` record in an IODI manner.
 
