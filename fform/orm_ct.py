@@ -329,10 +329,6 @@ class Sponsor(Base, OrmBase):
     )
     def update_md5(self, key, value):
 
-        # Enforce lowercasing of the value in order to avoid needless
-        # duplication when the keyword is provided with different casing.
-        value = value.lower() if value else None
-
         attrs = {
             "agency": self.agency,
             "agency_class": self.agency_class,
@@ -342,9 +338,9 @@ class Sponsor(Base, OrmBase):
         # Retrieve the full concatenated name.
         name = " ".join([str(value) for value in attrs.values()])
 
-        # Encode the full concatenated name to UTF8 (in case it contains
-        # unicode characters).
-        name_encoded = name.encode("utf-8")
+        # Lowercase and encode the full concatenated name to UTF8 (in case it
+        # contains unicode characters).
+        name_encoded = name.lower().encode("utf-8")
 
         # Calculate the MD5 hash of the encoded full concatenated name and store
         # it under the `md5` attribute.
