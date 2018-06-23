@@ -229,7 +229,7 @@ class DalFightForBase(DalBase):
         orm_class: Type[OrmBase],
         pk: int,
         session: sqlalchemy.orm.Session = None,
-    ) -> Union[Type[OrmBase], None]:
+    ) -> Type[OrmBase]:
         """Retrieves the record object of `orm_class` type through the value of
         its primary-key ID.
 
@@ -289,7 +289,7 @@ class DalFightForBase(DalBase):
         attr_name: str,
         attr_value: Any,
         session: sqlalchemy.orm.Session = None,
-    ) -> Union[Type[OrmBase], None]:
+    ) -> Type[OrmBase]:
         """Retrieves the record object of `orm_class` type through the value of
         a given attribute.
 
@@ -403,7 +403,7 @@ class DalFightForBase(DalBase):
         orm_class: Type[OrmBase],
         attrs_names_values: Dict[str, Any],
         session: sqlalchemy.orm.Session = None,
-    ) -> Union[Type[OrmBase], None]:
+    ) -> Type[OrmBase]:
         """Retrieves the record object of `orm_class` type through attribute
         name-value pairs.
 
