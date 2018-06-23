@@ -56,6 +56,53 @@ class DalCtContactTest(DalCtTestBase):
             email="adam@bearnd.io"
         )
 
+    def test_iodi_contact_duplicate(self):
+        """Tests the IODI insertion of duplicate `Contact` records to ensure
+        deduplication functions as intended."""
+
+        # IODI a new `Person` record as a fixture.
+        person_id = self.dal.iodi_person(
+            name_first="Adamos",
+            name_middle=None,
+            name_last="Kyriakou",
+            degrees="M.Sc., Ph.D."
+        )
+
+        # IODI a new `Contact` record.
+        obj_id = self.dal.iodi_contact(
+            person_id=person_id,
+            phone="1",
+            phone_ext="2",
+            email="adam@bearnd.io"
+        )
+
+        # The PK should be `1` as this is the first record.
+        self.assertEqual(obj_id, 1)
+
+        # IODI the same `Contact` record as before.
+        obj_id = self.dal.iodi_contact(
+            person_id=person_id,
+            phone="1",
+            phone_ext="2",
+            email="adam@bearnd.io"
+        )
+
+        # The PK should still be `1` as the record was identical thus no
+        # insertion should've occured.
+        self.assertEqual(obj_id, 1)
+
+        # IODI a new `Contact` record.
+        obj_id = self.dal.iodi_contact(
+            person_id=person_id,
+            phone="100",
+            phone_ext="200",
+            email="adam@bearnd.io"
+        )
+
+        # The PK should be `3` as the previous failed INSERT will have
+        # incremented the PK by 1.
+        self.assertEqual(obj_id, 3)
+
     def test_delete_contact(self):
         """Tests the deletion of a `Contact` record via the `delete` method of
         the `DalClinicalTrials` class."""
