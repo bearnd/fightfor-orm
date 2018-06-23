@@ -1,7 +1,5 @@
 # coding=utf-8
 
-import sqlalchemy.exc
-
 from fform.orm_ct import Keyword
 
 from tests.bases import DalCtTestBase
