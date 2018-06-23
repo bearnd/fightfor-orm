@@ -1,5 +1,44 @@
 ## Changelog
 
+### v0.7.0
+
+Issue No.48: Update `fightfor-orm` with Vagrant+Ansible deployment in order to allow unit-testing:
+
+- `.gitignore`: Added the `.ansible-vault-password` file.
+- Added a `Vagrantfile` and a development-only Ansible role so that the package can be tested in a VM with a local PostgreSQL instance.
+- Removed the unit-test placeholder.
+- `dals_ct.py`: Fixed bug in the `iodi_facility` method of the `DalClinicalTrials` where the name was passed as a tuple due to a trailing comma.
+- `dals_ct.py`: Updated the `DalClinicalTrials` class and replaced any calls to `get_by_md5` with `get_by_attr` as the former has been removed.
+
+Issue No.2: Improper unique-ing and study-updates:
+
+- Removed tables that aren’t actively used in the clinical-trials ingestion.
+- Added MD5 calculation and unique-constraints to tables that were missing uniqueness constraints before.
+- Added lowercasing to MD5 calculations to preclude duplication when case isn’t well defined.
+- `dals_ct.py`: Updated the `DalClinicalTrials` class and removed unused methods.
+- `dals_ct.py`: Updated the `iodi_location` method of the `DalClinicalTrials` class and converted from IODI to IODU including renaming the method.
+- `dals_ct.py`: Updated the `iodi_reference` method of the `DalClinicalTrials` class and converted from IODI to IODU including renaming the method.
+- `dals_ct.py`: Updated the `iodi_study` method of the `DalClinicalTrials` class and converted from IODI to IODU including renaming the method.
+- `dals_ct.py`: Updated the `iodi_study_sponsor` method of the `DalClinicalTrials` class and converted from IODI to IODU including renaming the method.
+- `dals_ct.py`: Updated the `iodi_study_outcome` method of the `DalClinicalTrials` class and converted from IODI to IODU including renaming the method.
+- `dals_ct.py`: Updated the `iodi_study_reference` method of the `DalClinicalTrials` class and converted from IODI to IODU including renaming the method.
+- `dals_ct.py`: Updated the `iodi_study_mesh_term` method of the `DalClinicalTrials` class and converted from IODI to IODU including renaming the method.
+- `orm_base.py`: Updated the `OrmBase` class and added class-methods and properties to retrieve the primary-key name and attribute of the ORM class.
+- `dal_base.py`: Updated the `DalFightForBase` class and added a `get` and a `delete` method to retrieve and delete record via its primary-key ID.
+- `dals_ct.py`: Updated all IODI/IODU methods of the `DalClinicalTrials` so that the values to be inserted are first set in an object of the record to be inserted and then used in the upsert statement via the object in order to any transformations they’re meant to have to kick in, e.g., lowercasing for keywords.
+- `dals_ct.py`: Updated many of the `DalClinicalTrials` methods and included typing information on the method arguments to signify which arguments correspond to nullable fields.
+- Added a new `tests/utils.py` module with a basic function to load configuration settings for unit-testing.
+- Added a new `tests/bases.py` module with unit-test base-classes.
+- Added a new `tests.dals_ct_sponsor.py` module with unit-tests for the `Sponsor` ORM class and its corresponding methods under the `DalClinicalTrials` class.
+- Added a new `tests.dals_ct_contact.py` module with unit-tests for the `Contact` ORM class and its corresponding methods under the `DalClinicalTrials` class.
+- `orm_ct.py`: Updated the `update_md5` class of the `Sponsor` class to not lowercase the attributes but rather use the lowercase versions to calculate the MD5.
+- `tests/dals_ct_contact.py`: Added a unit-test to test duplication-prevention.
+- Added a new `tests.dals_ct_keyword.py` module with unit-tests for the `Keyword` ORM class and its corresponding methods under the `DalClinicalTrials` class.
+- Renames.
+- Added a new `tests.dals_ct_facility_test.py` module with unit-tests for the `Facility` ORM class and its corresponding methods under the `DalClinicalTrials` class.
+- Added a new `tests.dals_ct_person_test.py` module with unit-tests for the `Person` ORM class and its corresponding methods under the `DalClinicalTrials` class.
+- Added a new `tests.dals_ct_person_test.py` module with unit-tests for the `Person` ORM class and its corresponding methods under the `DalClinicalTrials` class.
+
 ### v0.6.0
 
 Issue No.38: Add synonym relationships to the corresponding MeSH entity classes:
