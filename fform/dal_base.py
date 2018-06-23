@@ -8,7 +8,7 @@ interaction between SQLAlchemy and SQL-servers.
 
 import inspect
 import contextlib
-from typing import Dict, List, Any, Type
+from typing import Dict, List, Any, Type, Union
 
 import decorator
 import sqlalchemy
@@ -224,6 +224,65 @@ class DalFightForBase(DalBase):
         )
 
     @with_session_scope()
+    def get(
+        self,
+        orm_class: Type[OrmBase],
+        pk: int,
+        session: sqlalchemy.orm.Session = None,
+    ) -> Type[OrmBase]:
+        """Retrieves the record object of `orm_class` type through the value of
+        its primary-key ID.
+
+        Args:
+            orm_class (Type[OrmBase]): An object of a class derived off
+                `OrmBase` implementing the `attr_name` attribute.
+            pk (int): The primary-key ID of the record to be retrieved.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be retrieved. Defaults to `None`
+                in which case a new session is automatically created and
+                terminated upon completion.
+
+        Returns:
+            Type[OrmBase]: The record object of type `orm_class` matching the
+                primary-key ID and `None` if no record exists.
+        """
+
+        query = session.query(orm_class)
+        query = query.filter(
+            getattr(orm_class, orm_class.get_pk_name()) == pk
+        )
+
+        obj = query.one_or_none()
+
+        return obj
+
+    @with_session_scope()
+    def delete(
+        self,
+        orm_class: Type[OrmBase],
+        pk: int,
+        session: sqlalchemy.orm.Session = None,
+    ) -> None:
+        """Deletes the underlying record corresponding to an object of
+        `orm_class` type through its primary-key ID.
+
+        Args:
+            orm_class (Type[OrmBase]): A class derived off `OrmBase` which
+                represents the record to be deleted.
+            pk (int): The primary-key ID of the record to be deleted.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be deleted. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+        """
+
+        query = session.query(orm_class)
+        query = query.filter(
+            getattr(orm_class, orm_class.get_pk_name()) == pk
+        )
+        query.delete()
+
+    @with_session_scope()
     def get_by_attr(
         self,
         orm_class: Type[OrmBase],
@@ -247,9 +306,9 @@ class DalFightForBase(DalBase):
             attr_value (Any): The attribute value to be used in filtering out a
                 single record.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
-                through which the record will be added. Defaults to `None` in
-                which case a new session is automatically created and terminated
-                upon completion.
+                through which the record will be retrieved. Defaults to `None`
+                in which case a new session is automatically created and
+                terminated upon completion.
 
         Returns:
             Type[OrmBase]: The record object of type `orm_class` matching the
@@ -300,9 +359,9 @@ class DalFightForBase(DalBase):
                 same order the attribute values have. Only applied when the
                 number of objects is the same as the number of attribute values.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
-                through which the record will be added. Defaults to `None` in
-                which case a new session is automatically created and terminated
-                upon completion.
+                through which the records will be retrieved . Defaults to `None`
+                in which case a new session is automatically created and
+                terminated upon completion.
 
         Returns:
             List[Type[OrmBase]]: The record objects of type `orm_class`
@@ -360,9 +419,9 @@ class DalFightForBase(DalBase):
             attrs_names_values (Dict[str, Any]): A dictionary of attribute
                 name:value pairs to be used in filtering out a single record.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
-                through which the record will be added. Defaults to `None` in
-                which case a new session is automatically created and terminated
-                upon completion.
+                through which the record will be retrieved. Defaults to `None`
+                in which case a new session is automatically created and
+                terminated upon completion.
 
         Returns:
             Type[OrmBase]: The record object of type `orm_class` matching the
@@ -411,9 +470,9 @@ class DalFightForBase(DalBase):
                 name:list of values pairs to be used in filtering out the
                 records.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
-                through which the record will be added. Defaults to `None` in
-                which case a new session is automatically created and terminated
-                upon completion.
+                through which the records will be retrieved. Defaults to `None`
+                in which case a new session is automatically created and
+                terminated upon completion.
 
         Returns:
             List[Type[OrmBase]]: The record objects of type `orm_class`
