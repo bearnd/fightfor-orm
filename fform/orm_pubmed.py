@@ -98,7 +98,7 @@ class AbstractText(Base, OrmBase):
     # MD5 hash of the abstract text.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -161,7 +161,7 @@ class AccessionNumber(Base, OrmBase):
     # MD5 hash of the accession_number.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -230,7 +230,7 @@ class Affiliation(Base, OrmBase):
     # MD5 hash of the `affiliation` field.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True
     )
@@ -388,7 +388,7 @@ class Article(Base, OrmBase):
     # MD5 hash of the `title` field.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True
     )
@@ -943,7 +943,7 @@ class Author(Base, OrmBase):
     # MD5 hash of the author's full name.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False
@@ -1197,7 +1197,7 @@ class Databank(Base, OrmBase):
     # MD5 hash of the databank name.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -1313,7 +1313,7 @@ class Grant(Base, OrmBase):
     # MD5 hash of the grant's full description.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False
@@ -1412,7 +1412,7 @@ class Journal(Base, OrmBase):
     # MD5 hash of the journal `title` and `abbreviation` fields.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -1532,7 +1532,7 @@ class Keyword(Base, OrmBase):
     # MD5 hash of the keyword.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
