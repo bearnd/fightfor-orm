@@ -19,3 +19,9 @@ class MissingAttributeError(Exception):
     attribute."""
     def __init__(self, message, *args):
         super(MissingAttributeError, self).__init__(message, *args)
+
+
+class RecordMissingError(Exception):
+    """Exception raised when the requested record does not exist."""
+    def __init__(self, message, *args):
+        super(RecordMissingError, self).__init__(message, *args)
