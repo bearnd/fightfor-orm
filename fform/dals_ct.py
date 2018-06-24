@@ -506,13 +506,10 @@ class DalClinicalTrials(DalFightForBase):
                 "status": obj.status,
                 "contact_primary_id": obj.contact_primary_id,
                 "contact_backup_id": obj.contact_backup_id,
+                "md5": obj.md5,
             }
         ).on_conflict_do_update(
-            index_elements=[
-                "facility_id",
-                "contact_primary_id",
-                "contact_backup_id",
-            ],
+            index_elements=["md5"],
             set_={
                 "status": obj.status,
             }
@@ -523,13 +520,10 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
-            obj = self.get_by_attrs(
+            obj = self.get_by_attr(
                 orm_class=Location,
-                attrs_names_values={
-                    "facility_id": obj.facility_id,
-                    "contact_primary_id": obj.contact_primary_id,
-                    "contact_backup_id": obj.contact_backup_id,
-                },
+                attr_name="md5",
+                attr_value=obj.md5,
                 session=session,
             )  # type: Location
             return obj.location_id

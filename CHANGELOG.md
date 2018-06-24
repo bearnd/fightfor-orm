@@ -1,5 +1,12 @@
 ## Changelog
 
+### v0.7.3
+
+- Updated all `md5` fields and changed their type to a 16-byte `LargeBinary` instead of a `Binary` which is now deprecated.
+- `orm_ct.py`: Updated the `Location` class and replaced the FK unique constraint with an MD5 field as the contact FKs are nullable and NULL values are not considered unique in PostgreSQL.
+- `dals_ct.py`: Updated the `iodu_location` method of the `DalClinicalTrials` class to reflect the replacement of the FK unique constraint with an MD5.
+- Added a new `tests.dals_ct_location_test.py` module with unit-tests for the `Location` ORM class and its corresponding methods under the `DalClinicalTrials` class.
+
 ### v0.7.2
 
 - `dals_ct.py`: Typing fixes.
