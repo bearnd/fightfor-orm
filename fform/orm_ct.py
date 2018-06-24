@@ -901,6 +901,15 @@ class Location(Base, OrmBase):
         nullable=True,
     )
 
+    # MD5 hash of the location's keys.
+    md5 = sqlalchemy.Column(
+        name="md5",
+        type_=sqlalchemy.types.LargeBinary(length=16),
+        unique=True,
+        index=True,
+        nullable=False
+    )
+
     # Relationship to a `Contact` record for the primary contact.
     contact_primary = sqlalchemy.orm.relationship(
         argument="Contact",
@@ -928,15 +937,36 @@ class Location(Base, OrmBase):
 
     # Set table arguments.
     __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint(
-            "facility_id",
-            "contact_primary_id",
-            "contact_backup_id",
-        ),
         # Set table schema.
         {"schema": "clinicaltrials"}
     )
+
+    @sqlalchemy.orm.validates(
+        "facility_id",
+        "contact_primary_id",
+        "contact_backup_id",
+    )
+    def update_md5(self, key, value):
+        attrs = {
+            "facility_id": self.facility_id,
+            "contact_primary_id": self.contact_primary_id,
+            "contact_backup_id": self.contact_backup_id,
+        }
+        attrs[key] = value
+
+        # Retrieve the full concatenated key-string.
+        keys = " ".join([str(value) for value in attrs.values()])
+
+        # Encode the full concatenated key-string to UTF8 (in case it contains
+        # unicode characters).
+        keys_encoded = keys.encode("utf-8")
+
+        # Calculate the MD5 hash of the encoded full concatenated key-string and
+        # store it under the `md5` attribute.
+        md5 = hashlib.md5(keys_encoded).digest()
+        self.md5 = md5
+
+        return value
 
 
 class LocationInvestigator(Base, OrmBase):
