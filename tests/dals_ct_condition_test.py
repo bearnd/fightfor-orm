@@ -65,3 +65,31 @@ class DalCtConditionTest(DalCtTestBase):
         obj = self.dal.get(Condition, obj_id)  # type: Condition
 
         self.assertIsNone(obj)
+
+    def test_update_condition(self):
+        """Tests the update of a `Condition` record via the `update` method of
+        the `DalClinicalTrials` class."""
+
+        # IODI a new `Condition` record.
+        obj_id = self.dal.iodi_condition(condition="Cardiovascular Diseases")
+
+        # Retrieve the new record.
+        obj_original = self.dal.get(Condition, obj_id)  # type: Condition
+
+        # Assert that the different fields of the record match.
+        self.assertEqual(obj_original.condition_id, 1)
+        # Assert that lowercasing kicked in.
+        self.assertEqual(obj_original.condition, "cardiovascular diseases")
+
+        # Update the record.
+        self.dal.update_attr_value(Condition, obj_id, "condition", "test")
+
+        # Retrieve the updated record.
+        obj_updated = self.dal.get(Condition, obj_id)  # type: Condition
+
+        # Assert that the ID remained the same.
+        self.assertEqual(obj_updated.condition_id, 1)
+        # Assert that attribute changed.
+        self.assertEqual(obj_updated.condition, "test")
+        # Assert that the MD5 changes.
+        self.assertNotEqual(obj_original.md5, obj_updated.md5)

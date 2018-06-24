@@ -1,5 +1,14 @@
 ## Changelog
 
+### v0.7.2
+
+- `dals_ct.py`: Typing fixes.
+- `excs.py`: Fixed typo.
+- `excs.py`: Added a new `RecordMissingError` exception class.
+- `dal_base.py`: Typing fixes in the `DalFightForBase` class methods.
+- `dal_base.py`: Updated the `DalFightForBase` class and added a `update_attr_value` method to update the value of a specific attribute of a specific record.
+- `dals_ct_condition_test.py`: Added a unit-test to test the newly added `update_attr_value` method.
+
 ### v0.7.1
 
 - `dals_ct.py`: Fixed bug in the `iodi_intervention` method of the `DalClinicalTrials` class where the upsert wasn’t including the MD5 field or the correct way to retrieve the PK.
