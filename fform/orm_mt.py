@@ -80,7 +80,7 @@ class TreeNumber(Base, OrmBase):
     # MD5 hash of the tree-number.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -147,7 +147,7 @@ class ThesaurusId(Base, OrmBase):
     # MD5 hash of the tree-number.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -751,7 +751,7 @@ class PreviousIndexing(Base, OrmBase):
     # MD5 hash of the tree-number.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -1292,7 +1292,7 @@ class Source(Base, OrmBase):
     # MD5 hash of the tree-number.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -1717,7 +1717,7 @@ class DescriptorSynonym(Base, OrmBase):
     # MD5 hash of the synonym.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         index=True,
         nullable=False,
     )
@@ -1790,7 +1790,7 @@ class QualifierSynonym(Base, OrmBase):
     # MD5 hash of the synonym.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         index=True,
         nullable=False,
     )
@@ -1863,7 +1863,7 @@ class SupplementalSynonym(Base, OrmBase):
     # MD5 hash of the synonym.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         index=True,
         nullable=False,
     )

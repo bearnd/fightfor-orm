@@ -304,7 +304,7 @@ class Sponsor(Base, OrmBase):
     # MD5 hash of the keyword.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -376,7 +376,7 @@ class Keyword(Base, OrmBase):
     # MD5 hash of the keyword.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -441,7 +441,7 @@ class Condition(Base, OrmBase):
     # MD5 hash of the keyword.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -537,7 +537,7 @@ class Facility(Base, OrmBase):
     # MD5 hash of the author's full name.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False
@@ -627,7 +627,7 @@ class Person(Base, OrmBase):
     # MD5 hash of the contact's full name.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False
@@ -714,7 +714,7 @@ class Contact(Base, OrmBase):
     # MD5 hash of the contact's full name.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False
@@ -806,7 +806,7 @@ class Investigator(Base, OrmBase):
     # MD5 hash of the contact's full name.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False
@@ -1314,7 +1314,7 @@ class Intervention(Base, OrmBase):
     # MD5 hash of the keyword.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -1390,7 +1390,7 @@ class Alias(Base, OrmBase):
     # MD5 hash of the keyword.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
@@ -1703,7 +1703,7 @@ class MeshTerm(Base, OrmBase):
     # MD5 hash of the term.
     md5 = sqlalchemy.Column(
         name="md5",
-        type_=sqlalchemy.types.Binary(),
+        type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
         nullable=False,
