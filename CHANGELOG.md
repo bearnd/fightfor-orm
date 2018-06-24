@@ -1,5 +1,10 @@
 ## Changelog
 
+### v0.7.1
+
+- `dals_ct.py`: Fixed bug in the `iodi_intervention` method of the `DalClinicalTrials` class where the upsert wasn’t including the MD5 field or the correct way to retrieve the PK.
+- Added a new `tests.dals_ct_intervention_test.py` module with unit-tests for the `Intervention` ORM class and its corresponding methods under the `DalClinicalTrials` class.
+
 ### v0.7.0
 
 Issue No.48: Update `fightfor-orm` with Vagrant+Ansible deployment in order to allow unit-testing:
