@@ -8,7 +8,7 @@ interaction between SQLAlchemy and SQL-servers.
 
 import inspect
 import contextlib
-from typing import Dict, List, Any, Type, Union
+from typing import Dict, List, Any, Type, Optional
 
 import decorator
 import sqlalchemy
@@ -228,7 +228,7 @@ class DalFightForBase(DalBase):
         self,
         orm_class: Type[OrmBase],
         pk: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
     ) -> Type[OrmBase]:
         """Retrieves the record object of `orm_class` type through the value of
         its primary-key ID.
@@ -261,7 +261,7 @@ class DalFightForBase(DalBase):
         self,
         orm_class: Type[OrmBase],
         pk: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
     ) -> None:
         """Deletes the underlying record corresponding to an object of
         `orm_class` type through its primary-key ID.
@@ -288,7 +288,7 @@ class DalFightForBase(DalBase):
         orm_class: Type[OrmBase],
         attr_name: str,
         attr_value: Any,
-        session: sqlalchemy.orm.Session = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
     ) -> Type[OrmBase]:
         """Retrieves the record object of `orm_class` type through the value of
         a given attribute.
@@ -343,7 +343,7 @@ class DalFightForBase(DalBase):
         attr_name: str,
         attr_values: List[Any],
         do_sort: bool = True,
-        session: sqlalchemy.orm.Session = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
     ) -> List[Type[OrmBase]]:
         """Retrieves a list of record objects of `orm_class` type through the
         values of a given attribute.
@@ -402,7 +402,7 @@ class DalFightForBase(DalBase):
         self,
         orm_class: Type[OrmBase],
         attrs_names_values: Dict[str, Any],
-        session: sqlalchemy.orm.Session = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
     ) -> Type[OrmBase]:
         """Retrieves the record object of `orm_class` type through attribute
         name-value pairs.
@@ -458,7 +458,7 @@ class DalFightForBase(DalBase):
         self,
         orm_class: Type[OrmBase],
         attrs_names_values: Dict[str, List[Any]],
-        session: sqlalchemy.orm.Session = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
     ) -> List[Type[OrmBase]]:
         """Retrieves a list of record objects of `orm_class` type through
         attribute name-value pairs.
