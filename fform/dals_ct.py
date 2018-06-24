@@ -910,12 +910,22 @@ class DalClinicalTrials(DalFightForBase):
                 "type": obj.intervention_type,
                 "name": obj.name,
                 "description": obj.description,
+                "md5": obj.md5,
             }
         ).on_conflict_do_nothing()  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
-        return result.inserted_primary_key
+        if result.inserted_primary_key:
+            return result.inserted_primary_key
+        else:
+            obj = self.get_by_attr(
+                orm_class=Intervention,
+                attr_name="md5",
+                attr_value=obj.md5,
+                session=session,
+            )  # type: Intervention
+            return obj.intervention_id
 
     @return_first_item
     @with_session_scope()
