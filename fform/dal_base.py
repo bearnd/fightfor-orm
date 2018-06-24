@@ -8,7 +8,7 @@ interaction between SQLAlchemy and SQL-servers.
 
 import inspect
 import contextlib
-from typing import Dict, List, Any, Type, Union
+from typing import Dict, List, Any, Type, Optional
 
 import decorator
 import sqlalchemy
@@ -18,6 +18,7 @@ from fform.orm_base import OrmBase
 from fform.loggers import create_logger
 from fform.excs import MissingAttributeError
 from fform.excs import InvalidArgumentsError
+from fform.excs import RecordMissingError
 
 
 def with_session_scope(**dec_kwargs):
@@ -228,7 +229,7 @@ class DalFightForBase(DalBase):
         self,
         orm_class: Type[OrmBase],
         pk: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
     ) -> Type[OrmBase]:
         """Retrieves the record object of `orm_class` type through the value of
         its primary-key ID.
@@ -257,11 +258,67 @@ class DalFightForBase(DalBase):
         return obj
 
     @with_session_scope()
+    def update_attr_value(
+        self,
+        orm_class: Type[OrmBase],
+        pk: int,
+        attr_name: str,
+        attr_value: Any,
+        session: Optional[sqlalchemy.orm.Session] = None,
+    ) -> None:
+        """Updates the value of a single attribute in the record object of
+        `orm_class` type identified through its primary-key ID.
+
+        Args:
+            orm_class (Type[OrmBase]): An object of a class derived off
+                `OrmBase` implementing the `attr_name` attribute.
+            pk (int): The primary-key ID of the record to be updated.
+            attr_name (str): The name of the attribute to be updated.
+            attr_value (Any): The value the attribute will be updated to.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be retrieved and updated. Defaults
+                to `None` in which case a new session is automatically created
+                and terminated upon completion.
+
+        Raises:
+            MissingAttributeError: Raised when the `orm_class` does not define
+                the `attr_name` attribute.
+            RecordMissingError: Raised when there is no record of `orm_class`
+                type with the given primary-key ID.
+        """
+
+        # Retrieve the record object
+        obj = self.get(orm_class=orm_class, pk=pk, session=session)
+
+        # Log an error and raise an exception if the `orm_class` does not define
+        # an `attr_name` attribute.
+        if not hasattr(orm_class, attr_name):
+            msg = "Class `{}` does not define attribute `{}`."
+            msg_fmt = msg.format(orm_class, attr_name)
+            self.logger.error(msg_fmt)
+            raise MissingAttributeError(msg_fmt)
+
+        # Log an error and raise an exception if there is no `orm_class` record
+        # with the given primary-key ID.
+        if not obj:
+            msg = ("Record of type '{}' with a primary-key ID of '{}' was "
+                   "not found.")
+            msg_fmt = msg.format(orm_class, pk)
+            self.logger.error(msg_fmt)
+            raise RecordMissingError(msg_fmt)
+
+        # Set the attribute value in the retrieved record object.
+        setattr(obj, attr_name, attr_value)
+
+        # Merge the object updating the attribute value in the DB.
+        session.merge(obj)
+
+    @with_session_scope()
     def delete(
         self,
         orm_class: Type[OrmBase],
         pk: int,
-        session: sqlalchemy.orm.Session = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
     ) -> None:
         """Deletes the underlying record corresponding to an object of
         `orm_class` type through its primary-key ID.
@@ -288,7 +345,7 @@ class DalFightForBase(DalBase):
         orm_class: Type[OrmBase],
         attr_name: str,
         attr_value: Any,
-        session: sqlalchemy.orm.Session = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
     ) -> Type[OrmBase]:
         """Retrieves the record object of `orm_class` type through the value of
         a given attribute.
@@ -343,7 +400,7 @@ class DalFightForBase(DalBase):
         attr_name: str,
         attr_values: List[Any],
         do_sort: bool = True,
-        session: sqlalchemy.orm.Session = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
     ) -> List[Type[OrmBase]]:
         """Retrieves a list of record objects of `orm_class` type through the
         values of a given attribute.
@@ -402,7 +459,7 @@ class DalFightForBase(DalBase):
         self,
         orm_class: Type[OrmBase],
         attrs_names_values: Dict[str, Any],
-        session: sqlalchemy.orm.Session = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
     ) -> Type[OrmBase]:
         """Retrieves the record object of `orm_class` type through attribute
         name-value pairs.
@@ -458,7 +515,7 @@ class DalFightForBase(DalBase):
         self,
         orm_class: Type[OrmBase],
         attrs_names_values: Dict[str, List[Any]],
-        session: sqlalchemy.orm.Session = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
     ) -> List[Type[OrmBase]]:
         """Retrieves a list of record objects of `orm_class` type through
         attribute name-value pairs.

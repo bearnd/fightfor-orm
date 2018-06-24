@@ -15,7 +15,13 @@ class InvalidArgumentsError(Exception):
 
 
 class MissingAttributeError(Exception):
-    """Exception raised when the a defined ORM class does not define a given
+    """Exception raised when the defined ORM class does not define a given
     attribute."""
     def __init__(self, message, *args):
         super(MissingAttributeError, self).__init__(message, *args)
+
+
+class RecordMissingError(Exception):
+    """Exception raised when the requested record does not exist."""
+    def __init__(self, message, *args):
+        super(RecordMissingError, self).__init__(message, *args)
