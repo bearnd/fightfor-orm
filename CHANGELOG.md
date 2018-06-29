@@ -1,5 +1,18 @@
 ## Changelog
 
+### v0.8.0
+
+Issue No.2: Improper unique-ing and study-updates (Round 02):
+- `orm_base.py`: Added a new `OrmFightForBase` class and moved the primary-key retrieval methods to that class instead of `OrmBase`.
+- `orm_base.py`: Added a new `calculate_md5` method to the `OrmFightForBase` class to calculate an MD5 hash out of the values of an attribute dictionary. This method will be used to calculate MD5 fields for the different ORM classes that depend on MD5 to signify record uniqueness.
+- `orm_ct.py`: Updated all ORM classes to derive the new `OrmFightForBase` class instead of `OrmBase`.
+- `orm_mt.py`: Updated all ORM classes to derive the new `OrmFightForBase` class instead of `OrmBase`.
+- `orm_pubmed.py`: Updated all ORM classes to derive the new `OrmFightForBase` class instead of `OrmBase`.
+- `orm_ct.py`: Updated the `update_md5` method in all corresponding ORM classes to use the `calculate_md5` method of the `OrmFightForBase` class instead of calculating the MD5 individually.
+- `orm_mt.py`: Updated the `update_md5` method in all corresponding ORM classes to use the `calculate_md5` method of the `OrmFightForBase` class instead of calculating the MD5 individually.
+- `orm_pubmed.py`: Updated the `update_md5` method in all corresponding ORM classes to use the `calculate_md5` method of the `OrmFightForBase` class instead of calculating the MD5 individually.
+
+
 ### v0.7.3
 
 - Updated all `md5` fields and changed their type to a 16-byte `LargeBinary` instead of a `Binary` which is now deprecated.
