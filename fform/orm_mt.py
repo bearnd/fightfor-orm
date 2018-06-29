@@ -4,7 +4,8 @@ import hashlib
 
 import sqlalchemy.orm
 
-from fform.orm_base import Base, OrmBase
+from fform.orm_base import Base
+from fform.orm_base import OrmFightForBase
 from fform.utils import EnumBase
 
 
@@ -56,7 +57,7 @@ class SupplementalClassType(EnumBase):
     FOUR = "4"
 
 
-class TreeNumber(Base, OrmBase):
+class TreeNumber(Base, OrmFightForBase):
     """Table of `<TreeNumber>` element records."""
 
     # Set table name.
@@ -108,22 +109,20 @@ class TreeNumber(Base, OrmBase):
 
     @sqlalchemy.orm.validates("tree_number")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the tree-number to UTF8 (in case it contains unicode
-        # characters).
-        tree_number_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "tree_number": self.tree_number,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded tree-number and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(tree_number_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class ThesaurusId(Base, OrmBase):
+class ThesaurusId(Base, OrmFightForBase):
     """Table of `<ThesaurusID>` element records."""
 
     # Set table name.
@@ -168,22 +167,20 @@ class ThesaurusId(Base, OrmBase):
 
     @sqlalchemy.orm.validates("thesaurus_id")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the thesaurus-id to UTF8 (in case it contains unicode
-        # characters).
-        thesaurus_id_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "thesaurus_id": self.thesaurus_id,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded thesaurus-id and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(thesaurus_id_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class Term(Base, OrmBase):
+class Term(Base, OrmFightForBase):
     """Table of `<Term>` element records."""
 
     # Set table name.
@@ -268,7 +265,7 @@ class Term(Base, OrmBase):
     }
 
 
-class TermThesaurusId(Base, OrmBase):
+class TermThesaurusId(Base, OrmFightForBase):
     """Associative table between `Term` and `ThesaurusId` records."""
 
     # Set table name.
@@ -307,7 +304,7 @@ class TermThesaurusId(Base, OrmBase):
     )
 
 
-class Concept(Base, OrmBase):
+class Concept(Base, OrmFightForBase):
     """Table of `<Concept>` element records."""
 
     # Set table name.
@@ -409,7 +406,7 @@ class Concept(Base, OrmBase):
     }
 
 
-class ConceptRelatedConcept(Base, OrmBase):
+class ConceptRelatedConcept(Base, OrmFightForBase):
     """Associative table between `Concept` and other `Concept` records
     referenced in concept-relation elements."""
 
@@ -455,7 +452,7 @@ class ConceptRelatedConcept(Base, OrmBase):
     )
 
 
-class ConceptTerm(Base, OrmBase):
+class ConceptTerm(Base, OrmFightForBase):
     """Associative table between `Concept` and `Term` records."""
 
     # Set table name.
@@ -524,7 +521,7 @@ class ConceptTerm(Base, OrmBase):
     )
 
 
-class Qualifier(Base, OrmBase):
+class Qualifier(Base, OrmFightForBase):
     """Table of `<QualifierRecord>` element records."""
 
     # Set table name.
@@ -629,7 +626,7 @@ class Qualifier(Base, OrmBase):
     }
 
 
-class QualifierConcept(Base, OrmBase):
+class QualifierConcept(Base, OrmFightForBase):
     """Associative table between `Qualifier` and `Concept` records."""
 
     # Set table name.
@@ -674,7 +671,7 @@ class QualifierConcept(Base, OrmBase):
     )
 
 
-class QualifierTreeNumber(Base, OrmBase):
+class QualifierTreeNumber(Base, OrmFightForBase):
     """Associative table between `Qualifier` and `TreeNumber` records."""
 
     # Set table name.
@@ -713,7 +710,7 @@ class QualifierTreeNumber(Base, OrmBase):
     )
 
 
-class PreviousIndexing(Base, OrmBase):
+class PreviousIndexing(Base, OrmFightForBase):
     """Table of `<PreviousIndexing>` element records."""
 
     # Set table name.
@@ -765,22 +762,20 @@ class PreviousIndexing(Base, OrmBase):
 
     @sqlalchemy.orm.validates("previous_indexing")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the previous-indexing to UTF8 (in case it contains unicode
-        # characters).
-        previous_indexing_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "previous_indexing": self.previous_indexing,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded previous-indexing and store
-        # under the `md5` attribute.
-        md5 = hashlib.md5(previous_indexing_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class EntryCombination(Base, OrmBase):
+class EntryCombination(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `Qualifier` records denoting
     descriptor-qualifier combinations defined in `<EntryCombination>`,
     `<IndexingInformation>`, and `<HeadingMappedTo>` elements."""
@@ -833,7 +828,7 @@ class EntryCombination(Base, OrmBase):
     )
 
 
-class Descriptor(Base, OrmBase):
+class Descriptor(Base, OrmFightForBase):
     """Table of `<DescriptorRecord>` element records."""
 
     # Set table name.
@@ -982,7 +977,7 @@ class Descriptor(Base, OrmBase):
     }
 
 
-class DescriptorEntryCombination(Base, OrmBase):
+class DescriptorEntryCombination(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `EntryCombination` records."""
 
     # Set table name.
@@ -1021,7 +1016,7 @@ class DescriptorEntryCombination(Base, OrmBase):
     )
 
 
-class DescriptorConcept(Base, OrmBase):
+class DescriptorConcept(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `Concept` records."""
 
     # Set table name.
@@ -1066,7 +1061,7 @@ class DescriptorConcept(Base, OrmBase):
     )
 
 
-class DescriptorPreviousIndexing(Base, OrmBase):
+class DescriptorPreviousIndexing(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `PreviousIndexing` records."""
 
     # Set table name.
@@ -1105,7 +1100,7 @@ class DescriptorPreviousIndexing(Base, OrmBase):
     )
 
 
-class DescriptorAllowableQualifier(Base, OrmBase):
+class DescriptorAllowableQualifier(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `Qualifier` records denoting
     which qualifiers are allowed for a given descriptor."""
 
@@ -1150,7 +1145,7 @@ class DescriptorAllowableQualifier(Base, OrmBase):
     )
 
 
-class DescriptorTreeNumber(Base, OrmBase):
+class DescriptorTreeNumber(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `TreeNumber` records."""
 
     # Set table name.
@@ -1189,7 +1184,7 @@ class DescriptorTreeNumber(Base, OrmBase):
     )
 
 
-class DescriptorPharmacologicalActionDescriptor(Base, OrmBase):
+class DescriptorPharmacologicalActionDescriptor(Base, OrmFightForBase):
     """Associative table between `Descriptor` and other `Descriptor` records
     referenced in pharmacological-actions."""
 
@@ -1230,7 +1225,7 @@ class DescriptorPharmacologicalActionDescriptor(Base, OrmBase):
     )
 
 
-class DescriptorRelatedDescriptor(Base, OrmBase):
+class DescriptorRelatedDescriptor(Base, OrmFightForBase):
     """Associative table between `Descriptor` and other `Descriptor` records
     referenced in see-related elements."""
 
@@ -1268,7 +1263,7 @@ class DescriptorRelatedDescriptor(Base, OrmBase):
     )
 
 
-class Source(Base, OrmBase):
+class Source(Base, OrmFightForBase):
     """Table of `<Source>` element records."""
 
     # Set table name.
@@ -1313,21 +1308,20 @@ class Source(Base, OrmBase):
 
     @sqlalchemy.orm.validates("source")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the source to UTF8 (in case it contains unicode characters).
-        source_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "source": self.source,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded source and store under the `md5`
-        # attribute.
-        md5 = hashlib.md5(source_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class Supplemental(Base, OrmBase):
+class Supplemental(Base, OrmFightForBase):
     """Table of `<SupplementalRecord>` element records."""
 
     # Set table name.
@@ -1441,7 +1435,7 @@ class Supplemental(Base, OrmBase):
     }
 
 
-class SupplementalHeadingMappedTo(Base, OrmBase):
+class SupplementalHeadingMappedTo(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `EntryCombination` records
     via `<HeadingMappedTo>` elements."""
 
@@ -1481,7 +1475,7 @@ class SupplementalHeadingMappedTo(Base, OrmBase):
     )
 
 
-class SupplementalIndexingInformation(Base, OrmBase):
+class SupplementalIndexingInformation(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `EntryCombination` records
     via `<IndexingInformation>` elements."""
 
@@ -1521,7 +1515,7 @@ class SupplementalIndexingInformation(Base, OrmBase):
     )
 
 
-class SupplementalConcept(Base, OrmBase):
+class SupplementalConcept(Base, OrmFightForBase):
     """Associative table between `Supplemental` and `Concept` records."""
 
     # Set table name.
@@ -1566,7 +1560,7 @@ class SupplementalConcept(Base, OrmBase):
     )
 
 
-class SupplementalPreviousIndexing(Base, OrmBase):
+class SupplementalPreviousIndexing(Base, OrmFightForBase):
     """Associative table between `Supplemental` and `PreviousIndexing`
     records."""
 
@@ -1606,7 +1600,7 @@ class SupplementalPreviousIndexing(Base, OrmBase):
     )
 
 
-class SupplementalPharmacologicalActionDescriptor(Base, OrmBase):
+class SupplementalPharmacologicalActionDescriptor(Base, OrmFightForBase):
     """Associative table between `Supplemental` and `Descriptor` records
     referenced in pharmacological-actions."""
 
@@ -1647,7 +1641,7 @@ class SupplementalPharmacologicalActionDescriptor(Base, OrmBase):
     )
 
 
-class SupplementalSource(Base, OrmBase):
+class SupplementalSource(Base, OrmFightForBase):
     """Associative table between `Supplemental` and `Source` records."""
 
     # Set table name.
@@ -1686,7 +1680,7 @@ class SupplementalSource(Base, OrmBase):
     )
 
 
-class DescriptorSynonym(Base, OrmBase):
+class DescriptorSynonym(Base, OrmFightForBase):
     """Table of MeSH descriptor synonyms as defined in the UMLS."""
 
     # Set table name.
@@ -1745,21 +1739,20 @@ class DescriptorSynonym(Base, OrmBase):
 
     @sqlalchemy.orm.validates("synonym")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the synonym to UTF8 (in case it contains unicode characters).
-        synonym_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "synonym": self.synonym,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded synonym and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(synonym_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class QualifierSynonym(Base, OrmBase):
+class QualifierSynonym(Base, OrmFightForBase):
     """Table of MeSH qualifier synonyms as defined in the UMLS."""
 
     # Set table name.
@@ -1818,21 +1811,20 @@ class QualifierSynonym(Base, OrmBase):
 
     @sqlalchemy.orm.validates("synonym")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the synonym to UTF8 (in case it contains unicode characters).
-        synonym_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "synonym": self.synonym,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded synonym and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(synonym_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class SupplementalSynonym(Base, OrmBase):
+class SupplementalSynonym(Base, OrmFightForBase):
     """Table of MeSH supplemental synonyms as defined in the UMLS."""
 
     # Set table name.
@@ -1891,15 +1883,14 @@ class SupplementalSynonym(Base, OrmBase):
 
     @sqlalchemy.orm.validates("synonym")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the synonym to UTF8 (in case it contains unicode characters).
-        synonym_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "synonym": self.synonym,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded synonym and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(synonym_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value

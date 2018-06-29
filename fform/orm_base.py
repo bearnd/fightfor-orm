@@ -5,6 +5,8 @@ from __future__ import unicode_literals
 import inspect
 import datetime
 import binascii
+import hashlib
+from typing import Dict, Any
 
 import sqlalchemy
 import sqlalchemy.sql.sqltypes
@@ -162,6 +164,44 @@ class OrmBase(object):
 
         return results
 
+    def to_string(self, deep=False):
+        """"""
+
+        attributes = self._collect_attributes()
+
+        msg = "<{0}("
+        for attr_idx, attr_name in enumerate(attributes.keys()):
+            msg += attr_name + "='{" + str(attr_idx + 1) + "}'"
+            if attr_idx < len(attributes) - 1:
+                msg += ", "
+        msg += ")>"
+
+        values = [type(self).__name__]
+
+        for attr_name, (attr_column, attr_value) in attributes.items():
+
+            if isinstance(attr_value, OrmBase):
+                if not deep:
+                    val = "<{0}()>".format(type(attr_value).__name__)
+                else:
+                    val = attr_value.to_string(deep=deep)
+            else:
+                val = self._dictify_scalar(
+                    scalar=attr_value,
+                    column=attr_column,
+                    serialisable=True
+                )
+
+            values.append(val)
+
+        return msg.format(*values)
+
+    def __repr__(self):
+        return self.to_string(deep=False)
+
+
+class OrmFightForBase(OrmBase):
+
     @classmethod
     def get_pk(cls) -> Column:
         """Returns the class' primary-key attribute.
@@ -208,37 +248,43 @@ class OrmBase(object):
 
         return pk.name
 
-    def to_string(self, deep=False):
-        """"""
+    @staticmethod
+    def calculate_md5(
+        attrs: Dict[str, Any],
+        do_lowercase=False,
+    ) -> bytes:
+        """Calculates the MD5 hash of the concatenated values of a `dict`
+        ordered by the sorted `dict` keys.
 
-        attributes = self._collect_attributes()
+        This method takes a `dict` of name:value pairs, sorts the dictionary
+        keys, and uses the sorted keys to concatenate the `dict` values into a
+        single string, over which it then calculates an MD5 hash.
 
-        msg = "<{0}("
-        for attr_idx, attr_name in enumerate(attributes.keys()):
-            msg += attr_name + "='{" + str(attr_idx + 1) + "}'"
-            if attr_idx < len(attributes) - 1:
-                msg += ", "
-        msg += ")>"
+        Args:
+            attrs (Dict[str, Any]): The dictionary of name:value pairs over
+                which the hash will be calculated
+            do_lowercase (bool, optional): Whether to calculate the hash on the
+                lowercased version of the concatenated values. Defaults to
+                `False`.
 
-        values = [type(self).__name__]
+        Returns:
+            bytes: The binary digest of the calculated MD5 hash.
+        """
 
-        for attr_name, (attr_column, attr_value) in attributes.items():
+        # Sort the attribute names.
+        keys_sorted = sorted(attrs.keys())
 
-            if isinstance(attr_value, OrmBase):
-                if not deep:
-                    val = "<{0}()>".format(type(attr_value).__name__)
-                else:
-                    val = attr_value.to_string(deep=deep)
-            else:
-                val = self._dictify_scalar(
-                    scalar=attr_value,
-                    column=attr_column,
-                    serialisable=True
-                )
+        # Concatenate the attribute values in order of the ordered keys.
+        values_concatenated = " ".join([str(attrs[key]) for key in keys_sorted])
 
-            values.append(val)
+        # Lowercase the concatenated values (if required).
+        if do_lowercase:
+            values_concatenated = values_concatenated.lower()
 
-        return msg.format(*values)
+        # Encode the concatenated values to UTF8.
+        values_encoded = values_concatenated.lower().encode("utf-8")
 
-    def __repr__(self):
-        return self.to_string(deep=False)
+        # Calculate the MD5 hash and retrieve the binary digest.
+        md5 = hashlib.md5(values_encoded).digest()
+
+        return md5
