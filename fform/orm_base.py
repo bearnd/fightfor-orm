@@ -5,6 +5,8 @@ from __future__ import unicode_literals
 import inspect
 import datetime
 import binascii
+import hashlib
+from typing import Dict, Any
 
 import sqlalchemy
 import sqlalchemy.sql.sqltypes
@@ -245,3 +247,44 @@ class OrmFightForBase(OrmBase):
         pk = self.get_pk()
 
         return pk.name
+
+    @staticmethod
+    def calculate_md5(
+        attrs: Dict[str, Any],
+        do_lowercase=False,
+    ) -> bytes:
+        """Calculates the MD5 hash of the concatenated values of a `dict`
+        ordered by the sorted `dict` keys.
+
+        This method takes a `dict` of name:value pairs, sorts the dictionary
+        keys, and uses the sorted keys to concatenate the `dict` values into a
+        single string, over which it then calculates an MD5 hash.
+
+        Args:
+            attrs (Dict[str, Any]): The dictionary of name:value pairs over
+                which the hash will be calculated
+            do_lowercase (bool, optional): Whether to calculate the hash on the
+                lowercased version of the concatenated values. Defaults to
+                `False`.
+
+        Returns:
+            bytes: The binary digest of the calculated MD5 hash.
+        """
+
+        # Sort the attribute names.
+        keys_sorted = sorted(attrs.keys())
+
+        # Concatenate the attribute values in order of the ordered keys.
+        values_concatenated = " ".join([str(attrs[key]) for key in keys_sorted])
+
+        # Lowercase the concatenated values (if required).
+        if do_lowercase:
+            values_concatenated = values_concatenated.lower()
+
+        # Encode the concatenated values to UTF8.
+        values_encoded = values_concatenated.lower().encode("utf-8")
+
+        # Calculate the MD5 hash and retrieve the binary digest.
+        md5 = hashlib.md5(values_encoded).digest()
+
+        return md5
