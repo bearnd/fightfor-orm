@@ -162,6 +162,44 @@ class OrmBase(object):
 
         return results
 
+    def to_string(self, deep=False):
+        """"""
+
+        attributes = self._collect_attributes()
+
+        msg = "<{0}("
+        for attr_idx, attr_name in enumerate(attributes.keys()):
+            msg += attr_name + "='{" + str(attr_idx + 1) + "}'"
+            if attr_idx < len(attributes) - 1:
+                msg += ", "
+        msg += ")>"
+
+        values = [type(self).__name__]
+
+        for attr_name, (attr_column, attr_value) in attributes.items():
+
+            if isinstance(attr_value, OrmBase):
+                if not deep:
+                    val = "<{0}()>".format(type(attr_value).__name__)
+                else:
+                    val = attr_value.to_string(deep=deep)
+            else:
+                val = self._dictify_scalar(
+                    scalar=attr_value,
+                    column=attr_column,
+                    serialisable=True
+                )
+
+            values.append(val)
+
+        return msg.format(*values)
+
+    def __repr__(self):
+        return self.to_string(deep=False)
+
+
+class OrmFightForBase(OrmBase):
+
     @classmethod
     def get_pk(cls) -> Column:
         """Returns the class' primary-key attribute.
@@ -207,38 +245,3 @@ class OrmBase(object):
         pk = self.get_pk()
 
         return pk.name
-
-    def to_string(self, deep=False):
-        """"""
-
-        attributes = self._collect_attributes()
-
-        msg = "<{0}("
-        for attr_idx, attr_name in enumerate(attributes.keys()):
-            msg += attr_name + "='{" + str(attr_idx + 1) + "}'"
-            if attr_idx < len(attributes) - 1:
-                msg += ", "
-        msg += ")>"
-
-        values = [type(self).__name__]
-
-        for attr_name, (attr_column, attr_value) in attributes.items():
-
-            if isinstance(attr_value, OrmBase):
-                if not deep:
-                    val = "<{0}()>".format(type(attr_value).__name__)
-                else:
-                    val = attr_value.to_string(deep=deep)
-            else:
-                val = self._dictify_scalar(
-                    scalar=attr_value,
-                    column=attr_column,
-                    serialisable=True
-                )
-
-            values.append(val)
-
-        return msg.format(*values)
-
-    def __repr__(self):
-        return self.to_string(deep=False)
