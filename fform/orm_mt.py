@@ -4,7 +4,8 @@ import hashlib
 
 import sqlalchemy.orm
 
-from fform.orm_base import Base, OrmBase
+from fform.orm_base import Base
+from fform.orm_base import OrmFightForBase
 from fform.utils import EnumBase
 
 
@@ -56,7 +57,7 @@ class SupplementalClassType(EnumBase):
     FOUR = "4"
 
 
-class TreeNumber(Base, OrmBase):
+class TreeNumber(Base, OrmFightForBase):
     """Table of `<TreeNumber>` element records."""
 
     # Set table name.
@@ -123,7 +124,7 @@ class TreeNumber(Base, OrmBase):
         return value
 
 
-class ThesaurusId(Base, OrmBase):
+class ThesaurusId(Base, OrmFightForBase):
     """Table of `<ThesaurusID>` element records."""
 
     # Set table name.
@@ -183,7 +184,7 @@ class ThesaurusId(Base, OrmBase):
         return value
 
 
-class Term(Base, OrmBase):
+class Term(Base, OrmFightForBase):
     """Table of `<Term>` element records."""
 
     # Set table name.
@@ -268,7 +269,7 @@ class Term(Base, OrmBase):
     }
 
 
-class TermThesaurusId(Base, OrmBase):
+class TermThesaurusId(Base, OrmFightForBase):
     """Associative table between `Term` and `ThesaurusId` records."""
 
     # Set table name.
@@ -307,7 +308,7 @@ class TermThesaurusId(Base, OrmBase):
     )
 
 
-class Concept(Base, OrmBase):
+class Concept(Base, OrmFightForBase):
     """Table of `<Concept>` element records."""
 
     # Set table name.
@@ -409,7 +410,7 @@ class Concept(Base, OrmBase):
     }
 
 
-class ConceptRelatedConcept(Base, OrmBase):
+class ConceptRelatedConcept(Base, OrmFightForBase):
     """Associative table between `Concept` and other `Concept` records
     referenced in concept-relation elements."""
 
@@ -455,7 +456,7 @@ class ConceptRelatedConcept(Base, OrmBase):
     )
 
 
-class ConceptTerm(Base, OrmBase):
+class ConceptTerm(Base, OrmFightForBase):
     """Associative table between `Concept` and `Term` records."""
 
     # Set table name.
@@ -524,7 +525,7 @@ class ConceptTerm(Base, OrmBase):
     )
 
 
-class Qualifier(Base, OrmBase):
+class Qualifier(Base, OrmFightForBase):
     """Table of `<QualifierRecord>` element records."""
 
     # Set table name.
@@ -629,7 +630,7 @@ class Qualifier(Base, OrmBase):
     }
 
 
-class QualifierConcept(Base, OrmBase):
+class QualifierConcept(Base, OrmFightForBase):
     """Associative table between `Qualifier` and `Concept` records."""
 
     # Set table name.
@@ -674,7 +675,7 @@ class QualifierConcept(Base, OrmBase):
     )
 
 
-class QualifierTreeNumber(Base, OrmBase):
+class QualifierTreeNumber(Base, OrmFightForBase):
     """Associative table between `Qualifier` and `TreeNumber` records."""
 
     # Set table name.
@@ -713,7 +714,7 @@ class QualifierTreeNumber(Base, OrmBase):
     )
 
 
-class PreviousIndexing(Base, OrmBase):
+class PreviousIndexing(Base, OrmFightForBase):
     """Table of `<PreviousIndexing>` element records."""
 
     # Set table name.
@@ -780,7 +781,7 @@ class PreviousIndexing(Base, OrmBase):
         return value
 
 
-class EntryCombination(Base, OrmBase):
+class EntryCombination(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `Qualifier` records denoting
     descriptor-qualifier combinations defined in `<EntryCombination>`,
     `<IndexingInformation>`, and `<HeadingMappedTo>` elements."""
@@ -833,7 +834,7 @@ class EntryCombination(Base, OrmBase):
     )
 
 
-class Descriptor(Base, OrmBase):
+class Descriptor(Base, OrmFightForBase):
     """Table of `<DescriptorRecord>` element records."""
 
     # Set table name.
@@ -982,7 +983,7 @@ class Descriptor(Base, OrmBase):
     }
 
 
-class DescriptorEntryCombination(Base, OrmBase):
+class DescriptorEntryCombination(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `EntryCombination` records."""
 
     # Set table name.
@@ -1021,7 +1022,7 @@ class DescriptorEntryCombination(Base, OrmBase):
     )
 
 
-class DescriptorConcept(Base, OrmBase):
+class DescriptorConcept(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `Concept` records."""
 
     # Set table name.
@@ -1066,7 +1067,7 @@ class DescriptorConcept(Base, OrmBase):
     )
 
 
-class DescriptorPreviousIndexing(Base, OrmBase):
+class DescriptorPreviousIndexing(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `PreviousIndexing` records."""
 
     # Set table name.
@@ -1105,7 +1106,7 @@ class DescriptorPreviousIndexing(Base, OrmBase):
     )
 
 
-class DescriptorAllowableQualifier(Base, OrmBase):
+class DescriptorAllowableQualifier(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `Qualifier` records denoting
     which qualifiers are allowed for a given descriptor."""
 
@@ -1150,7 +1151,7 @@ class DescriptorAllowableQualifier(Base, OrmBase):
     )
 
 
-class DescriptorTreeNumber(Base, OrmBase):
+class DescriptorTreeNumber(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `TreeNumber` records."""
 
     # Set table name.
@@ -1189,7 +1190,7 @@ class DescriptorTreeNumber(Base, OrmBase):
     )
 
 
-class DescriptorPharmacologicalActionDescriptor(Base, OrmBase):
+class DescriptorPharmacologicalActionDescriptor(Base, OrmFightForBase):
     """Associative table between `Descriptor` and other `Descriptor` records
     referenced in pharmacological-actions."""
 
@@ -1230,7 +1231,7 @@ class DescriptorPharmacologicalActionDescriptor(Base, OrmBase):
     )
 
 
-class DescriptorRelatedDescriptor(Base, OrmBase):
+class DescriptorRelatedDescriptor(Base, OrmFightForBase):
     """Associative table between `Descriptor` and other `Descriptor` records
     referenced in see-related elements."""
 
@@ -1268,7 +1269,7 @@ class DescriptorRelatedDescriptor(Base, OrmBase):
     )
 
 
-class Source(Base, OrmBase):
+class Source(Base, OrmFightForBase):
     """Table of `<Source>` element records."""
 
     # Set table name.
@@ -1327,7 +1328,7 @@ class Source(Base, OrmBase):
         return value
 
 
-class Supplemental(Base, OrmBase):
+class Supplemental(Base, OrmFightForBase):
     """Table of `<SupplementalRecord>` element records."""
 
     # Set table name.
@@ -1441,7 +1442,7 @@ class Supplemental(Base, OrmBase):
     }
 
 
-class SupplementalHeadingMappedTo(Base, OrmBase):
+class SupplementalHeadingMappedTo(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `EntryCombination` records
     via `<HeadingMappedTo>` elements."""
 
@@ -1481,7 +1482,7 @@ class SupplementalHeadingMappedTo(Base, OrmBase):
     )
 
 
-class SupplementalIndexingInformation(Base, OrmBase):
+class SupplementalIndexingInformation(Base, OrmFightForBase):
     """Associative table between `Descriptor` and `EntryCombination` records
     via `<IndexingInformation>` elements."""
 
@@ -1521,7 +1522,7 @@ class SupplementalIndexingInformation(Base, OrmBase):
     )
 
 
-class SupplementalConcept(Base, OrmBase):
+class SupplementalConcept(Base, OrmFightForBase):
     """Associative table between `Supplemental` and `Concept` records."""
 
     # Set table name.
@@ -1566,7 +1567,7 @@ class SupplementalConcept(Base, OrmBase):
     )
 
 
-class SupplementalPreviousIndexing(Base, OrmBase):
+class SupplementalPreviousIndexing(Base, OrmFightForBase):
     """Associative table between `Supplemental` and `PreviousIndexing`
     records."""
 
@@ -1606,7 +1607,7 @@ class SupplementalPreviousIndexing(Base, OrmBase):
     )
 
 
-class SupplementalPharmacologicalActionDescriptor(Base, OrmBase):
+class SupplementalPharmacologicalActionDescriptor(Base, OrmFightForBase):
     """Associative table between `Supplemental` and `Descriptor` records
     referenced in pharmacological-actions."""
 
@@ -1647,7 +1648,7 @@ class SupplementalPharmacologicalActionDescriptor(Base, OrmBase):
     )
 
 
-class SupplementalSource(Base, OrmBase):
+class SupplementalSource(Base, OrmFightForBase):
     """Associative table between `Supplemental` and `Source` records."""
 
     # Set table name.
@@ -1686,7 +1687,7 @@ class SupplementalSource(Base, OrmBase):
     )
 
 
-class DescriptorSynonym(Base, OrmBase):
+class DescriptorSynonym(Base, OrmFightForBase):
     """Table of MeSH descriptor synonyms as defined in the UMLS."""
 
     # Set table name.
@@ -1759,7 +1760,7 @@ class DescriptorSynonym(Base, OrmBase):
         return value
 
 
-class QualifierSynonym(Base, OrmBase):
+class QualifierSynonym(Base, OrmFightForBase):
     """Table of MeSH qualifier synonyms as defined in the UMLS."""
 
     # Set table name.
@@ -1832,7 +1833,7 @@ class QualifierSynonym(Base, OrmBase):
         return value
 
 
-class SupplementalSynonym(Base, OrmBase):
+class SupplementalSynonym(Base, OrmFightForBase):
     """Table of MeSH supplemental synonyms as defined in the UMLS."""
 
     # Set table name.
