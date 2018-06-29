@@ -6,7 +6,8 @@ import hashlib
 
 import sqlalchemy.orm
 
-from fform.orm_base import Base, OrmBase
+from fform.orm_base import Base
+from fform.orm_base import OrmFightForBase
 from fform.utils import EnumBase
 
 
@@ -271,7 +272,7 @@ class MeshTermType(EnumBase):
     INTERVENTION = "Intervention"
 
 
-class Sponsor(Base, OrmBase):
+class Sponsor(Base, OrmFightForBase):
     """Table of `<sponsor>` element record."""
 
     # Set table name.
@@ -329,28 +330,20 @@ class Sponsor(Base, OrmBase):
     )
     def update_md5(self, key, value):
 
+        # Assemble the class attributes into a `dict`.
         attrs = {
             "agency": self.agency,
             "agency_class": self.agency_class,
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated name.
-        name = " ".join([str(value) for value in attrs.values()])
-
-        # Lowercase and encode the full concatenated name to UTF8 (in case it
-        # contains unicode characters).
-        name_encoded = name.lower().encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated name and store
-        # it under the `md5` attribute.
-        md5 = hashlib.md5(name_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class Keyword(Base, OrmBase):
+class Keyword(Base, OrmFightForBase):
     """Table of `<keyword>` element records."""
 
     # Set table name.
@@ -397,25 +390,24 @@ class Keyword(Base, OrmBase):
 
     @sqlalchemy.orm.validates("keyword")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
         # Enforce lowercasing of the value in order to avoid needless
         # duplication when the keyword is provided with different casing.
         value = value.lower() if value else None
 
-        # Encode the keyword to UTF8 (in case it contains unicode characters).
-        keyword_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "keyword": self.keyword,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded keyword and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(keyword_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class Condition(Base, OrmBase):
+class Condition(Base, OrmFightForBase):
     """Table of `<condition>` element records."""
 
     # Set table name.
@@ -462,25 +454,24 @@ class Condition(Base, OrmBase):
 
     @sqlalchemy.orm.validates("condition")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
         # Enforce lowercasing of the value in order to avoid needless
         # duplication when the keyword is provided with different casing.
         value = value.lower() if value else None
 
-        # Encode the condition to UTF8 (in case it contains unicode characters).
-        condition_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "condition": self.condition,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded condition and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(condition_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class Facility(Base, OrmBase):
+class Facility(Base, OrmFightForBase):
     """Table of `<facility>` elements and their underlying `<address>` element
     records."""
 
@@ -557,6 +548,7 @@ class Facility(Base, OrmBase):
         "country",
     )
     def update_md5(self, key, value):
+        # Assemble the class attributes into a `dict`.
         attrs = {
             "name": self.name,
             "city": self.city,
@@ -566,22 +558,13 @@ class Facility(Base, OrmBase):
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated name.
-        name = " ".join([str(value) for value in attrs.values()])
-
-        # Lowercase and encode the full concatenated name to UTF8 (in case it
-        # contains unicode characters).
-        name_encoded = name.lower().encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated name and store
-        # it under the `md5` attribute.
-        md5 = hashlib.md5(name_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class Person(Base, OrmBase):
+class Person(Base, OrmFightForBase):
     """Table of person records normalized out of `<contact>` and
     `<investigator> element records."""
 
@@ -646,6 +629,7 @@ class Person(Base, OrmBase):
         "degrees",
     )
     def update_md5(self, key, value):
+        # Assemble the class attributes into a `dict`.
         attrs = {
             "name_first": self.name_first,
             "name_middle": self.name_middle,
@@ -654,22 +638,13 @@ class Person(Base, OrmBase):
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated name.
-        name = " ".join([str(value) for value in attrs.values()])
-
-        # Lowercase and encode the full concatenated name to UTF8 (in case it
-        # contains unicode characters).
-        name_encoded = name.lower().encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated name and store
-        # it under the `md5` attribute.
-        md5 = hashlib.md5(name_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class Contact(Base, OrmBase):
+class Contact(Base, OrmFightForBase):
     """Table of `<contact>` elements records."""
 
     # Set table name.
@@ -752,22 +727,13 @@ class Contact(Base, OrmBase):
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated name.
-        name = " ".join([str(value) for value in attrs.values()])
-
-        # Encode the full concatenated name to UTF8 (in case it contains
-        # unicode characters).
-        name_encoded = name.encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated name and store
-        # it under the `md5` attribute.
-        md5 = hashlib.md5(name_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class Investigator(Base, OrmBase):
+class Investigator(Base, OrmFightForBase):
     """Table of `<investigator>` elements records."""
 
     # Set table name.
@@ -835,6 +801,7 @@ class Investigator(Base, OrmBase):
         "affiliation",
     )
     def update_md5(self, key, value):
+        # Assemble the class attributes into a `dict`.
         attrs = {
             "person_id": self.person_id,
             "role": self.role,
@@ -842,22 +809,13 @@ class Investigator(Base, OrmBase):
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated name.
-        name = " ".join([str(value) for value in attrs.values()])
-
-        # Encode the full concatenated name to UTF8 (in case it contains
-        # unicode characters).
-        name_encoded = name.encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated name and store
-        # it under the `md5` attribute.
-        md5 = hashlib.md5(name_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class Location(Base, OrmBase):
+class Location(Base, OrmFightForBase):
     """Table of `<location>` elements records."""
 
     # Set table name.
@@ -947,6 +905,7 @@ class Location(Base, OrmBase):
         "contact_backup_id",
     )
     def update_md5(self, key, value):
+
         attrs = {
             "facility_id": self.facility_id,
             "contact_primary_id": self.contact_primary_id,
@@ -954,22 +913,13 @@ class Location(Base, OrmBase):
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated key-string.
-        keys = " ".join([str(value) for value in attrs.values()])
-
-        # Encode the full concatenated key-string to UTF8 (in case it contains
-        # unicode characters).
-        keys_encoded = keys.encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated key-string and
-        # store it under the `md5` attribute.
-        md5 = hashlib.md5(keys_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class LocationInvestigator(Base, OrmBase):
+class LocationInvestigator(Base, OrmFightForBase):
     """Associative table between `Location` and `Investigator` records."""
 
     # Set table name.
@@ -1005,7 +955,7 @@ class LocationInvestigator(Base, OrmBase):
     )
 
 
-class OversightInfo(Base, OrmBase):
+class OversightInfo(Base, OrmFightForBase):
     """Table of `<oversight_info>` elements records."""
 
     # Set table name.
@@ -1068,7 +1018,7 @@ class OversightInfo(Base, OrmBase):
     }
 
 
-class ExpandedAccessInfo(Base, OrmBase):
+class ExpandedAccessInfo(Base, OrmFightForBase):
     """Table of `<expanded_access_info>` elements records."""
 
     # Set table name.
@@ -1110,7 +1060,7 @@ class ExpandedAccessInfo(Base, OrmBase):
     }
 
 
-class StudyDesignInfo(Base, OrmBase):
+class StudyDesignInfo(Base, OrmFightForBase):
     """Table of `<study_design_info>` elements records."""
 
     # Set table name.
@@ -1187,7 +1137,7 @@ class StudyDesignInfo(Base, OrmBase):
     }
 
 
-class ProtocolOutcome(Base, OrmBase):
+class ProtocolOutcome(Base, OrmFightForBase):
     """Table of `<protocol_outcome>` elements records."""
 
     # Set table name.
@@ -1229,7 +1179,7 @@ class ProtocolOutcome(Base, OrmBase):
     }
 
 
-class Enrollment(Base, OrmBase):
+class Enrollment(Base, OrmFightForBase):
     """Table of `<enrollment>` element records."""
 
     # Set table name.
@@ -1264,7 +1214,7 @@ class Enrollment(Base, OrmBase):
     }
 
 
-class ArmGroup(Base, OrmBase):
+class ArmGroup(Base, OrmFightForBase):
     """Table of `<arm_group>` element records."""
 
     # Set table name.
@@ -1306,7 +1256,7 @@ class ArmGroup(Base, OrmBase):
     }
 
 
-class Intervention(Base, OrmBase):
+class Intervention(Base, OrmFightForBase):
     """Table of `<intervention>` element records."""
 
     # Set table name.
@@ -1381,22 +1331,13 @@ class Intervention(Base, OrmBase):
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated name.
-        name = " ".join([str(value) for value in attrs.values()])
-
-        # Lowercase and encode the full concatenated name to UTF8 (in case it
-        # contains unicode characters).
-        name_encoded = name.lower().encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated name and store
-        # it under the `md5` attribute.
-        md5 = hashlib.md5(name_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class Alias(Base, OrmBase):
+class Alias(Base, OrmFightForBase):
     """Table of aliases."""
 
     # Set table name.
@@ -1434,25 +1375,24 @@ class Alias(Base, OrmBase):
 
     @sqlalchemy.orm.validates("alias")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
         # Enforce lowercasing of the value in order to avoid needless
         # duplication when the keyword is provided with different casing.
         value = value.lower() if value else None
 
-        # Encode the alias to UTF8 (in case it contains unicode characters).
-        alias_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "alias": self.alias,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded alias and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(alias_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class InterventionAlias(Base, OrmBase):
+class InterventionAlias(Base, OrmFightForBase):
     """Associative table between `Intervention` and `Alias` records."""
 
     # Set table name.
@@ -1489,7 +1429,7 @@ class InterventionAlias(Base, OrmBase):
     )
 
 
-class InterventionArmGroup(Base, OrmBase):
+class InterventionArmGroup(Base, OrmFightForBase):
     """Associative table between `Intervention` and `ArmGroup` records."""
 
     # Set table name.
@@ -1526,7 +1466,7 @@ class InterventionArmGroup(Base, OrmBase):
     )
 
 
-class Eligibility(Base, OrmBase):
+class Eligibility(Base, OrmFightForBase):
     """Table of `<eligibility>` element records."""
 
     # Set table name.
@@ -1610,7 +1550,7 @@ class Eligibility(Base, OrmBase):
     }
 
 
-class Reference(Base, OrmBase):
+class Reference(Base, OrmFightForBase):
     """Table of `<reference>` element records."""
 
     # Set table name.
@@ -1646,7 +1586,7 @@ class Reference(Base, OrmBase):
     }
 
 
-class ResponsibleParty(Base, OrmBase):
+class ResponsibleParty(Base, OrmFightForBase):
     """Table of `<responsible_party>` element records."""
 
     # Set table name.
@@ -1709,7 +1649,7 @@ class ResponsibleParty(Base, OrmBase):
     }
 
 
-class MeshTerm(Base, OrmBase):
+class MeshTerm(Base, OrmFightForBase):
     """Table of `<mesh_term>` element records."""
 
     # Set table name.
@@ -1754,22 +1694,20 @@ class MeshTerm(Base, OrmBase):
 
     @sqlalchemy.orm.validates("term")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Lowercase and encode the term to UTF8 (in case it contains unicode
-        # characters).
-        term_encoded = str(value).lower().encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "term": self.term,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded term and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(term_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
 
-class PatientData(Base, OrmBase):
+class PatientData(Base, OrmFightForBase):
     """Table of `<patient_data>` element records."""
 
     # Set table name.
@@ -1805,7 +1743,7 @@ class PatientData(Base, OrmBase):
 
 
 # TODO: Issue No.50
-class StudyDoc(Base, OrmBase):
+class StudyDoc(Base, OrmFightForBase):
     """Table of `<study_doc>` element records."""
 
     # Set table name.
@@ -1854,7 +1792,7 @@ class StudyDoc(Base, OrmBase):
     }
 
 
-class StudyDates(Base, OrmBase):
+class StudyDates(Base, OrmFightForBase):
     """Table of secondary dates pertaining to a `<clinical_study>` element
     record."""
 
@@ -1960,7 +1898,7 @@ class StudyDates(Base, OrmBase):
     }
 
 
-class Study(Base, OrmBase):
+class Study(Base, OrmFightForBase):
     """Table of `<clinical_study>` element records."""
 
     # Set table name.
@@ -2343,7 +2281,7 @@ class Study(Base, OrmBase):
     }
 
 
-class StudyAlias(Base, OrmBase):
+class StudyAlias(Base, OrmFightForBase):
     """Associative table between `Study` and `Alias` records."""
 
     # Set table name.
@@ -2380,7 +2318,7 @@ class StudyAlias(Base, OrmBase):
     )
 
 
-class StudySponsor(Base, OrmBase):
+class StudySponsor(Base, OrmFightForBase):
     """Associative table between `Study` and `Sponsor` records."""
 
     # Set table name.
@@ -2425,7 +2363,7 @@ class StudySponsor(Base, OrmBase):
     )
 
 
-class StudyOutcome(Base, OrmBase):
+class StudyOutcome(Base, OrmFightForBase):
     """Associative table between `Study` and `ProtocolOutcome` records."""
 
     # Set table name.
@@ -2472,7 +2410,7 @@ class StudyOutcome(Base, OrmBase):
     )
 
 
-class StudyCondition(Base, OrmBase):
+class StudyCondition(Base, OrmFightForBase):
     """Associative table between `Study` and `Condition` records."""
 
     # Set table name.
@@ -2509,7 +2447,7 @@ class StudyCondition(Base, OrmBase):
     )
 
 
-class StudyArmGroup(Base, OrmBase):
+class StudyArmGroup(Base, OrmFightForBase):
     """Associative table between `Study` and `ArmGroup` records."""
 
     # Set table name.
@@ -2546,7 +2484,7 @@ class StudyArmGroup(Base, OrmBase):
     )
 
 
-class StudyIntervention(Base, OrmBase):
+class StudyIntervention(Base, OrmFightForBase):
     """Associative table between `Study` and `Intervention` records."""
 
     # Set table name.
@@ -2583,7 +2521,7 @@ class StudyIntervention(Base, OrmBase):
     )
 
 
-class StudyInvestigator(Base, OrmBase):
+class StudyInvestigator(Base, OrmFightForBase):
     """Associative table between `Study` and `Investigator` records."""
 
     # Set table name.
@@ -2620,7 +2558,7 @@ class StudyInvestigator(Base, OrmBase):
     )
 
 
-class StudyLocation(Base, OrmBase):
+class StudyLocation(Base, OrmFightForBase):
     """Associative table between `Study` and `Location` records."""
 
     # Set table name.
@@ -2657,7 +2595,7 @@ class StudyLocation(Base, OrmBase):
     )
 
 
-class StudyReference(Base, OrmBase):
+class StudyReference(Base, OrmFightForBase):
     """Associative table between `Study` and `Reference` records."""
 
     # Set table name.
@@ -2702,7 +2640,7 @@ class StudyReference(Base, OrmBase):
     )
 
 
-class StudyKeyword(Base, OrmBase):
+class StudyKeyword(Base, OrmFightForBase):
     """Associative table between `Study` and `Keyword` records."""
 
     # Set table name.
@@ -2739,7 +2677,7 @@ class StudyKeyword(Base, OrmBase):
     )
 
 
-class StudyMeshTerm(Base, OrmBase):
+class StudyMeshTerm(Base, OrmFightForBase):
     """Associative table between `Study` and `MeshTerm` records."""
 
     # Set table name.
@@ -2784,7 +2722,7 @@ class StudyMeshTerm(Base, OrmBase):
     )
 
 
-class StudyStudyDoc(Base, OrmBase):
+class StudyStudyDoc(Base, OrmFightForBase):
     """Associative table between `Study` and `StudyDoc` records."""
 
     # Set table name.
