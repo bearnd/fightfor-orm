@@ -4,7 +4,8 @@ import hashlib
 
 import sqlalchemy.orm
 
-from fform.orm_base import Base, OrmBase
+from fform.orm_base import Base
+from fform.orm_base import OrmFightForBase
 from fform.utils import EnumBase
 
 
@@ -56,7 +57,7 @@ class JournalIssnType(EnumBase):
     UNDETERMINED = "Undetermined"
 
 
-class AbstractText(Base, OrmBase):
+class AbstractText(Base, OrmFightForBase):
     """Table of `<AbstractText>` element records."""
 
     # set table name
@@ -135,7 +136,7 @@ class AbstractText(Base, OrmBase):
         return value
 
 
-class AccessionNumber(Base, OrmBase):
+class AccessionNumber(Base, OrmFightForBase):
     """Table of `<AccessionNumber>` element records."""
 
     # set table name
@@ -191,7 +192,7 @@ class AccessionNumber(Base, OrmBase):
         return value
 
 
-class Affiliation(Base, OrmBase):
+class Affiliation(Base, OrmFightForBase):
     """Table of `<Affliliation>` element records."""
 
     # set table name
@@ -282,7 +283,7 @@ class Affiliation(Base, OrmBase):
         return value
 
 
-class Article(Base, OrmBase):
+class Article(Base, OrmFightForBase):
     """Table of `<Article>` element records."""
 
     # set table name
@@ -462,7 +463,7 @@ class Article(Base, OrmBase):
         return value
 
 
-class ArticleAbstractText(Base, OrmBase):
+class ArticleAbstractText(Base, OrmFightForBase):
     """Associative table between `Article` and `AbstractText` records."""
 
     # set table name
@@ -506,7 +507,7 @@ class ArticleAbstractText(Base, OrmBase):
     )
 
 
-class ArticleAuthorAffiliation(Base, OrmBase):
+class ArticleAuthorAffiliation(Base, OrmFightForBase):
     """Associative table between `Article`, `Author`, and `Affiliation`
      records."""
 
@@ -562,7 +563,7 @@ class ArticleAuthorAffiliation(Base, OrmBase):
     )
 
 
-class ArticleDatabankAccessionNumber(Base, OrmBase):
+class ArticleDatabankAccessionNumber(Base, OrmFightForBase):
     """Associative table between `Article`, `Databank` and `AccessionNumber`
     records."""
 
@@ -617,7 +618,7 @@ class ArticleDatabankAccessionNumber(Base, OrmBase):
     )
 
 
-class ArticleGrant(Base, OrmBase):
+class ArticleGrant(Base, OrmFightForBase):
     """Associative table between `Article` and `Grant` records."""
 
     # set table name
@@ -654,7 +655,7 @@ class ArticleGrant(Base, OrmBase):
     )
 
 
-class CitationChemical(Base, OrmBase):
+class CitationChemical(Base, OrmFightForBase):
     """Associative table between `Citation` and `Chemical` records."""
 
     # set table name
@@ -691,7 +692,7 @@ class CitationChemical(Base, OrmBase):
     )
 
 
-class CitationDescriptorQualifier(Base, OrmBase):
+class CitationDescriptorQualifier(Base, OrmFightForBase):
     """Associative table between `Citation`, `Descriptor` and `Qualifier`
     records."""
 
@@ -756,7 +757,7 @@ class CitationDescriptorQualifier(Base, OrmBase):
     )
 
 
-class CitationIdentifier(Base, OrmBase):
+class CitationIdentifier(Base, OrmFightForBase):
     """Associative table between `Citation` and `Identifier` records."""
 
     # set table name
@@ -802,7 +803,7 @@ class CitationIdentifier(Base, OrmBase):
     )
 
 
-class CitationKeyword(Base, OrmBase):
+class CitationKeyword(Base, OrmFightForBase):
     """Associative table between `Citation` and `Keyword` records."""
 
     # set table name
@@ -839,7 +840,7 @@ class CitationKeyword(Base, OrmBase):
     )
 
 
-class ArticlePublicationType(Base, OrmBase):
+class ArticlePublicationType(Base, OrmFightForBase):
     """Associative table between `Article` and `PublicationType` records."""
 
     # set table name
@@ -876,7 +877,7 @@ class ArticlePublicationType(Base, OrmBase):
     )
 
 
-class Author(Base, OrmBase):
+class Author(Base, OrmFightForBase):
     """Table of `<Author>` element records."""
 
     # set table name
@@ -1011,7 +1012,7 @@ class Author(Base, OrmBase):
         return value
 
 
-class Chemical(Base, OrmBase):
+class Chemical(Base, OrmFightForBase):
     """Table of `<Chemical>` element records."""
 
     # set table name
@@ -1064,7 +1065,7 @@ class Chemical(Base, OrmBase):
     }
 
 
-class Citation(Base, OrmBase):
+class Citation(Base, OrmFightForBase):
     """Table of `<MedlineCitation>` element records."""
 
     # set table name
@@ -1171,7 +1172,7 @@ class Citation(Base, OrmBase):
     }
 
 
-class Databank(Base, OrmBase):
+class Databank(Base, OrmFightForBase):
     """Table of `<DataBank>` element records."""
 
     # set table name
@@ -1227,7 +1228,7 @@ class Databank(Base, OrmBase):
         return value
 
 
-class Descriptor(Base, OrmBase):
+class Descriptor(Base, OrmFightForBase):
     """Table of `<DescriptorName>` element records."""
 
     # set table name
@@ -1267,7 +1268,7 @@ class Descriptor(Base, OrmBase):
     }
 
 
-class Grant(Base, OrmBase):
+class Grant(Base, OrmFightForBase):
     """Table of `<Grant>` element records."""
 
     # set table name
@@ -1364,7 +1365,7 @@ class Grant(Base, OrmBase):
         return value
 
 
-class Journal(Base, OrmBase):
+class Journal(Base, OrmFightForBase):
     """Table of `<Journal>` element records."""
 
     # set table name
@@ -1455,7 +1456,7 @@ class Journal(Base, OrmBase):
         return value
 
 
-class JournalInfo(Base, OrmBase):
+class JournalInfo(Base, OrmFightForBase):
     """Table of `<MedlineJournalInfo>` element records."""
 
     # set table name
@@ -1506,7 +1507,7 @@ class JournalInfo(Base, OrmBase):
     }
 
 
-class Keyword(Base, OrmBase):
+class Keyword(Base, OrmFightForBase):
     """Table of `<Keyword>` element records."""
 
     # set table name
@@ -1568,7 +1569,7 @@ class Keyword(Base, OrmBase):
         return value
 
 
-class PublicationType(Base, OrmBase):
+class PublicationType(Base, OrmFightForBase):
     """Table of `<PublicationType>` element records."""
 
     # set table name
@@ -1613,7 +1614,7 @@ class PublicationType(Base, OrmBase):
     }
 
 
-class Qualifier(Base, OrmBase):
+class Qualifier(Base, OrmFightForBase):
     """Table of `<Qualifier>` element records."""
 
     # set table name
