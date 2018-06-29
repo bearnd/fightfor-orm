@@ -330,23 +330,15 @@ class Sponsor(Base, OrmFightForBase):
     )
     def update_md5(self, key, value):
 
+        # Assemble the class attributes into a `dict`.
         attrs = {
             "agency": self.agency,
             "agency_class": self.agency_class,
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated name.
-        name = " ".join([str(value) for value in attrs.values()])
-
-        # Lowercase and encode the full concatenated name to UTF8 (in case it
-        # contains unicode characters).
-        name_encoded = name.lower().encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated name and store
-        # it under the `md5` attribute.
-        md5 = hashlib.md5(name_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -398,20 +390,19 @@ class Keyword(Base, OrmFightForBase):
 
     @sqlalchemy.orm.validates("keyword")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
         # Enforce lowercasing of the value in order to avoid needless
         # duplication when the keyword is provided with different casing.
         value = value.lower() if value else None
 
-        # Encode the keyword to UTF8 (in case it contains unicode characters).
-        keyword_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "keyword": self.keyword,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded keyword and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(keyword_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -463,20 +454,19 @@ class Condition(Base, OrmFightForBase):
 
     @sqlalchemy.orm.validates("condition")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
         # Enforce lowercasing of the value in order to avoid needless
         # duplication when the keyword is provided with different casing.
         value = value.lower() if value else None
 
-        # Encode the condition to UTF8 (in case it contains unicode characters).
-        condition_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "condition": self.condition,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded condition and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(condition_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -558,6 +548,7 @@ class Facility(Base, OrmFightForBase):
         "country",
     )
     def update_md5(self, key, value):
+        # Assemble the class attributes into a `dict`.
         attrs = {
             "name": self.name,
             "city": self.city,
@@ -567,17 +558,8 @@ class Facility(Base, OrmFightForBase):
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated name.
-        name = " ".join([str(value) for value in attrs.values()])
-
-        # Lowercase and encode the full concatenated name to UTF8 (in case it
-        # contains unicode characters).
-        name_encoded = name.lower().encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated name and store
-        # it under the `md5` attribute.
-        md5 = hashlib.md5(name_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -647,6 +629,7 @@ class Person(Base, OrmFightForBase):
         "degrees",
     )
     def update_md5(self, key, value):
+        # Assemble the class attributes into a `dict`.
         attrs = {
             "name_first": self.name_first,
             "name_middle": self.name_middle,
@@ -655,17 +638,8 @@ class Person(Base, OrmFightForBase):
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated name.
-        name = " ".join([str(value) for value in attrs.values()])
-
-        # Lowercase and encode the full concatenated name to UTF8 (in case it
-        # contains unicode characters).
-        name_encoded = name.lower().encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated name and store
-        # it under the `md5` attribute.
-        md5 = hashlib.md5(name_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -753,17 +727,8 @@ class Contact(Base, OrmFightForBase):
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated name.
-        name = " ".join([str(value) for value in attrs.values()])
-
-        # Encode the full concatenated name to UTF8 (in case it contains
-        # unicode characters).
-        name_encoded = name.encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated name and store
-        # it under the `md5` attribute.
-        md5 = hashlib.md5(name_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -836,6 +801,7 @@ class Investigator(Base, OrmFightForBase):
         "affiliation",
     )
     def update_md5(self, key, value):
+        # Assemble the class attributes into a `dict`.
         attrs = {
             "person_id": self.person_id,
             "role": self.role,
@@ -843,17 +809,8 @@ class Investigator(Base, OrmFightForBase):
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated name.
-        name = " ".join([str(value) for value in attrs.values()])
-
-        # Encode the full concatenated name to UTF8 (in case it contains
-        # unicode characters).
-        name_encoded = name.encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated name and store
-        # it under the `md5` attribute.
-        md5 = hashlib.md5(name_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -948,6 +905,7 @@ class Location(Base, OrmFightForBase):
         "contact_backup_id",
     )
     def update_md5(self, key, value):
+
         attrs = {
             "facility_id": self.facility_id,
             "contact_primary_id": self.contact_primary_id,
@@ -955,17 +913,8 @@ class Location(Base, OrmFightForBase):
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated key-string.
-        keys = " ".join([str(value) for value in attrs.values()])
-
-        # Encode the full concatenated key-string to UTF8 (in case it contains
-        # unicode characters).
-        keys_encoded = keys.encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated key-string and
-        # store it under the `md5` attribute.
-        md5 = hashlib.md5(keys_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -1382,17 +1331,8 @@ class Intervention(Base, OrmFightForBase):
         }
         attrs[key] = value
 
-        # Retrieve the full concatenated name.
-        name = " ".join([str(value) for value in attrs.values()])
-
-        # Lowercase and encode the full concatenated name to UTF8 (in case it
-        # contains unicode characters).
-        name_encoded = name.lower().encode("utf-8")
-
-        # Calculate the MD5 hash of the encoded full concatenated name and store
-        # it under the `md5` attribute.
-        md5 = hashlib.md5(name_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -1435,20 +1375,19 @@ class Alias(Base, OrmFightForBase):
 
     @sqlalchemy.orm.validates("alias")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
         # Enforce lowercasing of the value in order to avoid needless
         # duplication when the keyword is provided with different casing.
         value = value.lower() if value else None
 
-        # Encode the alias to UTF8 (in case it contains unicode characters).
-        alias_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "alias": self.alias,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded alias and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(alias_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -1755,17 +1694,15 @@ class MeshTerm(Base, OrmFightForBase):
 
     @sqlalchemy.orm.validates("term")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Lowercase and encode the term to UTF8 (in case it contains unicode
-        # characters).
-        term_encoded = str(value).lower().encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "term": self.term,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded term and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(term_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
