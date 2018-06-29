@@ -109,17 +109,15 @@ class TreeNumber(Base, OrmFightForBase):
 
     @sqlalchemy.orm.validates("tree_number")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the tree-number to UTF8 (in case it contains unicode
-        # characters).
-        tree_number_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "tree_number": self.tree_number,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded tree-number and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(tree_number_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -169,17 +167,15 @@ class ThesaurusId(Base, OrmFightForBase):
 
     @sqlalchemy.orm.validates("thesaurus_id")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the thesaurus-id to UTF8 (in case it contains unicode
-        # characters).
-        thesaurus_id_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "thesaurus_id": self.thesaurus_id,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded thesaurus-id and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(thesaurus_id_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -766,17 +762,15 @@ class PreviousIndexing(Base, OrmFightForBase):
 
     @sqlalchemy.orm.validates("previous_indexing")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the previous-indexing to UTF8 (in case it contains unicode
-        # characters).
-        previous_indexing_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "previous_indexing": self.previous_indexing,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded previous-indexing and store
-        # under the `md5` attribute.
-        md5 = hashlib.md5(previous_indexing_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -1314,16 +1308,15 @@ class Source(Base, OrmFightForBase):
 
     @sqlalchemy.orm.validates("source")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the source to UTF8 (in case it contains unicode characters).
-        source_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "source": self.source,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded source and store under the `md5`
-        # attribute.
-        md5 = hashlib.md5(source_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -1746,16 +1739,15 @@ class DescriptorSynonym(Base, OrmFightForBase):
 
     @sqlalchemy.orm.validates("synonym")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the synonym to UTF8 (in case it contains unicode characters).
-        synonym_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "synonym": self.synonym,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded synonym and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(synonym_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -1819,16 +1811,15 @@ class QualifierSynonym(Base, OrmFightForBase):
 
     @sqlalchemy.orm.validates("synonym")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the synonym to UTF8 (in case it contains unicode characters).
-        synonym_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "synonym": self.synonym,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded synonym and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(synonym_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
 
@@ -1892,15 +1883,14 @@ class SupplementalSynonym(Base, OrmFightForBase):
 
     @sqlalchemy.orm.validates("synonym")
     def update_md5(self, key, value):
-        # Dumb hack to make the linter shut up that the `key` isn't used.
-        assert key
 
-        # Encode the synonym to UTF8 (in case it contains unicode characters).
-        synonym_encoded = str(value).encode("utf-8")
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "synonym": self.synonym,
+        }
+        attrs[key] = value
 
-        # Calculate the MD5 hash of the encoded synonym and store under the
-        # `md5` attribute.
-        md5 = hashlib.md5(synonym_encoded).digest()
-        self.md5 = md5
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
