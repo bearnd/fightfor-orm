@@ -868,6 +868,12 @@ class Location(Base, OrmFightForBase):
         nullable=False
     )
 
+    # Relationship to a `Facility` record.
+    facility = sqlalchemy.orm.relationship(
+        argument="Facility",
+        foreign_keys=facility_id
+    )
+
     # Relationship to a `Contact` record for the primary contact.
     contact_primary = sqlalchemy.orm.relationship(
         argument="Contact",
