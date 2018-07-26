@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.8.1
+
+- `orm_ct.py`: Updated the `Location` class and added a relationship to the `Facility` class.
+
 ### v0.8.0
 
 Issue No.2: Improper unique-ing and study-updates (Round 02):
