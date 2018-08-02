@@ -1,5 +1,11 @@
 ## Changelog
 
+### v0.8.2
+
+- Updated `Makefile` to run the unit-tests properly using `unittest`.
+- Updated `.gitignore`.
+- Cleaned up Ansible role.
+
 ### v0.8.1
 
 - `orm_ct.py`: Updated the `Location` class and added a relationship to the `Facility` class.
