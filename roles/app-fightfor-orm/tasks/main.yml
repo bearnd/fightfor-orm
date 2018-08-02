@@ -13,12 +13,12 @@
   ignore_errors: true
   when: app_fightfor_orm.is_vagrant is defined and app_fightfor_orm.is_vagrant == True
 
-#- name: Install apt dependencies.
-#  apt:
-#    name: "{{ item }}"
-#    state: latest
-#  with_items: "{{ app_fightfor_orm.dependencies_apt }}"
-#  become: true
+- name: Install apt dependencies.
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ app_fightfor_orm.dependencies_apt }}"
+  become: true
 
 - name: Create service group.
   group:
