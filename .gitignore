@@ -102,3 +102,5 @@ ENV/
 .mypy_cache/
 /.ansible-vault-password
 /app-fightfor-orm.retry
+/.vagrant
+/.idea
