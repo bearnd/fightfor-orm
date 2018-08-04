@@ -16,13 +16,14 @@ sql_password: !vault |
 # PostgreSQL Server Settings.
 postgresql_python_library: "python-psycopg2"
 
-# PostgreSQL Server Databases.
+# PostgreSQL databases.
 postgresql_databases:
   - name: "fightfor"
     port: 5432
   - name: "test"
     port: 5432
-# PostgreSQL Server Users.
+
+# PostgreSQL users.
 postgresql_users:
   - name: "fform"
     password: "{{ sql_password }}"
