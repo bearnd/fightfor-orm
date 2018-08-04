@@ -16,7 +16,7 @@ class DalTestBase(unittest.TestCase):
 
         # Load the configuration.
         self.cfg = load_config(
-            filename_config="/etc/fightfor-orm/fightfor-orm.json",
+            filename_config="/etc/fightfor-orm/fightfor-orm-test.json",
         )
 
         self.dal = self.setup_dal()
