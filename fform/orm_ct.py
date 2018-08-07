@@ -2253,6 +2253,12 @@ class Study(Base, OrmFightForBase):
         back_populates="studies",
     )
 
+    # Relationship to a list of `StudyMeshTerm` records.
+    study_mesh_terms = sqlalchemy.orm.relationship(
+        argument="StudyMeshTerm",
+        back_populates="studies",
+    )
+
     # Relationship to a list of `MeshTerm` records.
     mesh_terms = sqlalchemy.orm.relationship(
         argument="MeshTerm",
@@ -2717,6 +2723,15 @@ class StudyMeshTerm(Base, OrmFightForBase):
         type_=sqlalchemy.types.Enum(MeshTermType),
         nullable=False,
         index=True
+    )
+
+    # Relationship to a `MeshTerm` record.
+    mesh_term = sqlalchemy.orm.relationship(argument="MeshTerm")
+
+    # Relationship to a list of `Study` records.
+    studies = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_mesh_terms"
     )
 
     # Set table arguments.
