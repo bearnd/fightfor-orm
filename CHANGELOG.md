@@ -1,5 +1,10 @@
 ## Changelog
 
+### v0.9.0
+
+- Refactored the entire Ansible role and updated it to create PostgreSQL schemata to be used for unit-testing and local development.
+- Updated the `Study` and `StudyMeshTerm` classes and added a relationship between them. In addition, added a relationship to `MeshTerm` in `StudyMeshTerm`.
+
 ### v0.8.2
 
 - Updated `Makefile` to run the unit-tests properly using `unittest`.

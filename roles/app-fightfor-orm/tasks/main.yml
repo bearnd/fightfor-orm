@@ -11,27 +11,49 @@
   include_role:
     name: geerlingguy.postgresql
   ignore_errors: true
-  when: app_fightfor_orm.is_vagrant is defined and app_fightfor_orm.is_vagrant == True
+  when: is_vagrant == True
+
+- name: Create schemata in the `fightfor` database under PostgreSQL.
+  postgresql_schema:
+    database: "fightfor"
+    name: "{{ item }}"
+    owner: "{{ system.user }}"
+    state: present
+  with_items: "{{ postgresql_schemata }}"
+  become: true
+  become_user: postgres
+  when: is_vagrant == True
+
+- name: Create schemata in the `test` database under PostgreSQL.
+  postgresql_schema:
+    database: "test"
+    name: "{{ item }}"
+    owner: "{{ system.user }}"
+    state: present
+  with_items: "{{ postgresql_schemata }}"
+  become: true
+  become_user: postgres
+  when: is_vagrant == True
 
 - name: Install apt dependencies.
   apt:
     name: "{{ item }}"
     state: latest
-  with_items: "{{ app_fightfor_orm.dependencies_apt }}"
+  with_items: "{{ dependencies.apt }}"
   become: true
 
 - name: Create service group.
   group:
     state: present
-    name: "{{ app_fightfor_orm.group }}"
+    name: "{{ system.group }}"
   become: true
 
 - name: Create service user.
   user:
     state: present
-    name: "{{ app_fightfor_orm.user }}"
+    name: "{{ system.user }}"
     createhome: yes
-    group: "{{ app_fightfor_orm.group }}"
+    group: "{{ system.group }}"
     shell: "/bin/false"
   become: true
 
@@ -39,13 +61,14 @@
   file:
     state: directory
     path: "{{ item }}"
-    owner: "{{ app_fightfor_orm.user }}"
+    owner: "{{ system.user }}"
     mode: 0755
   with_items:
-    - "{{ app_fightfor_orm.share_dir }}"
-    - "{{ app_fightfor_orm.config_dir }}"
-    - "{{ app_fightfor_orm.run_dir }}"
-    - "{{ app_fightfor_orm.log_dir }}"
+    - "{{ system.directories.config }}"
+    - "{{ system.directories.share }}"
+    - "{{ system.directories.run }}"
+    - "{{ system.directories.log }}"
+    - "{{ system.directories.virtual_env }}"
   become: true
 
 - name: Copy PostgreSQL configuration files.
@@ -57,43 +80,55 @@
   with_items:
     - "pg_hba.conf"
     - "postgresql.conf"
-  when: app_fightfor_orm.is_vagrant is defined and app_fightfor_orm.is_vagrant == True
+  when: is_vagrant == True
 
 - name: Install system-level Python dependencies
   pip:
     name: "{{ item }}"
     state: latest
-  with_items: "{{ app_fightfor_orm.dependencies_pip_system }}"
+  with_items: "{{ dependencies.pip.system }}"
   become: true
 
-- name: Install deployment-level pip dependencies not included in a `requirements.txt` within the virtual environment
+- name: Install deployment-level pip dependencies not included in a
+        `requirements.txt` within the virtual environment
   pip:
     name: "{{ item }}"
     state: latest
-    virtualenv: "{{ app_fightfor_orm.virtual_env_dir }}"
+    virtualenv: "{{ system.directories.virtual_env }}"
     virtualenv_python: python3.5
-  with_items: "{{ app_fightfor_orm.dependencies_pip_virtualenv }}"
+  with_items: "{{ dependencies.pip.virtualenv }}"
   become: true
-  become_user: "{{ app_fightfor_orm.user }}"
+  become_user: "{{ system.user }}"
 
-- name: Create configuration file (Development)
+- name: Create `test` configuration file (Vagrant).
   template:
-    src: "config_dev.json.j2"
-    dest: "{{ app_fightfor_orm.config_dir }}/fightfor-orm.json"
-    owner: "{{ app_fightfor_orm.user }}"
-    group: "{{ app_fightfor_orm.group }}"
+    src: "config_test.json.j2"
+    dest: "{{ system.directories.config }}/{{ project.name }}-test.json"
+    owner: "{{ system.user }}"
+    group: "{{ system.group }}"
     mode: 0600
   become: true
-  become_user: "{{ app_fightfor_orm.user }}"
-  when: app_fightfor_orm.is_vagrant is defined and app_fightfor_orm.is_vagrant == True
+  become_user: "{{ system.user }}"
+  when: is_vagrant == True
 
-- name: Install Python package requirements (Development)
+- name: Create `dev` configuration file (Vagrant).
+  template:
+    src: "config_dev.json.j2"
+    dest: "{{ system.directories.config }}/{{ project.name }}-dev.json"
+    owner: "{{ system.user }}"
+    group: "{{ system.group }}"
+    mode: 0600
+  become: true
+  become_user: "{{ system.user }}"
+  when: is_vagrant == True
+
+- name: Install development-only Python package requirements (Vagrant).
   pip:
-    chdir: "/home/vagrant/fightfor-orm"
+    chdir: "/home/vagrant/{{ project.name }}"
     requirements: requirements_dev.txt
     state: latest
-    virtualenv: "{{ app_fightfor_orm.virtual_env_dir }}"
+    virtualenv: "{{ system.directories.virtual_env }}"
     virtualenv_python: python2.7
-  when: app_fightfor_orm.is_vagrant is defined and app_fightfor_orm.is_vagrant == True
+  when: is_vagrant == True
   become: true
-  become_user: "{{ app_fightfor_orm.user }}"
+  become_user: "{{ system.user }}"
