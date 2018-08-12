@@ -2171,7 +2171,7 @@ class Study(Base, OrmFightForBase):
     )
 
     # Relationship to an `Elligibility` record.
-    elligibility = sqlalchemy.orm.relationship(
+    eligibility = sqlalchemy.orm.relationship(
         argument="Eligibility",
     )
 
