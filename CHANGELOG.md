@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.9.1
+
+- Fixed typo in `Study` class where the `eligibility` relationship was spelled as `elligibility`.
+
 ### v0.9.0
 
 - Refactored the entire Ansible role and updated it to create PostgreSQL schemata to be used for unit-testing and local development.
