@@ -1,5 +1,19 @@
 ## Changelog
 
+### v0.10.0
+
+- Updated Python dependencies.
+- Updated the Ansible role to install the PostGIS extension to the PostgreSQL server.
+- Added a new `FacilityCanonical` ORM class to store canonicalised facilities.
+- Added a new `StudyFacility` ORM class to represent an associative table between `studies`, `facilities`, and `facilities_canonical`.
+- Updated the `Facility` class and added a new foreign-key to a `FacilityCanonical` record as well as a corresponding relationship.
+- Updated the `Facility` class and added a relationship to a list of `Study` records through the new `study_facilities` table.
+- Updated the `Facility` class and added indices to the `city`, `state`, and `country` columns.
+- Updated the `Facility` class and added a relationship to a list of `Study` records through the new `study_facilities` table.
+- Updated the `Study` class and added relationships to the `Facility` and `FacilityCanonical` records.
+- Updated the `DalClinicalTrials` class and added a new `iodu_facility_canonical` method to upsert `FacilityCanonical` records.
+- Added unit-tests for the new `FacilityCanonical` table.
+
 ### v0.9.1
 
 - Fixed typo in `Study` class where the `eligibility` relationship was spelled as `elligibility`.
