@@ -37,6 +37,9 @@ postgresql_schemata:
   - pubmed
   - mesh
 
+# PostgreSQL extensions.
+postgresql_extensions:
+  - postgis
 
 project:
   name: "fightfor-orm"
@@ -52,7 +55,7 @@ system:
     share: "/usr/local/share/{{ project.name }}"
     run: "/var/run/{{ project.name }}"
     log: "/var/log/{{ project.name }}"
-    virtual_env: "/usr/local/share/fightfor-orm/venvs/{{ project.name }}"
+    virtual_env: "/usr/local/share/{{ project.name }}/venvs/{{ project.name }}"
 
 # Application Configuration Settings.
 config:

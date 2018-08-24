@@ -65,6 +65,7 @@ from fform.orm_ct import StudyType
 from fform.orm_ct import BiospecRetentionType
 from fform.orm_ct import MeshTermType
 from fform.orm_ct import ReferenceType
+from fform.orm_ct import FacilityCanonical
 from fform.utils import return_first_item
 
 
@@ -296,6 +297,244 @@ class DalClinicalTrials(DalFightForBase):
                 session=session,
             )  # type: Facility
             return obj.facility_id
+
+    @return_first_item
+    @with_session_scope()
+    def iodu_facility_canonical(
+        self,
+        google_place_id: str,
+        name: str,
+        google_url: str,
+        url: Union[str, None],
+        address: Union[str, None],
+        phone_number: Union[str, None],
+        coordinate_longitude: float,
+        coordinate_latitude: float,
+        country: str,
+        administrative_area_level_1: Union[str, None],
+        administrative_area_level_2: Union[str, None],
+        administrative_area_level_3: Union[str, None],
+        administrative_area_level_4: Union[str, None],
+        administrative_area_level_5: Union[str, None],
+        locality: Union[str, None],
+        sublocality: Union[str, None],
+        sublocality_level_1: Union[str, None],
+        sublocality_level_2: Union[str, None],
+        sublocality_level_3: Union[str, None],
+        sublocality_level_4: Union[str, None],
+        sublocality_level_5: Union[str, None],
+        colloquial_area: Union[str, None],
+        floor: Union[str, None],
+        room: Union[str, None],
+        intersection: Union[str, None],
+        neighborhood: Union[str, None],
+        post_box: Union[str, None],
+        postal_code: Union[str, None],
+        postal_code_prefix: Union[str, None],
+        postal_code_suffix: Union[str, None],
+        postal_town: Union[str, None],
+        premise: Union[str, None],
+        subpremise: Union[str, None],
+        route: Union[str, None],
+        street_address: Union[str, None],
+        street_number: Union[str, None],
+        session: Optional[sqlalchemy.orm.Session] = None,
+    ) -> int:
+        """Creates a new `FacilityCanonical` record in an IODU manner.
+
+        Args:
+            google_place_id (str): Google Place ID.
+            name (str): Facility name.
+            google_url (str): Google Maps place URL.
+            url (Union[str, None]): Facility URL.
+            address (Union[str, None]): Facility formatted address.
+            phone_number (Union[str, None]): Facility phone-number.
+            coordinate_longitude (float): Facility longitude.
+            coordinate_latitude (float): Facility latitude.
+            country (str): Country.
+            administrative_area_level_1 (Union[str, None]): First-order civil
+                entity below the country level.
+            administrative_area_level_2 (Union[str, None]): Second-order civil
+                entity below the country level.
+            administrative_area_level_3 (Union[str, None]): Third-order civil
+                entity below the country level.
+            administrative_area_level_4 (Union[str, None]): Fourth-order civil
+                entity below the country level.
+            administrative_area_level_5 (Union[str, None]): Fifth-order civil
+                entity below the country level.
+            locality (Union[str, None]): Incorporated city or town political
+                entity.
+            sublocality (Union[str, None]): First-order civil entity below a
+                locality.
+            sublocality_level_1 (Union[str, None]): First-order sublocality.
+            sublocality_level_2 (Union[str, None]): Second-order sublocality.
+            sublocality_level_3 (Union[str, None]): Third-order sublocality.
+            sublocality_level_4 (Union[str, None]): Fourth-order sublocality.
+            sublocality_level_5 (Union[str, None]): Fifth-order sublocality.
+            colloquial_area (Union[str, None]): Commonly-used alternative name
+                for the entity.
+            floor (Union[str, None]): Floor of a building address.
+            room (Union[str, None]): Room of a building address.
+            intersection (Union[str, None]): Major intersection, usually of two
+                major roads.
+            neighborhood (Union[str, None]): Named neighborhood.
+            post_box (Union[str, None]): Postal box.
+            postal_code (Union[str, None]): Postal code as used to address
+                postal mail within the country.
+            postal_code_prefix (Union[str, None]): Postal code prefix.
+            postal_code_suffix (Union[str, None]): Postal code suffix.
+            postal_town (Union[str, None]): Grouping of geographic areas, such
+                as `locality` and `sublocality`, used for mailing addresses in
+                some countries.
+            premise (Union[str, None]): Named location, usually a building or
+                collection of buildings with a common name.
+            subpremise (Union[str, None]): First-order entity below a named
+                location, usually a singular building within a collection of
+                buildings with a common name.
+            route (Union[str, None]): Named route.
+            street_address (Union[str, None]): Precise street address.
+            street_number (Union[str, None]): Precise street number.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `Location` record.
+        """
+
+        obj = FacilityCanonical()
+        obj.google_place_id = google_place_id
+        obj.name = name
+        obj.google_url = google_url
+        obj.url = url
+        obj.address = address
+        obj.phone_number = phone_number
+        obj.coordinates = "SRID=4326;POINT({} {})".format(
+            coordinate_longitude,
+            coordinate_latitude,
+        ),
+        obj.coordinate_latitude = coordinate_latitude
+        obj.country = country
+        obj.administrative_area_level_1 = administrative_area_level_1
+        obj.administrative_area_level_2 = administrative_area_level_2
+        obj.administrative_area_level_3 = administrative_area_level_3
+        obj.administrative_area_level_4 = administrative_area_level_4
+        obj.administrative_area_level_5 = administrative_area_level_5
+        obj.locality = locality
+        obj.sublocality = sublocality
+        obj.sublocality_level_1 = sublocality_level_1
+        obj.sublocality_level_2 = sublocality_level_2
+        obj.sublocality_level_3 = sublocality_level_3
+        obj.sublocality_level_4 = sublocality_level_4
+        obj.sublocality_level_5 = sublocality_level_5
+        obj.colloquial_area = colloquial_area
+        obj.floor = floor
+        obj.room = room
+        obj.intersection = intersection
+        obj.neighborhood = neighborhood
+        obj.post_box = post_box
+        obj.postal_code = postal_code
+        obj.postal_code_prefix = postal_code_prefix
+        obj.postal_code_suffix = postal_code_suffix
+        obj.postal_town = postal_town
+        obj.premise = premise
+        obj.subpremise = subpremise
+        obj.route = route
+        obj.street_address = street_address
+        obj.street_number = street_number
+
+        statement = insert(
+            FacilityCanonical,
+            values={
+                "google_place_id": obj.google_place_id,
+                "name": obj.name,
+                "google_url": obj.google_url,
+                "url": obj.url,
+                "address": obj.address,
+                "phone_number": obj.phone_number,
+                "coordinates": obj.coordinates,
+                "country": obj.country,
+                "administrative_area_level_1": obj.administrative_area_level_1,
+                "administrative_area_level_2": obj.administrative_area_level_2,
+                "administrative_area_level_3": obj.administrative_area_level_3,
+                "administrative_area_level_4": obj.administrative_area_level_4,
+                "administrative_area_level_5": obj.administrative_area_level_5,
+                "locality": obj.locality,
+                "sublocality": obj.sublocality,
+                "sublocality_level_1": obj.sublocality_level_1,
+                "sublocality_level_2": obj.sublocality_level_2,
+                "sublocality_level_3": obj.sublocality_level_3,
+                "sublocality_level_4": obj.sublocality_level_4,
+                "sublocality_level_5": obj.sublocality_level_5,
+                "colloquial_area": obj.colloquial_area,
+                "floor": obj.floor,
+                "room": obj.room,
+                "intersection": obj.intersection,
+                "neighborhood": obj.neighborhood,
+                "post_box": obj.post_box,
+                "postal_code": obj.postal_code,
+                "postal_code_prefix": obj.postal_code_prefix,
+                "postal_code_suffix": obj.postal_code_suffix,
+                "postal_town": obj.postal_town,
+                "premise": obj.premise,
+                "subpremise": obj.subpremise,
+                "route": obj.route,
+                "street_address": obj.street_address,
+                "street_number": obj.street_number,
+            }
+        ).on_conflict_do_update(
+            index_elements=["google_place_id"],
+            set_={
+                "name": obj.name,
+                "google_url": obj.google_url,
+                "url": obj.url,
+                "address": obj.address,
+                "phone_number": obj.phone_number,
+                "coordinates": obj.coordinates,
+                "country": obj.country,
+                "administrative_area_level_1": obj.administrative_area_level_1,
+                "administrative_area_level_2": obj.administrative_area_level_2,
+                "administrative_area_level_3": obj.administrative_area_level_3,
+                "administrative_area_level_4": obj.administrative_area_level_4,
+                "administrative_area_level_5": obj.administrative_area_level_5,
+                "locality": obj.locality,
+                "sublocality": obj.sublocality,
+                "sublocality_level_1": obj.sublocality_level_1,
+                "sublocality_level_2": obj.sublocality_level_2,
+                "sublocality_level_3": obj.sublocality_level_3,
+                "sublocality_level_4": obj.sublocality_level_4,
+                "sublocality_level_5": obj.sublocality_level_5,
+                "colloquial_area": obj.colloquial_area,
+                "floor": obj.floor,
+                "room": obj.room,
+                "intersection": obj.intersection,
+                "neighborhood": obj.neighborhood,
+                "post_box": obj.post_box,
+                "postal_code": obj.postal_code,
+                "postal_code_prefix": obj.postal_code_prefix,
+                "postal_code_suffix": obj.postal_code_suffix,
+                "postal_town": obj.postal_town,
+                "premise": obj.premise,
+                "subpremise": obj.subpremise,
+                "route": obj.route,
+                "street_address": obj.street_address,
+                "street_number": obj.street_number,
+            }
+        )  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        if result.inserted_primary_key:
+            return result.inserted_primary_key
+        else:
+            obj = self.get_by_attr(
+                orm_class=FacilityCanonical,
+                attr_name="google_place_id",
+                attr_value=obj.google_place_id,
+                session=session,
+            )  # type: FacilityCanonical
+            return obj.facility_canonical_id
 
     @return_first_item
     @with_session_scope()
