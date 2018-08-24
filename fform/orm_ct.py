@@ -2,9 +2,8 @@
 
 from __future__ import unicode_literals
 
-import hashlib
-
 import sqlalchemy.orm
+from geoalchemy2 import Geometry
 
 from fform.orm_base import Base
 from fform.orm_base import OrmFightForBase
@@ -486,6 +485,15 @@ class Facility(Base, OrmFightForBase):
         autoincrement="auto",
     )
 
+    # Foreign key to the canonical facility ID.
+    facility_canonical_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.facilities_canonical.facility_canonical_id",
+        ),
+        name="facility_canonical_id",
+        nullable=True,
+    )
+
     # Facility name (referring to the `<name>` element).
     name = sqlalchemy.Column(
         name="name",
@@ -534,6 +542,10 @@ class Facility(Base, OrmFightForBase):
         nullable=False
     )
 
+    # Relationship to a `FacilityCanonical` record.
+    facility_canonical = sqlalchemy.orm.relationship(
+        argument="FacilityCanonical",
+    )
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
