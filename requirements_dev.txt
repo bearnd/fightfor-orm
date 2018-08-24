@@ -8,3 +8,5 @@ psycopg2==2.7.3.2
 SQLAlchemy==1.2.8
 colorlog==3.1.4
 attrdict==2.0.0
+GeoAlchemy2==0.4.2
+Shapely==1.6.4
