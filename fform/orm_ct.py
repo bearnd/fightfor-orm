@@ -3071,6 +3071,13 @@ class FacilityCanonical(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a list of `Study` records.
+    studies = sqlalchemy.orm.relationship(
+        argument="Study",
+        secondary="clinicaltrials.study_facilities",
+        back_populates="facilities_canonical"
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
