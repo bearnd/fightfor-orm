@@ -546,6 +546,14 @@ class Facility(Base, OrmFightForBase):
     facility_canonical = sqlalchemy.orm.relationship(
         argument="FacilityCanonical",
     )
+
+    # Relationship to a list of `Study` records.
+    studies = sqlalchemy.orm.relationship(
+        argument="Study",
+        secondary="clinicaltrials.study_facilities",
+        back_populates="facilities"
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
