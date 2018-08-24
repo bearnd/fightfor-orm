@@ -507,6 +507,7 @@ class Facility(Base, OrmFightForBase):
         name="city",
         type_=sqlalchemy.types.Unicode(),
         nullable=True,
+        index=True,
     )
 
     # Facility state (referring to the `<city>` element under the `<address>`
@@ -515,6 +516,7 @@ class Facility(Base, OrmFightForBase):
         name="state",
         type_=sqlalchemy.types.Unicode(),
         nullable=True,
+        index=True,
     )
 
     # Facility zip-code (referring to the `<zip>` element under the `<address>`
@@ -531,6 +533,7 @@ class Facility(Base, OrmFightForBase):
         name="country",
         type_=sqlalchemy.types.Unicode(),
         nullable=True,
+        index=True,
     )
 
     # MD5 hash of the author's full name.
