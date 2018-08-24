@@ -7,6 +7,13 @@
   ignore_errors: true
   become: true
 
+- name: Install apt dependencies.
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ dependencies.apt }}"
+  become: true
+
 - name: Install PostgreSQL.
   include_role:
     name: geerlingguy.postgresql
@@ -35,12 +42,23 @@
   become_user: postgres
   when: is_vagrant == True
 
-- name: Install apt dependencies.
-  apt:
+- name: Install extensions in the `fightfor` database under PostgreSQL.
+  postgresql_ext:
+    db: "fightfor"
     name: "{{ item }}"
-    state: latest
-  with_items: "{{ dependencies.apt }}"
+  with_items: "{{ postgresql_extensions }}"
   become: true
+  become_user: postgres
+  when: is_vagrant == True
+
+- name: Install extensions in the `test` database under PostgreSQL.
+  postgresql_ext:
+    db: "test"
+    name: "{{ item }}"
+  with_items: "{{ postgresql_extensions }}"
+  become: true
+  become_user: postgres
+  when: is_vagrant == True
 
 - name: Create service group.
   group:
@@ -128,7 +146,7 @@
     requirements: requirements_dev.txt
     state: latest
     virtualenv: "{{ system.directories.virtual_env }}"
-    virtualenv_python: python2.7
+    virtualenv_python: python3.5
   when: is_vagrant == True
   become: true
   become_user: "{{ system.user }}"
