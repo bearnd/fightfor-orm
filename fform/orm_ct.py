@@ -3054,3 +3054,49 @@ class FacilityCanonical(Base, OrmFightForBase):
         "schema": "clinicaltrials"
     }
 
+
+class StudyFacility(Base, OrmFightForBase):
+    """Associative table between `Study`, `Facility` and `FacilityCanonical`
+    records."""
+
+    # Set table name.
+    __tablename__ = "study_facilities"
+
+    # Autoincrementing primary key ID.
+    study_facility_id = sqlalchemy.Column(
+        name="study_facility_id",
+        type_=sqlalchemy.types.BigInteger(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the study ID.
+    study_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
+        name="study_id",
+        nullable=False,
+    )
+
+    # Foreign key to the facility ID.
+    facility_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("clinicaltrials.facilities.facility_id"),
+        name="facility_id",
+        nullable=False,
+    )
+
+    # Foreign key to the canonical facility ID.
+    facility_canonical_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey(
+            "clinicaltrials.facilities_canonical.facility_canonical_id",
+        ),
+        name="facility_canonical_id",
+        nullable=True,
+    )
+
+    # Set table arguments.
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint('study_id', 'facility_id'),
+        # Set table schema.
+        {"schema": "clinicaltrials"}
+    )
