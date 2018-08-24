@@ -2237,6 +2237,20 @@ class Study(Base, OrmFightForBase):
         back_populates="studies"
     )
 
+    # Relationship to a list of `Facility` records.
+    facilities = sqlalchemy.orm.relationship(
+        argument="Facility",
+        secondary="clinicaltrials.study_facilities",
+        back_populates="studies"
+    )
+
+    # Relationship to a list of `FacilityCanonical` records.
+    facilities_canonical = sqlalchemy.orm.relationship(
+        argument="FacilityCanonical",
+        secondary="clinicaltrials.study_facilities",
+        back_populates="studies"
+    )
+
     # Relationship to a list of `Reference` records.
     references = sqlalchemy.orm.relationship(
         argument="Reference",
