@@ -66,6 +66,7 @@ from fform.orm_ct import BiospecRetentionType
 from fform.orm_ct import MeshTermType
 from fform.orm_ct import ReferenceType
 from fform.orm_ct import FacilityCanonical
+from fform.orm_ct import StudyFacility
 from fform.utils import return_first_item
 
 
@@ -2545,3 +2546,62 @@ class DalClinicalTrials(DalFightForBase):
                 session=session,
             )  # type: StudyStudyDoc
             return obj.study_study_doc_id
+
+    @return_first_item
+    @with_session_scope()
+    def iodu_study_facility(
+        self,
+        study_id: int,
+        facility_id: int,
+        facility_canonical_id: Optional[int] = None,
+        session: Optional[sqlalchemy.orm.Session] = None,
+    ) -> int:
+        """Creates a new `StudyFacility` record in an IODU manner.
+
+        Args:
+            study_id (int): The linked `Study` record primary-key ID.
+            facility_id (int): The linked `Facility` record primary-key ID.
+            facility_canonical_id (Optional[int]): The linked
+                `FacilityCanonical` record primary-key ID.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `StudyFacility` record.
+        """
+
+        obj = StudyFacility()
+        obj.study_id = study_id
+        obj.facility_id = facility_id
+        obj.facility_canonical_id = facility_canonical_id
+
+        statement = insert(
+            StudyMeshTerm,
+            values={
+                "study_id": obj.study_id,
+                "facility_id": obj.facility_id,
+                "facility_canonical_id": obj.facility_canonical_id,
+            }
+        ).on_conflict_do_update(
+            index_elements=["study_id", "facility_id"],
+            set_={
+                "facility_canonical_id": obj.facility_canonical_id,
+            }
+        )  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        if result.inserted_primary_key:
+            return result.inserted_primary_key
+        else:
+            obj = self.get_by_attrs(
+                orm_class=StudyFacility,
+                attrs_names_values={
+                    "study_id": obj.study_id,
+                    "facility_id": obj.facility_id,
+                },
+                session=session,
+            )  # type: StudyFacility
+            return obj.study_facility_id
