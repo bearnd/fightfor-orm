@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.10.1
+
+- Added a `iodu_study_facility` method to the `DalClinicalTrials` class to create a new `StudyFacility` record in an IODU manner.
+
 ### v0.10.0
 
 - Updated Python dependencies.
