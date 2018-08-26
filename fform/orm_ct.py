@@ -1535,6 +1535,7 @@ class Eligibility(Base, OrmFightForBase):
         name="gender",
         type_=sqlalchemy.types.Enum(GenderType),
         nullable=True,
+        index=True,
     )
 
     # Referring to the `<gender_based>` element.
@@ -2060,6 +2061,7 @@ class Study(Base, OrmFightForBase):
         name="start_date",
         type_=sqlalchemy.types.Date(),
         nullable=True,
+        index=True,
     )
 
     # Referring to the value of the `<completion_date>` element.
