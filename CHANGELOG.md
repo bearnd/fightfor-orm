@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.10.3
+
+- Updated the `Citation` class and added `descriptors` and `qualifiers` relationships.
+
 ### v0.10.2
 
 - Prefixed the PubMed ORM classes `Keyword`, `Descriptor`, and `Qualifier` with `Pm` to distinguish them from the classes of the same name in other schemata as the conflicting names are causing issues in `fightfor-graphql`.
