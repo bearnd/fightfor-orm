@@ -2060,6 +2060,7 @@ class Study(Base, OrmFightForBase):
         name="start_date",
         type_=sqlalchemy.types.Date(),
         nullable=True,
+        index=True,
     )
 
     # Referring to the value of the `<completion_date>` element.
