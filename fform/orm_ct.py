@@ -1535,6 +1535,7 @@ class Eligibility(Base, OrmFightForBase):
         name="gender",
         type_=sqlalchemy.types.Enum(GenderType),
         nullable=True,
+        index=True,
     )
 
     # Referring to the `<gender_based>` element.
