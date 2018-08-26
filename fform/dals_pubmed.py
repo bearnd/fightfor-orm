@@ -10,9 +10,9 @@ from fform.dal_base import with_session_scope
 from fform.orm_pubmed import Chemical
 from fform.orm_pubmed import Author
 from fform.orm_pubmed import Affiliation
-from fform.orm_pubmed import Keyword
-from fform.orm_pubmed import Descriptor
-from fform.orm_pubmed import Qualifier
+from fform.orm_pubmed import PmKeyword
+from fform.orm_pubmed import PmDescriptor
+from fform.orm_pubmed import PmQualifier
 from fform.orm_pubmed import PublicationType
 from fform.orm_pubmed import Journal
 from fform.orm_pubmed import JournalIssnType
@@ -109,7 +109,7 @@ class DalPubmed(DalFightForBase):
     ) -> List[int]:
 
         statement = insert(
-            Descriptor,
+            PmDescriptor,
             values=list(
                 {
                     "uid": uid,
@@ -124,12 +124,12 @@ class DalPubmed(DalFightForBase):
         session.execute(statement)
 
         objs = self.bget_by_attr(
-            orm_class=Descriptor,
+            orm_class=PmDescriptor,
             attr_name="uid",
             attr_values=uids,
             do_sort=True,
             session=session,
-        )  # type: List[Descriptor]
+        )  # type: List[PmDescriptor]
 
         obj_ids = [getattr(obj, obj.pk_name) for obj in objs]
 
@@ -145,7 +145,7 @@ class DalPubmed(DalFightForBase):
     ) -> List[int]:
 
         statement = insert(
-            Qualifier,
+            PmQualifier,
             values=list(
                 {
                     "uid": uid,
@@ -160,12 +160,12 @@ class DalPubmed(DalFightForBase):
         session.execute(statement)
 
         objs = self.bget_by_attr(
-            orm_class=Qualifier,
+            orm_class=PmQualifier,
             attr_name="uid",
             attr_values=uids,
             do_sort=True,
             session=session,
-        )  # type: List[Qualifier]
+        )  # type: List[PmQualifier]
 
         obj_ids = [getattr(obj, obj.pk_name) for obj in objs]
 
@@ -181,7 +181,7 @@ class DalPubmed(DalFightForBase):
     ) -> List[int]:
 
         statement = insert(
-            Keyword,
+            PmKeyword,
             values=list(
                 {
                     "keyword": keyword,
@@ -196,12 +196,12 @@ class DalPubmed(DalFightForBase):
         session.execute(statement)
 
         objs = self.bget_by_attr(
-            orm_class=Keyword,
+            orm_class=PmKeyword,
             attr_name="md5",
             attr_values=md5s,
             do_sort=True,
             session=session,
-        )  # type: List[Keyword]
+        )  # type: List[PmKeyword]
 
         obj_ids = [getattr(obj, obj.pk_name) for obj in objs]
 
