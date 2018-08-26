@@ -677,7 +677,7 @@ class CitationChemical(Base, OrmFightForBase):
 
 
 class CitationDescriptorQualifier(Base, OrmFightForBase):
-    """Associative table between `Citation`, `Descriptor` and `Qualifier`
+    """Associative table between `Citation`, `PmDescriptor` and `PmQualifier`
     records."""
 
     # set table name
@@ -788,7 +788,7 @@ class CitationIdentifier(Base, OrmFightForBase):
 
 
 class CitationKeyword(Base, OrmFightForBase):
-    """Associative table between `Citation` and `Keyword` records."""
+    """Associative table between `Citation` and `PmKeyword` records."""
 
     # set table name
     __tablename__ = "citation_keywords"
@@ -1122,14 +1122,14 @@ class Citation(Base, OrmFightForBase):
         back_populates="citations"
     )
 
-    # Relationship to a list of `Keyword` records.
+    # Relationship to a list of `PmKeyword` records.
     keywords = sqlalchemy.orm.relationship(
-        argument="Keyword",
+        argument="PmKeyword",
         secondary="pubmed.citation_keywords",
         back_populates="citations"
     )
 
-    # # Relationship to a list of `Keyword` records.
+    # Relationship to a list of `PmKeyword` records.
     descriptors_qualifiers = sqlalchemy.orm.relationship(
         argument="CitationDescriptorQualifier",
     )
@@ -1194,7 +1194,7 @@ class Databank(Base, OrmFightForBase):
         return value
 
 
-class Descriptor(Base, OrmFightForBase):
+class PmDescriptor(Base, OrmFightForBase):
     """Table of `<DescriptorName>` element records."""
 
     # set table name
@@ -1458,7 +1458,7 @@ class JournalInfo(Base, OrmFightForBase):
     }
 
 
-class Keyword(Base, OrmFightForBase):
+class PmKeyword(Base, OrmFightForBase):
     """Table of `<Keyword>` element records."""
 
     # set table name
@@ -1563,7 +1563,7 @@ class PublicationType(Base, OrmFightForBase):
     }
 
 
-class Qualifier(Base, OrmFightForBase):
+class PmQualifier(Base, OrmFightForBase):
     """Table of `<Qualifier>` element records."""
 
     # set table name

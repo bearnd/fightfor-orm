@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.10.2
+
+- Prefixed the PubMed ORM classes `Keyword`, `Descriptor`, and `Qualifier` with `Pm` to distinguish them from the classes of the same name in other schemata as the conflicting names are causing issues in `fightfor-graphql`.
+
 ### v0.10.1
 
 - Added a `iodu_study_facility` method to the `DalClinicalTrials` class to create a new `StudyFacility` record in an IODU manner.
