@@ -1134,6 +1134,18 @@ class Citation(Base, OrmFightForBase):
         argument="CitationDescriptorQualifier",
     )
 
+    # Relationship to a list of `PmDescriptor` records.
+    descriptors = sqlalchemy.orm.relationship(
+        argument="PmDescriptor",
+        secondary="pubmed.citation_descriptors_qualifiers",
+    )
+
+    # Relationship to a list of `PmQualifier` records.
+    qualifiers = sqlalchemy.orm.relationship(
+        argument="PmQualifier",
+        secondary="pubmed.citation_descriptors_qualifiers",
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
