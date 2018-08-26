@@ -1,5 +1,10 @@
 ## Changelog
 
+### v0.11.0
+
+- Updated the `Study` class and added an index to the `start_date` column.
+- Updated the `Eligibility` class and added an index to the `gender` column.
+
 ### v0.10.3
 
 - Updated the `Citation` class and added `descriptors` and `qualifiers` relationships.
