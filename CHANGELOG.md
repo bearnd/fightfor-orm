@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.11.1
+
+- Updated the `FacilityCanonical` ORM class and set all columns but `google_place_id` to nullable so that the place ID can be populated separately to the rest of the details.
+
 ### v0.11.0
 
 - Updated the `Study` class and added an index to the `start_date` column.
