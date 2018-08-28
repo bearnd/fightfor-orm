@@ -2847,14 +2847,14 @@ class FacilityCanonical(Base, OrmFightForBase):
     name = sqlalchemy.Column(
         name="name",
         type_=sqlalchemy.types.Unicode(),
-        nullable=False,
+        nullable=True,
     )
 
     # Google Maps place URL.
     google_url = sqlalchemy.Column(
         name="google_url",
         type_=sqlalchemy.types.UnicodeText(),
-        nullable=False,
+        nullable=True,
     )
 
     # Facility URL.
@@ -2882,14 +2882,14 @@ class FacilityCanonical(Base, OrmFightForBase):
     coordinates = sqlalchemy.Column(
         name="coordinates",
         type_=Geometry(geometry_type="POINT", srid=4326),
-        nullable=False,
+        nullable=True,
     )
 
     # Country.
     country = sqlalchemy.Column(
         name="country",
         type_=sqlalchemy.types.Unicode(),
-        nullable=False,
+        nullable=True,
         index=True,
     )
 
