@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.11.3
+
+- Updated the `iodu_facility_canonical` method of the `DalClinicalTrials` class to only assemble the coordinates point expression if coordinates have been defined.
+
 ### v0.11.2
 
 - Updated the `iodu_facility_canonical` method to only require the `google_place_id` argument.
