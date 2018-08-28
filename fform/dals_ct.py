@@ -403,6 +403,14 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `Location` record.
         """
+        
+        # Assemble a PostGIS coordinates point if coordinates have been defined.
+        coordinates = None
+        if coordinate_latitude and coordinate_longitude:
+            coordinates = "SRID=4326;POINT({} {})".format(
+                coordinate_longitude,
+                coordinate_latitude,
+            )
 
         obj = FacilityCanonical()
         obj.google_place_id = google_place_id
@@ -411,10 +419,7 @@ class DalClinicalTrials(DalFightForBase):
         obj.url = url
         obj.address = address
         obj.phone_number = phone_number
-        obj.coordinates = "SRID=4326;POINT({} {})".format(
-            coordinate_longitude,
-            coordinate_latitude,
-        ),
+        obj.coordinates = coordinates,
         obj.coordinate_latitude = coordinate_latitude
         obj.country = country
         obj.administrative_area_level_1 = administrative_area_level_1
