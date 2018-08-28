@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.11.2
+
+- Updated the `iodu_facility_canonical` method to only require the `google_place_id` argument.
+
 ### v0.11.1
 
 - Updated the `FacilityCanonical` ORM class and set all columns but `google_place_id` to nullable so that the place ID can be populated separately to the rest of the details.
