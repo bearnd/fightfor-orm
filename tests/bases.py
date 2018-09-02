@@ -4,6 +4,7 @@ import abc
 import unittest
 
 from fform.dals_ct import DalClinicalTrials
+from fform.dals_pubmed import DalPubmed
 from fform.orm_base import Base
 
 from tests.utils import load_config
@@ -40,6 +41,21 @@ class DalCtTestBase(DalTestBase):
     def setup_dal(self):
         # Instantiate a DAL.
         dal = DalClinicalTrials(
+            sql_username=self.cfg.sql_username,
+            sql_password=self.cfg.sql_password,
+            sql_host=self.cfg.sql_host,
+            sql_port=self.cfg.sql_port,
+            sql_db=self.cfg.sql_db
+        )
+
+        return dal
+
+
+class DalPubmedTestBase(DalTestBase):
+
+    def setup_dal(self):
+        # Instantiate a DAL.
+        dal = DalPubmed(
             sql_username=self.cfg.sql_username,
             sql_password=self.cfg.sql_password,
             sql_host=self.cfg.sql_host,
