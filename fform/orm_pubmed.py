@@ -533,10 +533,19 @@ class ArticleAuthorAffiliation(Base, OrmFightForBase):
         nullable=False
     )
 
-    # Foreign key to the author ID.
+    # Foreign key to the affiliation ID.
     affiliation_id = sqlalchemy.Column(
         sqlalchemy.ForeignKey("pubmed.affiliations.affiliation_id"),
         name="affiliation_id",
+        nullable=True
+    )
+
+    # Foreign key to the canonical affiliation ID.
+    affiliation_canonical_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey(
+            "pubmed.affiliations_canonical.affiliation_canonical_id"
+        ),
+        name="affiliation_canonical_id",
         nullable=True
     )
 
