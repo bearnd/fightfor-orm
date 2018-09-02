@@ -1,5 +1,15 @@
 ## Changelog
 
+### v0.12.0
+
+- Added a new ORM `AffiliationCanonical` class which will be used to store canonicalized affiliations.
+- Added a foreign-key column to the `affiliations_canonical` table under the `affiliations` table.
+- Added a foreign-key column to the `affiliations_canonical` table under the `article_authors_affiliations` table.
+- Added an `affiliations_canonical` relationship to the `Article` class.
+- Added a new `iodu_affiliation_canonical` method to the `DalPubmed` class to store `AffiliationCanonical` records.
+- Updated the methods of the `DalPubmed` class to store foreign-keys to the `affiliations_canonical` table.
+- Added unit-tests for the new `AffiliationCanonical` class.
+
 ### v0.11.3
 
 - Updated the `iodu_facility_canonical` method of the `DalClinicalTrials` class to only assemble the coordinates point expression if coordinates have been defined.

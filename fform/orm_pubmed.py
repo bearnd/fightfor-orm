@@ -1,8 +1,7 @@
 # coding=utf-8
 
-import hashlib
-
 import sqlalchemy.orm
+from geoalchemy2 import Geometry
 
 from fform.orm_base import Base
 from fform.orm_base import OrmFightForBase
@@ -222,6 +221,20 @@ class Affiliation(Base, OrmFightForBase):
         nullable=False
     )
 
+    # Foreign key to the canonical affiliation ID.
+    affiliation_canonical_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey(
+            "pubmed.affiliations_canonical.affiliation_canonical_id"
+        ),
+        name="affiliation_canonical_id",
+        nullable=True
+    )
+
+    # Relationship to a `AffiliationCanonical` record.
+    affiliation_canonical = sqlalchemy.orm.relationship(
+        argument="AffiliationCanonical"
+    )
+
     # MD5 hash of the `affiliation` field.
     md5 = sqlalchemy.Column(
         name="md5",
@@ -419,11 +432,18 @@ class Article(Base, OrmFightForBase):
         back_populates="articles"
     )
 
-    # Relationship to a list of `Author` records.
+    # Relationship to a list of `Affiliation` records.
     affiliations = sqlalchemy.orm.relationship(
         argument="Affiliation",
         secondary="pubmed.article_author_affiliations",
         back_populates="articles",
+    )
+
+    # Relationship to a list of `AffiliationCanonical` records.
+    affiliations_canonical = sqlalchemy.orm.relationship(
+        argument="AffiliationCanonical",
+        secondary="pubmed.article_author_affiliations",
+        back_populates="articles"
     )
 
     # Set table arguments.
@@ -520,10 +540,19 @@ class ArticleAuthorAffiliation(Base, OrmFightForBase):
         nullable=False
     )
 
-    # Foreign key to the author ID.
+    # Foreign key to the affiliation ID.
     affiliation_id = sqlalchemy.Column(
         sqlalchemy.ForeignKey("pubmed.affiliations.affiliation_id"),
         name="affiliation_id",
+        nullable=True
+    )
+
+    # Foreign key to the canonical affiliation ID.
+    affiliation_canonical_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey(
+            "pubmed.affiliations_canonical.affiliation_canonical_id"
+        ),
+        name="affiliation_canonical_id",
         nullable=True
     )
 
@@ -1606,6 +1635,288 @@ class PmQualifier(Base, OrmFightForBase):
         unique=True,
         nullable=False,
         index=True,
+    )
+
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "pubmed"
+    }
+
+
+class AffiliationCanonical(Base, OrmFightForBase):
+    """Table storing canonicalized version of affiliations with data retrieved
+    from the Google Maps API."""
+
+    # Set table name.
+    __tablename__ = "affiliations_canonical"
+
+    # Autoincrementing primary key ID.
+    affiliation_canonical_id = sqlalchemy.Column(
+        name="affiliation_canonical_id",
+        type_=sqlalchemy.types.BigInteger(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Google Place ID.
+    google_place_id = sqlalchemy.Column(
+        name="google_place_id",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    # Facility name.
+    name = sqlalchemy.Column(
+        name="name",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Google Maps place URL.
+    google_url = sqlalchemy.Column(
+        name="google_url",
+        type_=sqlalchemy.types.UnicodeText(),
+        nullable=True,
+    )
+
+    # Facility URL.
+    url = sqlalchemy.Column(
+        name="url",
+        type_=sqlalchemy.types.UnicodeText(),
+        nullable=True,
+    )
+
+    # Facility formatted address.
+    address = sqlalchemy.Column(
+        name="address",
+        type_=sqlalchemy.types.UnicodeText(),
+        nullable=True,
+    )
+
+    # Facility phone-number.
+    phone_number = sqlalchemy.Column(
+        name="phone_number",
+        type_=sqlalchemy.types.UnicodeText(),
+        nullable=True,
+    )
+
+    # Facility coordinates.
+    coordinates = sqlalchemy.Column(
+        name="coordinates",
+        type_=Geometry(geometry_type="POINT", srid=4326),
+        nullable=True,
+    )
+
+    # Country.
+    country = sqlalchemy.Column(
+        name="country",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+        index=True,
+    )
+
+    # First-order civil entity below the country level.
+    administrative_area_level_1 = sqlalchemy.Column(
+        name="administrative_area_level_1",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+        index=True,
+    )
+
+    # Second-order civil entity below the country level.
+    administrative_area_level_2 = sqlalchemy.Column(
+        name="administrative_area_level_2",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Third-order civil entity below the country level.
+    administrative_area_level_3 = sqlalchemy.Column(
+        name="administrative_area_level_3",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Fourth-order civil entity below the country level.
+    administrative_area_level_4 = sqlalchemy.Column(
+        name="administrative_area_level_4",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Fifth-order civil entity below the country level.
+    administrative_area_level_5 = sqlalchemy.Column(
+        name="administrative_area_level_5",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Incorporated city or town political entity.
+    locality = sqlalchemy.Column(
+        name="locality",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+        index=True,
+    )
+
+    # First-order civil entity below a locality.
+    sublocality = sqlalchemy.Column(
+        name="sublocality",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # First-order sublocality.
+    sublocality_level_1 = sqlalchemy.Column(
+        name="sublocality_level_1",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Second-order sublocality.
+    sublocality_level_2 = sqlalchemy.Column(
+        name="sublocality_level_2",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Third-order sublocality.
+    sublocality_level_3 = sqlalchemy.Column(
+        name="sublocality_level_3",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Fourth-order sublocality.
+    sublocality_level_4 = sqlalchemy.Column(
+        name="sublocality_level_4",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Fifth-order sublocality.
+    sublocality_level_5 = sqlalchemy.Column(
+        name="sublocality_level_5",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Commonly-used alternative name for the entity.
+    colloquial_area = sqlalchemy.Column(
+        name="colloquial_area",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Floor of a building address.
+    floor = sqlalchemy.Column(
+        name="floor",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Room of a building address.
+    room = sqlalchemy.Column(
+        name="room",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Major intersection, usually of two major roads.
+    intersection = sqlalchemy.Column(
+        name="intersection",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Named neighborhood.
+    neighborhood = sqlalchemy.Column(
+        name="neighborhood",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Postal box.
+    post_box = sqlalchemy.Column(
+        name="post_box",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Postal code as used to address postal mail within the country.
+    postal_code = sqlalchemy.Column(
+        name="postal_code",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Postal code prefix.
+    postal_code_prefix = sqlalchemy.Column(
+        name="postal_code_prefix",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Postal code suffix.
+    postal_code_suffix = sqlalchemy.Column(
+        name="postal_code_suffix",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Grouping of geographic areas, such as `locality` and `sublocality`, used
+    # for mailing addresses in some countries.
+    postal_town = sqlalchemy.Column(
+        name="postal_town",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Named location, usually a building or collection of buildings with a
+    # common name.
+    premise = sqlalchemy.Column(
+        name="premise",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # First-order entity below a named location, usually a singular building
+    # within a collection of buildings with a common name.
+    subpremise = sqlalchemy.Column(
+        name="subpremise",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Named route.
+    route = sqlalchemy.Column(
+        name="route",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Precise street address.
+    street_address = sqlalchemy.Column(
+        name="street_address",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Precise street number.
+    street_number = sqlalchemy.Column(
+        name="street_number",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Relationship to a list of `Study` records.
+    articles = sqlalchemy.orm.relationship(
+        argument="Article",
+        secondary="pubmed.article_author_affiliations",
+        back_populates="affiliations_canonical"
     )
 
     # Set table arguments.
