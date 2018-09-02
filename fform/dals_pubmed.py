@@ -318,6 +318,7 @@ class DalPubmed(DalFightForBase):
         affiliation_identifiers: List[str],
         affiliation_identifier_sources: List[str],
         affiliations: List[str],
+        affiliation_canonical_ids: Union[List[int], List[None]],
         md5s: List[str],
         session=None
     ) -> List[int]:
@@ -330,16 +331,19 @@ class DalPubmed(DalFightForBase):
                     "affiliation_identifier_source":
                         affiliation_identifier_source,
                     "affiliation": affiliation,
+                    "affiliation_canonical_id": affiliation_canonical_id,
                     "md5": md5,
                 } for (
                     affiliation_identifier,
                     affiliation_identifier_source,
                     affiliation,
+                    affiliation_canonical_id,
                     md5,
                 ) in zip(
                     affiliation_identifiers,
                     affiliation_identifier_sources,
                     affiliations,
+                    affiliation_canonical_ids,
                     md5s,
                 )
             )
@@ -515,6 +519,7 @@ class DalPubmed(DalFightForBase):
         article_id: int,
         author_ids: List[int],
         affiliation_ids: Union[List[int], List[None]],
+        affiliation_canonical_ids: Union[List[int], List[None]],
         ordinances: List[int],
         session=None,
     ) -> None:
@@ -526,10 +531,17 @@ class DalPubmed(DalFightForBase):
                     "article_id": article_id,
                     "author_id": author_id,
                     "affiliation_id": affiliation_id,
+                    "affiliation_canonical_id": affiliation_canonical_id,
                     "ordinance": ordinance,
-                } for author_id, affiliation_id, ordinance in zip(
+                } for (
+                    author_id,
+                    affiliation_id,
+                    affiliation_canonical_id,
+                    ordinance
+                ) in zip(
                     author_ids,
                     affiliation_ids,
+                    affiliation_canonical_ids,
                     ordinances
                 )
             )
