@@ -1,8 +1,7 @@
 # coding=utf-8
 
-import hashlib
-
 import sqlalchemy.orm
+from geoalchemy2 import Geometry
 
 from fform.orm_base import Base
 from fform.orm_base import OrmFightForBase
@@ -220,6 +219,20 @@ class Affiliation(Base, OrmFightForBase):
         name="affiliation",
         type_=sqlalchemy.types.Unicode(),
         nullable=False
+    )
+
+    # Foreign key to the canonical affiliation ID.
+    affiliation_canonical_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey(
+            "pubmed.affiliations_canonical.affiliation_canonical_id"
+        ),
+        name="affiliation_canonical_id",
+        nullable=True
+    )
+
+    # Relationship to a `AffiliationCanonical` record.
+    affiliation_canonical = sqlalchemy.orm.relationship(
+        argument="AffiliationCanonical"
     )
 
     # MD5 hash of the `affiliation` field.
