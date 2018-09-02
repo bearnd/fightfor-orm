@@ -432,11 +432,18 @@ class Article(Base, OrmFightForBase):
         back_populates="articles"
     )
 
-    # Relationship to a list of `Author` records.
+    # Relationship to a list of `Affiliation` records.
     affiliations = sqlalchemy.orm.relationship(
         argument="Affiliation",
         secondary="pubmed.article_author_affiliations",
         back_populates="articles",
+    )
+
+    # Relationship to a list of `AffiliationCanonical` records.
+    affiliations_canonical = sqlalchemy.orm.relationship(
+        argument="AffiliationCanonical",
+        secondary="pubmed.article_author_affiliations",
+        back_populates="articles"
     )
 
     # Set table arguments.
