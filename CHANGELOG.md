@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.12.1
+
+- Fixed bug in the `iodu_study_facility` method of the `DalClinicalTrials` class.
+
 ### v0.12.0
 
 - Added a new ORM `AffiliationCanonical` class which will be used to store canonicalized affiliations.

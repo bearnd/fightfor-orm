@@ -403,7 +403,7 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `Location` record.
         """
-        
+
         # Assemble a PostGIS coordinates point if coordinates have been defined.
         coordinates = None
         if coordinate_latitude and coordinate_longitude:
@@ -2583,7 +2583,7 @@ class DalClinicalTrials(DalFightForBase):
         obj.facility_canonical_id = facility_canonical_id
 
         statement = insert(
-            StudyMeshTerm,
+            StudyFacility,
             values={
                 "study_id": obj.study_id,
                 "facility_id": obj.facility_id,
