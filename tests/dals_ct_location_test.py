@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from fform.orm_ct import Location
-from fform.orm_ct import RecruitmentStatusType
+from fform.orm_ct import EnumRecruitmentStatus
 
 from tests.bases import DalCtTestBase
 
@@ -76,7 +76,7 @@ class DalCtLocationTest(DalCtTestBase):
         # IODU a new `Location` record.
         obj_id = self.dal.iodu_location(
             facility_id=facility_id,
-            status=RecruitmentStatusType.RECRUITING,
+            status=EnumRecruitmentStatus.RECRUITING,
             contact_primary_id=contact_id_01,
             contact_backup_id=contact_id_02
         )
@@ -89,7 +89,7 @@ class DalCtLocationTest(DalCtTestBase):
         # Assert that the different fields of the record match.
         self.assertEqual(obj.location_id, 1)
         self.assertEqual(obj.facility_id, facility_id)
-        self.assertEqual(obj.status, RecruitmentStatusType.RECRUITING)
+        self.assertEqual(obj.status, EnumRecruitmentStatus.RECRUITING)
         self.assertEqual(obj.contact_primary_id, contact_id_01)
         self.assertEqual(obj.contact_backup_id, contact_id_02)
 
@@ -108,7 +108,7 @@ class DalCtLocationTest(DalCtTestBase):
         # IODU a new `Location` record.
         obj_id = self.dal.iodu_location(
             facility_id=facility_id,
-            status=RecruitmentStatusType.RECRUITING,
+            status=EnumRecruitmentStatus.RECRUITING,
             contact_primary_id=contact_id_01,
             contact_backup_id=contact_id_02
         )
@@ -118,7 +118,7 @@ class DalCtLocationTest(DalCtTestBase):
         # IODU the same `Location` record.
         obj_id = self.dal.iodu_location(
             facility_id=facility_id,
-            status=RecruitmentStatusType.RECRUITING,
+            status=EnumRecruitmentStatus.RECRUITING,
             contact_primary_id=contact_id_01,
             contact_backup_id=contact_id_02
         )
@@ -128,13 +128,13 @@ class DalCtLocationTest(DalCtTestBase):
         # Retrieve the new record.
         obj = self.dal.get(Location, obj_id)  # type: Location
 
-        self.assertEqual(obj.status, RecruitmentStatusType.RECRUITING)
+        self.assertEqual(obj.status, EnumRecruitmentStatus.RECRUITING)
 
         # IODU the same `Location` record with a changed `status` field which
         # should trigger an update.
         obj_id = self.dal.iodu_location(
             facility_id=facility_id,
-            status=RecruitmentStatusType.COMPLETED,
+            status=EnumRecruitmentStatus.COMPLETED,
             contact_primary_id=contact_id_01,
             contact_backup_id=contact_id_02
         )
@@ -144,7 +144,7 @@ class DalCtLocationTest(DalCtTestBase):
         # Retrieve the new record.
         obj = self.dal.get(Location, obj_id)  # type: Location
 
-        self.assertEqual(obj.status, RecruitmentStatusType.COMPLETED)
+        self.assertEqual(obj.status, EnumRecruitmentStatus.COMPLETED)
 
         # IODU a new `Location` record.
         obj_id = self.dal.iodu_location(
@@ -181,7 +181,7 @@ class DalCtLocationTest(DalCtTestBase):
         # IODU a new `Location` record.
         obj_id = self.dal.iodu_location(
             facility_id=facility_id,
-            status=RecruitmentStatusType.RECRUITING,
+            status=EnumRecruitmentStatus.RECRUITING,
             contact_primary_id=contact_id_01,
             contact_backup_id=contact_id_02
         )
@@ -211,7 +211,7 @@ class DalCtLocationTest(DalCtTestBase):
         # IODU a new `Location` record.
         obj_id = self.dal.iodu_location(
             facility_id=facility_id,
-            status=RecruitmentStatusType.RECRUITING,
+            status=EnumRecruitmentStatus.RECRUITING,
             contact_primary_id=contact_id_01,
             contact_backup_id=contact_id_02
         )
@@ -222,7 +222,7 @@ class DalCtLocationTest(DalCtTestBase):
         # Assert that the different fields of the record match.
         self.assertEqual(obj_original.location_id, 1)
         self.assertEqual(obj_original.facility_id, facility_id)
-        self.assertEqual(obj_original.status, RecruitmentStatusType.RECRUITING)
+        self.assertEqual(obj_original.status, EnumRecruitmentStatus.RECRUITING)
         self.assertEqual(obj_original.contact_primary_id, contact_id_01)
         self.assertEqual(obj_original.contact_backup_id, contact_id_02)
 
@@ -231,7 +231,7 @@ class DalCtLocationTest(DalCtTestBase):
             Location,
             obj_id,
             "status",
-            RecruitmentStatusType.COMPLETED,
+            EnumRecruitmentStatus.COMPLETED,
         )
 
         # Retrieve the updated record.
@@ -240,4 +240,4 @@ class DalCtLocationTest(DalCtTestBase):
         # Assert that the ID remained the same.
         self.assertEqual(obj_updated.location_id, 1)
         # Assert that attribute changed.
-        self.assertEqual(obj_updated.status, RecruitmentStatusType.COMPLETED)
+        self.assertEqual(obj_updated.status, EnumRecruitmentStatus.COMPLETED)
