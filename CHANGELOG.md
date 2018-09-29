@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.12.2
+
+- Updated the enumeration classes so that their values are lowercased and are using underscores instead of dashes. This is so that the values match those in PostgreSQL.
+
 ### v0.12.1
 
 - Fixed bug in the `iodu_study_facility` method of the `DalClinicalTrials` class.
