@@ -39,11 +39,11 @@ from fform.orm_mt import SupplementalConcept
 from fform.orm_mt import SupplementalPreviousIndexing
 from fform.orm_mt import SupplementalPharmacologicalActionDescriptor
 from fform.orm_mt import SupplementalSource
-from fform.orm_mt import EnumRelationName
-from fform.orm_mt import EnumLexicalTag
-from fform.orm_mt import EnumEntryCombination
-from fform.orm_mt import EnumDescriptorClass
-from fform.orm_mt import EnumSupplementalClass
+from fform.orm_mt import RelationNameType
+from fform.orm_mt import LexicalTagType
+from fform.orm_mt import EntryCombinationType
+from fform.orm_mt import DescriptorClassType
+from fform.orm_mt import SupplementalClassType
 from fform.orm_mt import DescriptorSynonym
 from fform.orm_mt import QualifierSynonym
 from fform.orm_mt import ConceptSynonym
@@ -363,7 +363,7 @@ class DalMesh(DalFightForBase):
         self,
         concept_id: int,
         related_concept_id: int,
-        relation_name: EnumRelationName,
+        relation_name: RelationNameType,
         session: sqlalchemy.orm.Session = None,
     ) -> int:
         """Creates a new `ConceptRelatedConcept` record in an IODU manner.
@@ -372,7 +372,7 @@ class DalMesh(DalFightForBase):
             concept_id (int): The linked `Concept` record primary-key ID.
             related_concept_id (int): The related linked `Concept` record
                 primary-key ID.
-            relation_name (EnumRelationName): The relation name type.
+            relation_name (RelationNameType): The relation name type.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
@@ -419,7 +419,7 @@ class DalMesh(DalFightForBase):
         term_id: int,
         is_concept_preferred_term: bool,
         is_permuted_term: bool,
-        lexical_tag: EnumLexicalTag,
+        lexical_tag: LexicalTagType,
         is_record_preferred_term: bool,
         session: sqlalchemy.orm.Session = None,
     ) -> int:
@@ -431,7 +431,7 @@ class DalMesh(DalFightForBase):
             is_concept_preferred_term (bool): Whether the term is the preferred
                 one for the concept.
             is_permuted_term (bool): Whether the term is permuted.
-            lexical_tag (EnumLexicalTag): The term's lexical tag type.
+            lexical_tag (LexicalTagType): The term's lexical tag type.
             is_record_preferred_term (bool): Whether the term is the preferred
                 one for the record.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
@@ -704,7 +704,7 @@ class DalMesh(DalFightForBase):
         self,
         descriptor_id: int,
         qualifier_id: int,
-        combination_type: EnumEntryCombination,
+        combination_type: EntryCombinationType,
         session: sqlalchemy.orm.Session = None,
     ) -> int:
         """Creates a new `EntryCombination` record in an IODU manner.
@@ -712,7 +712,7 @@ class DalMesh(DalFightForBase):
         Args:
             descriptor_id (int): The linked `Descriptor` record primary-key ID.
             qualifier_id (int): The linked `Qualifier` record primary-key ID.
-            combination_type (EnumEntryCombination): The type of
+            combination_type (EntryCombinationType): The type of
                 entry-combination. This only applies to combinations in
                 `<EntryCombination>` elements.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
@@ -757,7 +757,7 @@ class DalMesh(DalFightForBase):
     @with_session_scope()
     def iodu_descriptor(
         self,
-        descriptor_class: EnumDescriptorClass,
+        descriptor_class: DescriptorClassType,
         ui: str,
         name: str,
         created: datetime.date,
@@ -774,7 +774,7 @@ class DalMesh(DalFightForBase):
         """Creates a new `Descriptor` record in an IODU manner.
 
         Args:
-            descriptor_class (EnumDescriptorClass): The descriptor class type.
+            descriptor_class (DescriptorClassType): The descriptor class type.
             ui (str): The descriptor UI.
             name (str): The descriptor name.
             created (datetime.date): The date the descriptor was created.
@@ -1239,7 +1239,7 @@ class DalMesh(DalFightForBase):
     @with_session_scope()
     def iodu_supplemental(
         self,
-        supplemental_class: EnumSupplementalClass,
+        supplemental_class: SupplementalClassType,
         ui: str,
         name: str,
         created: datetime.date,
@@ -1251,7 +1251,7 @@ class DalMesh(DalFightForBase):
         """Creates a new `Supplemental` record in an IODU manner.
 
         Args:
-            supplemental_class (EnumSupplementalClass): The supplemental class
+            supplemental_class (SupplementalClassType): The supplemental class
                 type.
             ui (str): The supplemental UI.
             name (str): The supplemental name.
