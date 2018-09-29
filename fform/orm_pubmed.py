@@ -12,12 +12,12 @@ class AbstractTextCategory(EnumBase):
     """Enumeration of the values of the `NlmCategory` attribute under the
     `<AbstractText>` element."""
 
-    BACKGROUND = "Background"
-    OBJECTIVE = "Objective"
-    METHODS = "Methods"
-    RESULTS = "Results"
-    CONCLUSIONS = "Conclusions"
-    UNASSIGNED = "Unassigned"
+    BACKGROUND = "background"
+    OBJECTIVE = "objective"
+    METHODS = "methods"
+    RESULTS = "results"
+    CONCLUSIONS = "conclusions"
+    UNASSIGNED = "unassigned"
 
 
 class ArticleIdentifierType(EnumBase):
@@ -40,20 +40,20 @@ class ArticlePubModel(EnumBase):
     """Enumeration of the values of the `PubModel` attribute under the
     `<Article>` element."""
 
-    PRINT = "Print"
-    PRINT_ELECTRONIC = "Print-Electronic"
-    ELECTRONIC = "Electronic"
-    ELECTRONIC_PRINT = "Electronic-Print"
-    ELECTRONIC_ECOLLECTION = "Electronic-eCollection"
+    PRINT = "print"
+    PRINT_ELECTRONIC = "print_electronic"
+    ELECTRONIC = "electronic"
+    ELECTRONIC_PRINT = "electronic_print"
+    ELECTRONIC_ECOLLECTION = "electronic_ecollection"
 
 
 class JournalIssnType(EnumBase):
     """Enumeration of the values of the `IssnType` attribute under the
     `<ISSN>` element."""
 
-    PRINT = "Print"
-    ELECTRONIC = "Electronic"
-    UNDETERMINED = "Undetermined"
+    PRINT = "print"
+    ELECTRONIC = "electronic"
+    UNDETERMINED = "undetermined"
 
 
 class AbstractText(Base, OrmFightForBase):
