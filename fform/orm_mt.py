@@ -1,7 +1,5 @@
 # coding=utf-8
 
-import hashlib
-
 import sqlalchemy.orm
 
 from fform.orm_base import Base
@@ -9,7 +7,7 @@ from fform.orm_base import OrmFightForBase
 from fform.utils import EnumBase
 
 
-class DescriptorClassType(EnumBase):
+class EnumDescriptorClass(EnumBase):
     """Enumeration of the descriptor-class types."""
 
     ONE = "1"
@@ -18,7 +16,7 @@ class DescriptorClassType(EnumBase):
     FOUR = "4"
 
 
-class RelationNameType(EnumBase):
+class EnumRelationName(EnumBase):
     """Enumeration of the relation-name types."""
 
     NRW = "NRW"
@@ -26,7 +24,7 @@ class RelationNameType(EnumBase):
     REL = "REL"
 
 
-class LexicalTagType(EnumBase):
+class EnumLexicalTag(EnumBase):
     """Enumeration of the lexical-tag types."""
 
     ABB = "ABB"
@@ -41,14 +39,14 @@ class LexicalTagType(EnumBase):
     Frelex = "Frelex"
 
 
-class EntryCombinationType(EnumBase):
+class EnumEntryCombination(EnumBase):
     """Enumeration of the entry-combination types."""
 
     ECIN = "ECIN"
     ECOUT = "ECOUT"
 
 
-class SupplementalClassType(EnumBase):
+class EnumSupplementalClass(EnumBase):
     """Enumeration of the supplemental-class types."""
 
     ONE = "1"
@@ -439,7 +437,7 @@ class ConceptRelatedConcept(Base, OrmFightForBase):
     # `<ConceptRelation>` element casted to a boolean.
     relation_name = sqlalchemy.Column(
         name="relation_name",
-        type_=sqlalchemy.types.Enum(RelationNameType),
+        type_=sqlalchemy.types.Enum(EnumRelationName),
         nullable=False,
     )
 
@@ -500,7 +498,7 @@ class ConceptTerm(Base, OrmFightForBase):
     # element casted to a boolean.
     lexical_tag = sqlalchemy.Column(
         name="lexical_tag",
-        type_=sqlalchemy.types.Enum(LexicalTagType),
+        type_=sqlalchemy.types.Enum(EnumLexicalTag),
         nullable=False,
     )
 
@@ -809,7 +807,7 @@ class EntryCombination(Base, OrmFightForBase):
     # element. This only applies to `<EntryCombination>` elements.
     combination_type = sqlalchemy.Column(
         name="type",
-        type_=sqlalchemy.types.Enum(EntryCombinationType),
+        type_=sqlalchemy.types.Enum(EnumEntryCombination),
         nullable=True,
     )
 
@@ -846,7 +844,7 @@ class Descriptor(Base, OrmFightForBase):
     # `<DescriptorRecord>` element.
     descriptor_class = sqlalchemy.Column(
         name="class",
-        type_=sqlalchemy.types.Enum(DescriptorClassType),
+        type_=sqlalchemy.types.Enum(EnumDescriptorClass),
         nullable=False,
     )
 
@@ -1339,7 +1337,7 @@ class Supplemental(Base, OrmFightForBase):
     # `<SupplementalRecord>` element.
     supplemental_class = sqlalchemy.Column(
         name="class",
-        type_=sqlalchemy.types.Enum(SupplementalClassType),
+        type_=sqlalchemy.types.Enum(EnumSupplementalClass),
         nullable=False,
     )
 
