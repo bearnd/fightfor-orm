@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.12.3
+
+- Renamed all enumeration classes to remove the word ‘type’ as it conflicts with auto-generated classes in Graphene-SQLAlchemy.
+
 ### v0.12.2
 
 - Updated the enumeration classes so that their values are lowercased and are using underscores instead of dashes. This is so that the values match those in PostgreSQL.
