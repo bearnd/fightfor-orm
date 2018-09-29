@@ -10,7 +10,7 @@ from fform.orm_base import OrmFightForBase
 from fform.utils import EnumBase
 
 
-class EnumActual(EnumBase):
+class ActualType(EnumBase):
     """Enumeration of the actual types."""
 
     ACTUAL = "Actual"
@@ -18,14 +18,14 @@ class EnumActual(EnumBase):
     ESTIMATE = "Estimate"
 
 
-class EnumYesNo(EnumBase):
+class YesNoType(EnumBase):
     """Enumeration of the yes/no types."""
 
     YES = "Yes"
     NO = "No"
 
 
-class EnumRecruitmentStatus(EnumBase):
+class RecruitmentStatusType(EnumBase):
     """Enumeration of the recruitment-status types."""
 
     ACTIVE_NOT = "Active, not recruiting"
@@ -38,7 +38,7 @@ class EnumRecruitmentStatus(EnumBase):
     WITHDRAWN = "Withdrawn"
 
 
-class EnumAgencyClass(EnumBase):
+class AgencyClassType(EnumBase):
     """Enumeration of the agency-class types."""
 
     NIH = "NIH"
@@ -47,7 +47,7 @@ class EnumAgencyClass(EnumBase):
     OTHER = "Other"
 
 
-class EnumIntervention(EnumBase):
+class InterventionType(EnumBase):
     """Enumeration of the intervention types."""
 
     BEHAVIORAL = "Behavioral"
@@ -63,14 +63,14 @@ class EnumIntervention(EnumBase):
     OTHER = "Other"
 
 
-class EnumSamplingMethod(EnumBase):
+class SamplingMethodType(EnumBase):
     """Enumeration of the sampling-method types."""
 
     PROBABILITY = "Probability Sample"
     NON_PROBABILITY = "Non-Probability Sample"
 
 
-class EnumGender(EnumBase):
+class GenderType(EnumBase):
     """Enumeration of the gender types."""
 
     FEMALE = "Female"
@@ -78,7 +78,7 @@ class EnumGender(EnumBase):
     ALL = "All"
 
 
-class EnumRole(EnumBase):
+class RoleType(EnumBase):
     """Enumeration of the role types."""
 
     PRINCIPAL = "Principal Investigator"
@@ -87,7 +87,7 @@ class EnumRole(EnumBase):
     DIRECTOR = "Study Director"
 
 
-class EnumResponsibleParty(EnumBase):
+class ResponsiblePartyType(EnumBase):
     """Enumeration of the responsible-party types."""
 
     SPONSOR = "Sponsor"
@@ -95,7 +95,7 @@ class EnumResponsibleParty(EnumBase):
     SPONSOR_INVESTIGATOR = "Sponsor-Investigator"
 
 
-class EnumMeasureParameter(EnumBase):
+class MeasureParameterType(EnumBase):
     """Enumeration of the measure-parameter types."""
 
     GEOMETRIC = "Geometric Mean"
@@ -109,7 +109,7 @@ class EnumMeasureParameter(EnumBase):
     UNITS = "Count of Units"
 
 
-class EnumMeasureDispersion(EnumBase):
+class MeasureDispersionType(EnumBase):
     """Enumeration of the measure-dispersion types."""
 
     CI_80 = "80% Confidence Interval"
@@ -124,7 +124,7 @@ class EnumMeasureDispersion(EnumBase):
     SE = "Standard Error"
 
 
-class EnumNonInferiority(EnumBase):
+class NonInferiorityType(EnumBase):
     """Enumeration of the non-inferiority types."""
 
     SUPERIORITY = "Superiority"
@@ -133,21 +133,21 @@ class EnumNonInferiority(EnumBase):
     OTHER = "Other"
 
 
-class EnumNumSides(EnumBase):
+class NumSidesType(EnumBase):
     """Enumeration of the number of sides."""
 
     ONE = "1-Sided"
     TWO = "2-Sided"
 
 
-class EnumAnalysisDispersion(EnumBase):
+class AnalysisDispersionType(EnumBase):
     """Enumeration of the analysis-dispersion types."""
 
     SD = "Standard Deviation"
     SEM = "Standard Error of the Mean"
 
 
-class EnumOutcome(EnumBase):
+class OutcomeType(EnumBase):
     """Enumeration of the outcome types."""
 
     PRIMARY = "Primary"
@@ -156,14 +156,14 @@ class EnumOutcome(EnumBase):
     OTHER = "Other Pre-specified"
 
 
-class EnumEventAssessment(EnumBase):
+class EventAssessmentType(EnumBase):
     """Enumeration of the event-assessment types."""
 
     SYSTEMATIC = "Systematic Assessment"
     NON_SYSTEMATIC = "Non-systematic Assessment"
 
 
-class EnumPiEmployee(EnumBase):
+class PiEmployeeType(EnumBase):
     """Enumeration of the pi-employee types."""
 
     ARE_EMPLOYED = ("All Principal Investigators ARE employed by the "
@@ -172,7 +172,7 @@ class EnumPiEmployee(EnumBase):
                     "organization sponsoring the study.")
 
 
-class EnumExpandedAccessStatus(EnumBase):
+class ExpandedAccessStatusType(EnumBase):
     """Enumeration of the expanded-access-status types."""
 
     AVAILABLE = "Available"
@@ -181,19 +181,19 @@ class EnumExpandedAccessStatus(EnumBase):
     APPROVED = "Approved for marketing"
 
 
-class EnumRedactedRecordStatus(EnumBase):
+class RedactedRecordStatusType(EnumBase):
     """Enumeration of the redacted-record-status types."""
 
     WITHHELD = "Withheld"
 
 
-class EnumUnknownStatus(EnumBase):
+class UnknownStatusType(EnumBase):
     """Enumeration of the unknown-status types."""
 
     UNKNOWN = "Unknown status"
 
 
-class EnumOverallStatus(EnumBase):
+class OverallStatusType(EnumBase):
     """Enumeration of the overall-status types."""
 
     ACTIVE_NOT = "Active, not recruiting"
@@ -212,7 +212,7 @@ class EnumOverallStatus(EnumBase):
     UNKNOWN = "Unknown status"
 
 
-class EnumStudyType(EnumBase):
+class StudyType(EnumBase):
     """Enumeration of the study types."""
 
     EXPANDED = "Expanded Access"
@@ -222,7 +222,7 @@ class EnumStudyType(EnumBase):
     OBSERVATIONAL_PR = "Observational [Patient Registry]"
 
 
-class EnumPhase(EnumBase):
+class PhaseType(EnumBase):
     """Enumeration of the phase types."""
 
     NA = "N/A"
@@ -235,7 +235,7 @@ class EnumPhase(EnumBase):
     PHASE_4 = "Phase 4"
 
 
-class EnumBiospecRetention(EnumBase):
+class BiospecRetentionType(EnumBase):
     """Enumeration of the biospec-retention types."""
 
     NONE = "None Retained"
@@ -243,28 +243,28 @@ class EnumBiospecRetention(EnumBase):
     SAMPLES_WO_DNA = "Samples Without DNA"
 
 
-class EnumSponsor(EnumBase):
+class SponsorType(EnumBase):
     """Enumeration of the sponsor types."""
 
     LEAD = "lead_sponsor"
     COLLABORATOR = "collaborator"
 
 
-class EnumInvestigator(EnumBase):
+class InvestigatorType(EnumBase):
     """Enumeration of the investigator types."""
 
     LOCATION = "location"
     OVERALL = "overall"
 
 
-class EnumReference(EnumBase):
+class ReferenceType(EnumBase):
     """Enumeration of the reference types."""
 
     STANDARD = "Standard"
     RESULTS = "Results"
 
 
-class EnumMeshTerm(EnumBase):
+class MeshTermType(EnumBase):
     """Enumeration of the mesh-term types."""
 
     CONDITION = "Condition"
@@ -295,7 +295,7 @@ class Sponsor(Base, OrmFightForBase):
     # Agency class (value of the `<agency_class>` element).
     agency_class = sqlalchemy.Column(
         name="class",
-        type_=sqlalchemy.types.Enum(EnumAgencyClass),
+        type_=sqlalchemy.types.Enum(AgencyClassType),
         nullable=False,
         default=None,
         index=True
@@ -780,7 +780,7 @@ class Investigator(Base, OrmFightForBase):
     # Investigator role (referring to the `<role>` element).
     role = sqlalchemy.Column(
         name="role",
-        type_=sqlalchemy.types.Enum(EnumRole),
+        type_=sqlalchemy.types.Enum(RoleType),
         nullable=True,
         index=True
     )
@@ -863,7 +863,7 @@ class Location(Base, OrmFightForBase):
     # type).
     status = sqlalchemy.Column(
         name="status",
-        type_=sqlalchemy.types.Enum(EnumRecruitmentStatus),
+        type_=sqlalchemy.types.Enum(RecruitmentStatusType),
         nullable=True,
         index=True
     )
@@ -1232,7 +1232,7 @@ class Enrollment(Base, OrmFightForBase):
     # Referring to the value of the `type` attribute.
     enrollment_type = sqlalchemy.Column(
         name="type",
-        type_=sqlalchemy.types.Enum(EnumActual),
+        type_=sqlalchemy.types.Enum(ActualType),
         nullable=True,
     )
 
@@ -1302,7 +1302,7 @@ class Intervention(Base, OrmFightForBase):
     # Referring to the value of the `<intervention_type>` attribute.
     intervention_type = sqlalchemy.Column(
         name="type",
-        type_=sqlalchemy.types.Enum(EnumIntervention),
+        type_=sqlalchemy.types.Enum(InterventionType),
         nullable=False,
     )
 
@@ -1519,7 +1519,7 @@ class Eligibility(Base, OrmFightForBase):
     # Referring to the value of the `<sampling_method>` attribute.
     sampling_method = sqlalchemy.Column(
         name="sampling_method",
-        type_=sqlalchemy.types.Enum(EnumSamplingMethod),
+        type_=sqlalchemy.types.Enum(SamplingMethodType),
         nullable=True,
     )
 
@@ -1533,7 +1533,7 @@ class Eligibility(Base, OrmFightForBase):
     # Referring to the value of the `<gender>` attribute.
     gender = sqlalchemy.Column(
         name="gender",
-        type_=sqlalchemy.types.Enum(EnumGender),
+        type_=sqlalchemy.types.Enum(GenderType),
         nullable=True,
         index=True,
     )
@@ -1647,7 +1647,7 @@ class ResponsibleParty(Base, OrmFightForBase):
     # Referring to the value of the `<responsible_party_type>` attribute.
     responsible_party_type = sqlalchemy.Column(
         name="type",
-        type_=sqlalchemy.types.Enum(EnumResponsibleParty),
+        type_=sqlalchemy.types.Enum(ResponsiblePartyType),
         nullable=True,
     )
 
@@ -2036,7 +2036,7 @@ class Study(Base, OrmFightForBase):
     # Referring to the value of the `<overall_status>` element.
     overall_status = sqlalchemy.Column(
         name="overall_status",
-        type_=sqlalchemy.types.Enum(EnumOverallStatus),
+        type_=sqlalchemy.types.Enum(OverallStatusType),
         nullable=False,
         index=True
     )
@@ -2044,7 +2044,7 @@ class Study(Base, OrmFightForBase):
     # Referring to the value of the `<last_known_status>` element.
     last_known_status = sqlalchemy.Column(
         name="last_known_status",
-        type_=sqlalchemy.types.Enum(EnumOverallStatus),
+        type_=sqlalchemy.types.Enum(OverallStatusType),
         nullable=True,
         index=True
     )
@@ -2088,7 +2088,7 @@ class Study(Base, OrmFightForBase):
     # Referring to the value of the `<phase>` element.
     phase = sqlalchemy.Column(
         name="phase",
-        type_=sqlalchemy.types.Enum(EnumPhase),
+        type_=sqlalchemy.types.Enum(PhaseType),
         nullable=False,
         index=True
     )
@@ -2096,7 +2096,7 @@ class Study(Base, OrmFightForBase):
     # Referring to the value of the `<study_type>` element.
     study_type = sqlalchemy.Column(
         name="study_type",
-        type_=sqlalchemy.types.Enum(EnumStudyType),
+        type_=sqlalchemy.types.Enum(StudyType),
         nullable=False,
         index=True
     )
@@ -2176,7 +2176,7 @@ class Study(Base, OrmFightForBase):
     # Referring to the value of the `<biospec_retention>` element.
     biospec_retention = sqlalchemy.Column(
         name="biospec_retention",
-        type_=sqlalchemy.types.Enum(EnumBiospecRetention),
+        type_=sqlalchemy.types.Enum(BiospecRetentionType),
         nullable=True,
         index=True
     )
@@ -2400,7 +2400,7 @@ class StudySponsor(Base, OrmFightForBase):
     # Sponsor type (defined by the name of the element of `<sponsor>` type.
     sponsor_type = sqlalchemy.Column(
         name="type",
-        type_=sqlalchemy.types.Enum(EnumSponsor),
+        type_=sqlalchemy.types.Enum(SponsorType),
         nullable=False,
         index=True
     )
@@ -2447,7 +2447,7 @@ class StudyOutcome(Base, OrmFightForBase):
     # Referring to the type of outcome.
     outcome_type = sqlalchemy.Column(
         name="type",
-        type_=sqlalchemy.types.Enum(EnumOutcome),
+        type_=sqlalchemy.types.Enum(OutcomeType),
         nullable=False,
         index=True
     )
@@ -2677,7 +2677,7 @@ class StudyReference(Base, OrmFightForBase):
     # Referring to the type of reference.
     reference_type = sqlalchemy.Column(
         name="type",
-        type_=sqlalchemy.types.Enum(EnumReference),
+        type_=sqlalchemy.types.Enum(ReferenceType),
         nullable=False,
         index=True
     )
@@ -2759,7 +2759,7 @@ class StudyMeshTerm(Base, OrmFightForBase):
     # Referring to the type of mesh-term.
     mesh_term_type = sqlalchemy.Column(
         name="type",
-        type_=sqlalchemy.types.Enum(EnumMeshTerm),
+        type_=sqlalchemy.types.Enum(MeshTermType),
         nullable=False,
         index=True
     )

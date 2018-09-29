@@ -8,7 +8,7 @@ from fform.orm_base import OrmFightForBase
 from fform.utils import EnumBase
 
 
-class EnumAbstractTextCategory(EnumBase):
+class AbstractTextCategory(EnumBase):
     """Enumeration of the values of the `NlmCategory` attribute under the
     `<AbstractText>` element."""
 
@@ -20,7 +20,7 @@ class EnumAbstractTextCategory(EnumBase):
     UNASSIGNED = "unassigned"
 
 
-class EnumArticleIdentifier(EnumBase):
+class ArticleIdentifierType(EnumBase):
     """Enumeration of the values of the `IdType` attribute under the
     `<ArticleId>` element."""
 
@@ -36,7 +36,7 @@ class EnumArticleIdentifier(EnumBase):
     PMCID = "pmcid"
 
 
-class EnumArticlePubModel(EnumBase):
+class ArticlePubModel(EnumBase):
     """Enumeration of the values of the `PubModel` attribute under the
     `<Article>` element."""
 
@@ -47,7 +47,7 @@ class EnumArticlePubModel(EnumBase):
     ELECTRONIC_ECOLLECTION = "electronic_ecollection"
 
 
-class EnumJournalIssnType(EnumBase):
+class JournalIssnType(EnumBase):
     """Enumeration of the values of the `IssnType` attribute under the
     `<ISSN>` element."""
 
@@ -82,9 +82,9 @@ class AbstractText(Base, OrmFightForBase):
     # `<AbstractText>` element).
     category = sqlalchemy.Column(
         name="category",
-        type_=sqlalchemy.types.Enum(EnumAbstractTextCategory),
+        type_=sqlalchemy.types.Enum(AbstractTextCategory),
         nullable=True,
-        default=EnumAbstractTextCategory.UNASSIGNED,
+        default=AbstractTextCategory.UNASSIGNED,
         index=True
     )
 
@@ -329,7 +329,7 @@ class Article(Base, OrmFightForBase):
     # `<Article>` element).
     publication_model = sqlalchemy.Column(
         name="publication_model",
-        type_=sqlalchemy.types.Enum(EnumArticlePubModel),
+        type_=sqlalchemy.types.Enum(ArticlePubModel),
         nullable=True,
         default=None,
     )
@@ -795,7 +795,7 @@ class CitationIdentifier(Base, OrmFightForBase):
     # element).
     identifier_type = sqlalchemy.Column(
         name="identifier_type",
-        type_=sqlalchemy.types.Enum(EnumArticleIdentifier),
+        type_=sqlalchemy.types.Enum(ArticleIdentifierType),
         nullable=False,
         index=True,
     )
@@ -1389,9 +1389,9 @@ class Journal(Base, OrmFightForBase):
     # ISSN type (referring to the `IssnType` attribute of the `<ISSN>` element).
     issn_type = sqlalchemy.Column(
         name="issn_type",
-        type_=sqlalchemy.types.Enum(EnumJournalIssnType),
+        type_=sqlalchemy.types.Enum(JournalIssnType),
         nullable=True,
-        default=EnumJournalIssnType.UNDETERMINED
+        default=JournalIssnType.UNDETERMINED
     )
 
     # Full journal title (referring to the `<Title>` element).

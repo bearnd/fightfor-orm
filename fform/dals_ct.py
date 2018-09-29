@@ -24,7 +24,7 @@ from fform.orm_ct import ExpandedAccessInfo
 from fform.orm_ct import StudyDesignInfo
 from fform.orm_ct import ProtocolOutcome
 from fform.orm_ct import Enrollment
-from fform.orm_ct import EnumActual
+from fform.orm_ct import ActualType
 from fform.orm_ct import ArmGroup
 from fform.orm_ct import Intervention
 from fform.orm_ct import Alias
@@ -50,21 +50,21 @@ from fform.orm_ct import StudyKeyword
 from fform.orm_ct import StudyMeshTerm
 from fform.orm_ct import StudyStudyDoc
 from fform.orm_ct import StudyDates
-from fform.orm_ct import EnumAgencyClass
-from fform.orm_ct import EnumSponsor
-from fform.orm_ct import EnumRole
-from fform.orm_ct import EnumRecruitmentStatus
-from fform.orm_ct import EnumOutcome
-from fform.orm_ct import EnumIntervention
-from fform.orm_ct import EnumSamplingMethod
-from fform.orm_ct import EnumGender
-from fform.orm_ct import EnumResponsibleParty
-from fform.orm_ct import EnumOverallStatus
-from fform.orm_ct import EnumPhase
-from fform.orm_ct import EnumStudyType
-from fform.orm_ct import EnumBiospecRetention
-from fform.orm_ct import EnumMeshTerm
-from fform.orm_ct import EnumReference
+from fform.orm_ct import AgencyClassType
+from fform.orm_ct import SponsorType
+from fform.orm_ct import RoleType
+from fform.orm_ct import RecruitmentStatusType
+from fform.orm_ct import OutcomeType
+from fform.orm_ct import InterventionType
+from fform.orm_ct import SamplingMethodType
+from fform.orm_ct import GenderType
+from fform.orm_ct import ResponsiblePartyType
+from fform.orm_ct import OverallStatusType
+from fform.orm_ct import PhaseType
+from fform.orm_ct import StudyType
+from fform.orm_ct import BiospecRetentionType
+from fform.orm_ct import MeshTermType
+from fform.orm_ct import ReferenceType
 from fform.orm_ct import FacilityCanonical
 from fform.orm_ct import StudyFacility
 from fform.utils import return_first_item
@@ -97,14 +97,14 @@ class DalClinicalTrials(DalFightForBase):
     def iodi_sponsor(
         self,
         agency: str,
-        agency_class: EnumAgencyClass,
+        agency_class: AgencyClassType,
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
         """Creates a new `Sponsor` record in an IODI manner.
 
         Args:
             agency (str): The sponsor agency.
-            agency_class (EnumAgencyClass): An enumeration member denoting the
+            agency_class (AgencyClassType): An enumeration member denoting the
                 sponsor agency class.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
@@ -663,7 +663,7 @@ class DalClinicalTrials(DalFightForBase):
     def iodi_investigator(
         self,
         person_id: int,
-        role: Union[EnumRole, None],
+        role: Union[RoleType, None],
         affiliation: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
@@ -671,7 +671,7 @@ class DalClinicalTrials(DalFightForBase):
 
         Args:
             person_id (int): The linked `Person` record primary-key ID.
-            role (EnumRole): The investigator role-type.
+            role (RoleType): The investigator role-type.
             affiliation (str): The investigator affiliation.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
@@ -717,7 +717,7 @@ class DalClinicalTrials(DalFightForBase):
     def iodu_location(
         self,
         facility_id: Union[int, None],
-        status: Union[EnumRecruitmentStatus, None],
+        status: Union[RecruitmentStatusType, None],
         contact_primary_id: Union[int, None],
         contact_backup_id: Union[int, None],
         session: Optional[sqlalchemy.orm.Session] = None,
@@ -726,7 +726,7 @@ class DalClinicalTrials(DalFightForBase):
 
         Args:
             facility_id (int): The linked `Facility` record primary-key ID.
-            status (EnumRole): The location recruitment-status-type.
+            status (RoleType): The location recruitment-status-type.
             contact_primary_id (str): The linked primary `Contact` record.
             contact_backup_id (str): The linked backup `Contact` record.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
@@ -1039,14 +1039,14 @@ class DalClinicalTrials(DalFightForBase):
     def iodi_enrollment(
         self,
         value: str,
-        enrollment_type: Union[EnumActual, None],
+        enrollment_type: Union[ActualType, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
         """Creates a new `Enrollment` record in an IODI manner.
 
         Args:
             value (str): The enrollment value.
-            enrollment_type (EnumActual): The enrollment type.
+            enrollment_type (ActualType): The enrollment type.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
@@ -1118,7 +1118,7 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def iodi_intervention(
         self,
-        intervention_type: EnumIntervention,
+        intervention_type: InterventionType,
         name: str,
         description: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
@@ -1126,7 +1126,7 @@ class DalClinicalTrials(DalFightForBase):
         """Creates a new `Intervention` record in an IODI manner.
 
         Args:
-            intervention_type (EnumIntervention): The intervention type.
+            intervention_type (InterventionType): The intervention type.
             name (str): The intervention name.
             description (str): The intervention description.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
@@ -1317,9 +1317,9 @@ class DalClinicalTrials(DalFightForBase):
     def iodi_eligibility(
         self,
         study_pop: Union[str, None],
-        sampling_method: Union[EnumSamplingMethod, None],
+        sampling_method: Union[SamplingMethodType, None],
         criteria: Union[str, None],
-        gender: Union[EnumGender, None],
+        gender: Union[GenderType, None],
         gender_based: Union[bool, None],
         gender_description: Union[str, None],
         minimum_age: Union[str, None],
@@ -1331,10 +1331,10 @@ class DalClinicalTrials(DalFightForBase):
 
         Args:
             study_pop (str): The eligibility study population.
-            sampling_method (EnumSamplingMethod): The eligibility sampling
+            sampling_method (SamplingMethodType): The eligibility sampling
                 method type.
             criteria (str): The eligibility study population.
-            gender (EnumGender): The eligibility gender-type.
+            gender (GenderType): The eligibility gender-type.
             gender_based (bool): Whether the study is gender-based.
             gender_description (str): The eligibility gender description.
             minimum_age (str): The eligibility minimum-age.
@@ -1439,7 +1439,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         name_title: Union[str, None],
         organization: Union[str, None],
-        responsible_party_type: Union[EnumResponsibleParty, None],
+        responsible_party_type: Union[ResponsiblePartyType, None],
         investigator_affiliation: Union[str, None],
         investigator_full_name: Union[str, None],
         investigator_title: Union[str, None],
@@ -1450,7 +1450,7 @@ class DalClinicalTrials(DalFightForBase):
         Args:
             name_title (str): The name/title of the responsible party.
             organization (str): The organization of the responsible party.
-            responsible_party_type (EnumResponsibleParty): The type of the
+            responsible_party_type (ResponsiblePartyType): The type of the
                 responsible party.
             investigator_affiliation (str): The investigator affiliation of the
                 responsible party.
@@ -1728,20 +1728,20 @@ class DalClinicalTrials(DalFightForBase):
         oversight_info_id: Union[int, None],
         brief_summary: Union[str, None],
         detailed_description: Union[str, None],
-        overall_status:  EnumOverallStatus,
-        last_known_status: Union[EnumOverallStatus, None],
+        overall_status:  OverallStatusType,
+        last_known_status: Union[OverallStatusType, None],
         why_stopped: Union[str, None],
         start_date: Union[datetime.date, None],
         completion_date: Union[datetime.date, None],
         primary_completion_date: Union[datetime.date, None],
         verification_date: Union[datetime.date, None],
-        phase: EnumPhase,
-        study_type: EnumStudyType,
+        phase: PhaseType,
+        study_type: StudyType,
         expanded_access_info_id: Union[int, None],
         study_design_info_id: Union[int, None],
         target_duration: Union[str, None],
         enrollment_id: Union[int, None],
-        biospec_retention: Union[EnumBiospecRetention, None],
+        biospec_retention: Union[BiospecRetentionType, None],
         biospec_description: Union[str, None],
         eligibility_id: Union[int, None],
         contact_primary_id: Union[int, None],
@@ -1766,7 +1766,7 @@ class DalClinicalTrials(DalFightForBase):
             brief_summary (str): The brief study summary.
             detailed_description (str): The detailed summary description.
             overall_status: (OverallStatusType): The study overall status.
-            last_known_status (EnumOverallStatus): THe study last-known status.
+            last_known_status (OverallStatusType): THe study last-known status.
             why_stopped (str): Why the study was stopped (if applicable).
             start_date: (datetime.date): The date the study will start.
             completion_date: (datetime.date): The date the study will be
@@ -1775,15 +1775,15 @@ class DalClinicalTrials(DalFightForBase):
                 primary-completion.
             verification_date: (datetime.date): The date the study will be
                 verified.
-            phase (EnumPhase): The study phase.
-            study_type (EnumStudyType): The study type.
+            phase (PhaseType): The study phase.
+            study_type (StudyType): The study type.
             expanded_access_info_id (int): The linked `ExpandedAccessInfo`
                 record primary-key ID.
             study_design_info_id (int): The linked `StudyDesignInfo` record
                 primary-key ID.
             target_duration (str): The study target duration.
             enrollment_id (int): The linked `Enrollment` record primary-key ID.
-            biospec_retention (EnumBiospecRetention): The study
+            biospec_retention (BiospecRetentionType): The study
                 biospec-retention type.
             biospec_description (str): The study biospec description.
             eligibility_id (int): The linked `Eligibility` record
@@ -1979,7 +1979,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         study_id: int,
         sponsor_id: int,
-        sponsor_type: EnumSponsor,
+        sponsor_type: SponsorType,
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
         """Creates a new `StudySponsor` record in an IODU manner.
@@ -1987,7 +1987,7 @@ class DalClinicalTrials(DalFightForBase):
         Args:
             study_id (int): The linked `Study` record primary-key ID.
             sponsor_id (int): The linked `Sponsor` record primary-key ID.
-            sponsor_type (EnumSponsor): An enumeration member denoting the
+            sponsor_type (SponsorType): An enumeration member denoting the
                 sponsor type.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
@@ -2038,7 +2038,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         study_id: int,
         protocol_outcome_id: int,
-        outcome_type: EnumOutcome,
+        outcome_type: OutcomeType,
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
         """Creates a new `StudyOutcome` record in an IODU manner.
@@ -2047,7 +2047,7 @@ class DalClinicalTrials(DalFightForBase):
             study_id (int): The linked `Study` record primary-key ID.
             protocol_outcome_id (int): The linked `Outcome` record primary-key
                 ID.
-            outcome_type (EnumOutcome): The linked `Outcome` type.
+            outcome_type (OutcomeType): The linked `Outcome` type.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
@@ -2344,7 +2344,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         study_id: int,
         reference_id: int,
-        reference_type: EnumReference,
+        reference_type: ReferenceType,
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
         """Creates a new `StudyReference` record in an IODU manner.
@@ -2352,7 +2352,7 @@ class DalClinicalTrials(DalFightForBase):
         Args:
             study_id (int): The linked `Study` record primary-key ID.
             reference_id (int): The linked `Reference` record primary-key ID.
-            reference_type (EnumReference): The reference type.
+            reference_type (ReferenceType): The reference type.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
@@ -2451,7 +2451,7 @@ class DalClinicalTrials(DalFightForBase):
         self,
         study_id: int,
         mesh_term_id: int,
-        mesh_term_type: EnumMeshTerm,
+        mesh_term_type: MeshTermType,
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
         """Creates a new `StudyMeshTerm` record in an IODU manner.
@@ -2459,7 +2459,7 @@ class DalClinicalTrials(DalFightForBase):
         Args:
             study_id (int): The linked `Study` record primary-key ID.
             mesh_term_id (int): The linked `MeshTerm` record primary-key ID.
-            mesh_term_type (EnumMeshTerm): The mesh-term type.
+            mesh_term_type (MeshTermType): The mesh-term type.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
