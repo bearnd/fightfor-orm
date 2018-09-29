@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from fform.orm_ct import Intervention
-from fform.orm_ct import EnumIntervention
+from fform.orm_ct import InterventionType
 
 from tests.bases import DalCtTestBase
 
@@ -15,7 +15,7 @@ class DalCtInterventionTest(DalCtTestBase):
 
         # IODI a new `Intervention` record.
         obj_id = self.dal.iodi_intervention(
-            intervention_type=EnumIntervention.DEVICE,
+            intervention_type=InterventionType.DEVICE,
             name="Whole body hyperthermia unit",
             description=None,
         )
@@ -27,7 +27,7 @@ class DalCtInterventionTest(DalCtTestBase):
 
         # Assert that the different fields of the record match.
         self.assertEqual(obj.intervention_id, 1)
-        self.assertEqual(obj.intervention_type, EnumIntervention.DEVICE)
+        self.assertEqual(obj.intervention_type, InterventionType.DEVICE)
         self.assertEqual(obj.name, "Whole body hyperthermia unit")
         self.assertEqual(obj.description, None)
 
@@ -37,7 +37,7 @@ class DalCtInterventionTest(DalCtTestBase):
 
         # IODI a new `Intervention` record.
         obj_id = self.dal.iodi_intervention(
-            intervention_type=EnumIntervention.DEVICE,
+            intervention_type=InterventionType.DEVICE,
             name="Whole body hyperthermia unit",
             description=None,
         )
@@ -46,7 +46,7 @@ class DalCtInterventionTest(DalCtTestBase):
 
         # IODI an identical `Intervention` record.
         obj_id = self.dal.iodi_intervention(
-            intervention_type=EnumIntervention.DEVICE,
+            intervention_type=InterventionType.DEVICE,
             name="Whole body hyperthermia unit",
             description=None,
         )
@@ -55,7 +55,7 @@ class DalCtInterventionTest(DalCtTestBase):
 
         # IODI a new `Intervention` record.
         obj_id = self.dal.iodi_intervention(
-            intervention_type=EnumIntervention.DRUG,
+            intervention_type=InterventionType.DRUG,
             name="Topical ocular hypotensive eye drops.",
             description="Topical ocular hypotensive eye drops.",
         )
@@ -65,7 +65,7 @@ class DalCtInterventionTest(DalCtTestBase):
         # IODI the same `Intervention` record as before only with different
         # casing.
         obj_id = self.dal.iodi_intervention(
-            intervention_type=EnumIntervention.DRUG,
+            intervention_type=InterventionType.DRUG,
             name="tOpical Ocular hypotensivE eYe drops.",
             description="Topical OCULAR hypotensive eye drops.",
         )
@@ -78,7 +78,7 @@ class DalCtInterventionTest(DalCtTestBase):
 
         # IODI a new `Intervention` record.
         obj_id = self.dal.iodi_intervention(
-            intervention_type=EnumIntervention.DEVICE,
+            intervention_type=InterventionType.DEVICE,
             name="Whole body hyperthermia unit",
             description=None,
         )

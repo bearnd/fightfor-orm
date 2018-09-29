@@ -18,7 +18,7 @@ from fform.orm_pubmed import PmDescriptor
 from fform.orm_pubmed import PmQualifier
 from fform.orm_pubmed import PublicationType
 from fform.orm_pubmed import Journal
-from fform.orm_pubmed import EnumJournalIssnType
+from fform.orm_pubmed import JournalIssnType
 from fform.orm_pubmed import JournalInfo
 from fform.orm_pubmed import Grant
 from fform.orm_pubmed import Databank
@@ -31,11 +31,11 @@ from fform.orm_pubmed import CitationChemical
 from fform.orm_pubmed import CitationDescriptorQualifier
 from fform.orm_pubmed import CitationIdentifier
 from fform.orm_pubmed import CitationKeyword
-from fform.orm_pubmed import EnumArticleIdentifier
+from fform.orm_pubmed import ArticleIdentifierType
 from fform.orm_pubmed import ArticlePublicationType
 from fform.orm_pubmed import AbstractText
-from fform.orm_pubmed import EnumAbstractTextCategory
-from fform.orm_pubmed import EnumArticlePubModel
+from fform.orm_pubmed import AbstractTextCategory
+from fform.orm_pubmed import ArticlePubModel
 from fform.orm_pubmed import Article
 from fform.orm_pubmed import Citation
 from fform.orm_pubmed import AffiliationCanonical
@@ -662,7 +662,7 @@ class DalPubmed(DalFightForBase):
     def biodi_citation_identifiers(
         self,
         citation_id: int,
-        identifier_types: List[EnumArticleIdentifier],
+        identifier_types: List[ArticleIdentifierType],
         identifiers: List[str],
         session=None,
     ) -> None:
@@ -737,7 +737,7 @@ class DalPubmed(DalFightForBase):
     def biodi_abstract_texts(
         self,
         labels: str,
-        categories: List[EnumAbstractTextCategory],
+        categories: List[AbstractTextCategory],
         texts: List[str],
         md5s: List[str],
         session=None,
@@ -811,7 +811,7 @@ class DalPubmed(DalFightForBase):
     def iodi_journal(
         self,
         issn: str,
-        issn_type: EnumJournalIssnType,
+        issn_type: JournalIssnType,
         title: str,
         abbreviation: str,
         md5: str,
@@ -849,7 +849,7 @@ class DalPubmed(DalFightForBase):
         publication_month: int,
         publication_day: int,
         date_published: datetime.date,
-        publication_model: EnumArticlePubModel,
+        publication_model: ArticlePubModel,
         journal_id: int,
         journal_volume: str,
         journal_issue: str,

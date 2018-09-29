@@ -3,7 +3,7 @@
 import sqlalchemy.exc
 
 from fform.orm_ct import Sponsor
-from fform.orm_ct import EnumAgencyClass
+from fform.orm_ct import AgencyClassType
 
 from tests.bases import DalCtTestBase
 
@@ -18,7 +18,7 @@ class DalCtSponsorTest(DalCtTestBase):
         # IODI a new `Sponsor` record.
         obj_id = self.dal.iodi_sponsor(
             agency="National Center for Research Resources (NCRR)",
-            agency_class=EnumAgencyClass.INDUSTRY
+            agency_class=AgencyClassType.INDUSTRY
         )
 
         self.assertEqual(obj_id, 1)
@@ -32,7 +32,7 @@ class DalCtSponsorTest(DalCtTestBase):
             obj.agency,
             "National Center for Research Resources (NCRR)"
         )
-        self.assertEqual(obj.agency_class, EnumAgencyClass.INDUSTRY)
+        self.assertEqual(obj.agency_class, AgencyClassType.INDUSTRY)
 
     def test_iodi_sponsor_duplicate(self):
         """Tests the IODI insertion of duplicate `Sponsor` records to ensure
@@ -41,7 +41,7 @@ class DalCtSponsorTest(DalCtTestBase):
         # IODI a `Sponsor` record.
         obj_id = self.dal.iodi_sponsor(
             agency="Johns Hopkins Bloomberg School of Public Health",
-            agency_class=EnumAgencyClass.OTHER
+            agency_class=AgencyClassType.OTHER
         )
 
         # The PK should be `1` as this is the first record.
@@ -50,7 +50,7 @@ class DalCtSponsorTest(DalCtTestBase):
         # IODI the same `Sponsor` record as before.
         obj_id = self.dal.iodi_sponsor(
             agency="Johns Hopkins Bloomberg School of Public Health",
-            agency_class=EnumAgencyClass.OTHER
+            agency_class=AgencyClassType.OTHER
         )
 
         # The PK should still be `1` as the record was identical thus no
@@ -60,7 +60,7 @@ class DalCtSponsorTest(DalCtTestBase):
         # IODI a new `Sponsor` record (different `agency` and `agency_class`).
         obj_id = self.dal.iodi_sponsor(
             agency="National Center for Research Resources (NCRR)",
-            agency_class=EnumAgencyClass.NIH
+            agency_class=AgencyClassType.NIH
         )
 
         # The PK should be `3` as the previous failed INSERT will have
@@ -71,7 +71,7 @@ class DalCtSponsorTest(DalCtTestBase):
         # different `agency_class`).
         obj_id = self.dal.iodi_sponsor(
             agency="National Center for Research Resources (NCRR)",
-            agency_class=EnumAgencyClass.INDUSTRY
+            agency_class=AgencyClassType.INDUSTRY
         )
 
         # The PK should be `4` as the different `agency_class` should designate
@@ -85,7 +85,7 @@ class DalCtSponsorTest(DalCtTestBase):
         # IODI a new `Sponsor` record.
         obj_id = self.dal.iodi_sponsor(
             agency="National Center for Research Resources (NCRR)",
-            agency_class=EnumAgencyClass.INDUSTRY
+            agency_class=AgencyClassType.INDUSTRY
         )
 
         self.assertEqual(obj_id, 1)
