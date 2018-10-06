@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.12.5
+
+- Added new indices to foreign keys.
+
 ### v0.12.4
 
 - Revert "Renamed all enumeration classes to remove the word ‘type’ as it conflicts with auto-generated classes in Graphene-SQLAlchemy."
