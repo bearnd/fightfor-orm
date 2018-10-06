@@ -1557,6 +1557,7 @@ class Eligibility(Base, OrmFightForBase):
         name="minimum_age",
         type_=sqlalchemy.types.Unicode(),
         nullable=True,
+        index=True,
     )
 
     # Referring to the value of the `<maximum_age>` element.
@@ -1564,6 +1565,7 @@ class Eligibility(Base, OrmFightForBase):
         name="maximum_age",
         type_=sqlalchemy.types.Unicode(),
         nullable=True,
+        index=True,
     )
 
     # Referring to the value of the `<healthy_volunteers>` element.
@@ -2480,6 +2482,7 @@ class StudyCondition(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
+        index=True,
     )
 
     # Foreign key to the condition ID.
@@ -2487,6 +2490,7 @@ class StudyCondition(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.conditions.condition_id"),
         name="condition_id",
         nullable=False,
+        index=True,
     )
 
     # Set table arguments.
@@ -2554,6 +2558,7 @@ class StudyIntervention(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
+        index=True,
     )
 
     # Foreign key to the intervention ID.
@@ -2561,6 +2566,7 @@ class StudyIntervention(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.interventions.intervention_id"),
         name="intervention_id",
         nullable=False,
+        index=True,
     )
 
     # Set table arguments.
@@ -2747,6 +2753,7 @@ class StudyMeshTerm(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
+        index=True,
     )
 
     # Foreign key to the mesh-term ID.
@@ -2754,6 +2761,7 @@ class StudyMeshTerm(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.mesh_terms.mesh_term_id"),
         name="mesh_term_id",
         nullable=False,
+        index=True,
     )
 
     # Referring to the type of mesh-term.
@@ -3121,6 +3129,7 @@ class StudyFacility(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
         name="study_id",
         nullable=False,
+        index=True,
     )
 
     # Foreign key to the facility ID.
@@ -3128,6 +3137,7 @@ class StudyFacility(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.facilities.facility_id"),
         name="facility_id",
         nullable=False,
+        index=True,
     )
 
     # Foreign key to the canonical facility ID.
@@ -3137,6 +3147,7 @@ class StudyFacility(Base, OrmFightForBase):
         ),
         name="facility_canonical_id",
         nullable=True,
+        index=True,
     )
 
     # Set table arguments.
