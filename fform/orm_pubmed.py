@@ -530,21 +530,24 @@ class ArticleAuthorAffiliation(Base, OrmFightForBase):
     article_id = sqlalchemy.Column(
         sqlalchemy.ForeignKey("pubmed.articles.article_id"),
         name="article_id",
-        nullable=False
+        nullable=False,
+        index=True,
     )
 
     # Foreign key to the author ID.
     author_id = sqlalchemy.Column(
         sqlalchemy.ForeignKey("pubmed.authors.author_id"),
         name="author_id",
-        nullable=False
+        nullable=False,
+        index=True,
     )
 
     # Foreign key to the affiliation ID.
     affiliation_id = sqlalchemy.Column(
         sqlalchemy.ForeignKey("pubmed.affiliations.affiliation_id"),
         name="affiliation_id",
-        nullable=True
+        nullable=True,
+        index=True,
     )
 
     # Foreign key to the canonical affiliation ID.
@@ -553,7 +556,8 @@ class ArticleAuthorAffiliation(Base, OrmFightForBase):
             "pubmed.affiliations_canonical.affiliation_canonical_id"
         ),
         name="affiliation_canonical_id",
-        nullable=True
+        nullable=True,
+        index=True,
     )
 
     # Ordinance of the author in the article.
@@ -725,6 +729,7 @@ class CitationDescriptorQualifier(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("pubmed.citations.citation_id"),
         name="citation_id",
         nullable=False,
+        index=True,
     )
 
     # Foreign key to the descriptor ID.
@@ -732,6 +737,7 @@ class CitationDescriptorQualifier(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("pubmed.descriptors.descriptor_id"),
         name="descriptor_id",
         nullable=False,
+        index=True,
     )
 
     # Whether the descriptor is major or not (referring to the `MajorTopicYN`
@@ -747,6 +753,7 @@ class CitationDescriptorQualifier(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("pubmed.qualifiers.qualifier_id"),
         name="qualifier_id",
         nullable=True,
+        index=True,
     )
 
     # Whether the qualifier is major or not (referring to the `MajorTopicYN`
