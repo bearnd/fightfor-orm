@@ -46,7 +46,6 @@ from fform.orm_mt import DescriptorClassType
 from fform.orm_mt import SupplementalClassType
 from fform.orm_mt import DescriptorSynonym
 from fform.orm_mt import QualifierSynonym
-from fform.orm_mt import ConceptSynonym
 from fform.orm_mt import SupplementalSynonym
 from fform.utils import return_first_item
 from fform.utils import lists_equal_length
