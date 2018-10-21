@@ -1,5 +1,12 @@
 ## Changelog
 
+### v0.13.0
+
+Issue No. 156: Model a user-data schema:
+
+- `orm_app.py`: Added new ORM classes for the `app` schema storing user and search data.
+- `dals_app.py`: Added a new `DalApp` class meant to manage the ORM classes and tables under the `app` schema.
+
 ### v0.12.5
 
 - Added new indices to foreign keys.
