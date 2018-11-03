@@ -1201,6 +1201,13 @@ class ProtocolOutcome(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a list of `StudyOutcome` records.
+    study_outcomes = sqlalchemy.orm.relationship(
+        argument="StudyOutcome",
+        back_populates="protocol_outcome",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -2138,6 +2145,13 @@ class Study(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a list of `StudyOutcome` records.
+    study_outcomes = sqlalchemy.orm.relationship(
+        argument="StudyOutcome",
+        back_populates="study",
+        uselist=True,
+    )
+
     # Relationship to a list of `ProtocolOutcome` records.
     outcomes = sqlalchemy.orm.relationship(
         argument="ProtocolOutcome",
@@ -2452,6 +2466,20 @@ class StudyOutcome(Base, OrmFightForBase):
         type_=sqlalchemy.types.Enum(OutcomeType),
         nullable=False,
         index=True
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_outcomes",
+        uselist=False,
+    )
+
+    # Relationship to a `ProtocolOutcome` record.
+    protocol_outcome = sqlalchemy.orm.relationship(
+        argument="ProtocolOutcome",
+        back_populates="study_outcomes",
+        uselist=False,
     )
 
     # Set table arguments.
