@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.13.1
+
+- Added new relationships between the `Study`, `StudyOutcome`, and `ProtocolOutcome` classes.
+
 ### v0.13.0
 
 Issue No. 156: Model a user-data schema:
