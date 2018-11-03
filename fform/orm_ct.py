@@ -1618,6 +1618,21 @@ class Reference(Base, OrmFightForBase):
         unique=True,
     )
 
+    # Relationship to a list of `Study` records.
+    studies = sqlalchemy.orm.relationship(
+        argument="Study",
+        secondary="clinicaltrials.study_references",
+        back_populates="references",
+        uselist=True,
+    )
+
+    # Relationship to a list of `StudyReference` records.
+    study_references = sqlalchemy.orm.relationship(
+        argument="StudyReference",
+        back_populates="reference",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -2269,10 +2284,19 @@ class Study(Base, OrmFightForBase):
         back_populates="studies"
     )
 
+    # Relationship to a list of `StudyReference` records.
+    study_references = sqlalchemy.orm.relationship(
+        argument="StudyReference",
+        back_populates="study",
+        uselist=True,
+    )
+
     # Relationship to a list of `Reference` records.
     references = sqlalchemy.orm.relationship(
         argument="Reference",
         secondary="clinicaltrials.study_references",
+        back_populates="studies",
+        uselist=True,
     )
 
     # Foreign key to the study-dates ID.
@@ -2714,6 +2738,20 @@ class StudyReference(Base, OrmFightForBase):
         type_=sqlalchemy.types.Enum(ReferenceType),
         nullable=False,
         index=True
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_references",
+        uselist=False,
+    )
+
+    # Relationship to a `Reference` record.
+    reference = sqlalchemy.orm.relationship(
+        argument="Reference",
+        back_populates="study_references",
+        uselist=False,
     )
 
     # Set table arguments.
