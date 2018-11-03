@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.13.2
+
+- Added new relationships between the `Study`, `StudyReference`, and `Reference` classes.
+
 ### v0.13.1
 
 - Added new relationships between the `Study`, `StudyOutcome`, and `ProtocolOutcome` classes.
