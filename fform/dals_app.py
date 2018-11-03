@@ -1,8 +1,5 @@
 # coding: utf-8
 
-import datetime
-from typing import List
-
 import sqlalchemy.orm
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.dialects.postgresql import Insert
