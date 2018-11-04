@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.13.3
+
+- Added new relationships.
+
 ### v0.13.2
 
 - Added new relationships between the `Study`, `StudyReference`, and `Reference` classes.
