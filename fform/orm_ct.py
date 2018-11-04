@@ -1285,6 +1285,14 @@ class ArmGroup(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a list of `ArmGroup` records.
+    interventions = sqlalchemy.orm.relationship(
+        argument="Intervention",
+        secondary="clinicaltrials.intervention_arm_groups",
+        back_populates="arm_groups",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -1340,6 +1348,8 @@ class Intervention(Base, OrmFightForBase):
     arm_groups = sqlalchemy.orm.relationship(
         argument="ArmGroup",
         secondary="clinicaltrials.intervention_arm_groups",
+        back_populates="interventions",
+        uselist=True,
     )
 
     # Relationship to a list of `Alias` records.
@@ -1737,7 +1747,15 @@ class MeshTerm(Base, OrmFightForBase):
     studies = sqlalchemy.orm.relationship(
         argument="Study",
         secondary="clinicaltrials.study_mesh_terms",
-        back_populates="mesh_terms"
+        back_populates="mesh_terms",
+        uselist=True,
+    )
+
+    # Relationship to a list of `StudyMeshTerm` records.
+    study_mesh_terms = sqlalchemy.orm.relationship(
+        argument="StudyMeshTerm",
+        back_populates="mesh_term",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -2335,7 +2353,8 @@ class Study(Base, OrmFightForBase):
     # Relationship to a list of `StudyMeshTerm` records.
     study_mesh_terms = sqlalchemy.orm.relationship(
         argument="StudyMeshTerm",
-        back_populates="studies",
+        back_populates="study",
+        uselist=True,
     )
 
     # Relationship to a list of `MeshTerm` records.
@@ -2343,6 +2362,7 @@ class Study(Base, OrmFightForBase):
         argument="MeshTerm",
         secondary="clinicaltrials.study_mesh_terms",
         back_populates="studies",
+        uselist=True,
     )
 
     # Foreign key to a patient-data ID.
@@ -2838,13 +2858,25 @@ class StudyMeshTerm(Base, OrmFightForBase):
         index=True
     )
 
-    # Relationship to a `MeshTerm` record.
-    mesh_term = sqlalchemy.orm.relationship(argument="MeshTerm")
-
     # Relationship to a list of `Study` records.
     studies = sqlalchemy.orm.relationship(
         argument="Study",
-        back_populates="study_mesh_terms"
+        back_populates="study_mesh_terms",
+        uselist=True,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_mesh_terms",
+        uselist=False,
+    )
+
+    # Relationship to a `MeshTerm` record.
+    mesh_term = sqlalchemy.orm.relationship(
+        argument="MeshTerm",
+        back_populates="study_mesh_terms",
+        uselist=False,
     )
 
     # Set table arguments.
