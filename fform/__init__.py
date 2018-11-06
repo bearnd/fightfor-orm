@@ -4,7 +4,7 @@
 
 __author__ = """Adamos Kyriakou"""
 __email__ = 'adam@bearnd.io'
-__version__ = '0.13.3'
+__version__ = '0.14.0'
 
 from fform import loggers
 from fform import utils
