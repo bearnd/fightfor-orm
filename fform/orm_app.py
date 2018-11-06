@@ -45,6 +45,20 @@ class User(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `Study` records.
+    studies = sqlalchemy.orm.relationship(
+        argument="Study",
+        secondary="clinicaltrials.studies",
+        uselist=True,
+    )
+
+    # Relationship to a list of `Citation` records.
+    citations = sqlalchemy.orm.relationship(
+        argument="Citation",
+        secondary="pubmed.citations",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -212,6 +226,84 @@ class UserSearch(Base, OrmFightForBase):
     __table_args__ = (
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('user_id', 'search_id'),
+        # Set table schema.
+        {"schema": "app"}
+    )
+
+
+class UserStudy(Base, OrmFightForBase):
+    """Associative table between `User` and `Study` records."""
+
+    # Set table name.
+    __tablename__ = "user_studies"
+
+    # Autoincrementing primary key ID.
+    user_study_id = sqlalchemy.Column(
+        name="user_study_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the user ID.
+    user_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("app.users.user_id"),
+        name="user_id",
+        nullable=False,
+        index=True,
+    )
+
+    # Foreign key to the study ID.
+    study_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
+        name="study_id",
+        nullable=False,
+        index=True,
+    )
+
+    # Set table arguments.
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint("user_id", "study_id"),
+        # Set table schema.
+        {"schema": "app"}
+    )
+
+
+class UserCitation(Base, OrmFightForBase):
+    """Associative table between `User` and `Citation` records."""
+
+    # Set table name.
+    __tablename__ = "user_citations"
+
+    # Autoincrementing primary key ID.
+    user_citation_id = sqlalchemy.Column(
+        name="user_citation_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the user ID.
+    user_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("app.users.user_id"),
+        name="user_id",
+        nullable=False,
+        index=True,
+    )
+
+    # Foreign key to the citation ID.
+    citation_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("pubmed.citations.citation_id"),
+        name="citation_id",
+        nullable=False,
+        index=True,
+    )
+
+    # Set table arguments.
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint("user_id", "citation_id"),
         # Set table schema.
         {"schema": "app"}
     )

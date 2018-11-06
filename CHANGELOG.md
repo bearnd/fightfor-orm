@@ -1,5 +1,11 @@
 ## Changelog
 
+### v0.14.0
+
+Issue No. 166: Add tables for studies and citations saved by the user:
+
+- Added new ORM classes and relationships for tables to store studies and citations saved by the user.
+
 ### v0.13.3
 
 - Added new relationships.
