@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.14.1
+
+- Fixed bugs in the `studies` and `citations` relationships of the `User` class.
+
 ### v0.14.0
 
 Issue No. 166: Add tables for studies and citations saved by the user:

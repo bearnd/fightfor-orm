@@ -48,14 +48,14 @@ class User(Base, OrmFightForBase):
     # Relationship to a list of `Study` records.
     studies = sqlalchemy.orm.relationship(
         argument="Study",
-        secondary="clinicaltrials.studies",
+        secondary="app.user_studies",
         uselist=True,
     )
 
     # Relationship to a list of `Citation` records.
     citations = sqlalchemy.orm.relationship(
         argument="Citation",
-        secondary="pubmed.citations",
+        secondary="app.user_citations",
         uselist=True,
     )
 
