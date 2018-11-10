@@ -1721,7 +1721,7 @@ class DalMesh(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_descriptor_synonym(
+    def iodi_descriptor_definition(
         self,
         descriptor_id: int,
         source: DescriptorDefinitionSourceType,
