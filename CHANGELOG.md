@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.15.3
+
+- Renamed the `iodi_descriptor_synonym` method to `iodi_descriptor_definition` as it was wrongly named.
+
 ### v0.15.2
 
 - Updated the `DescriptorDefinition` class and added an `md5` field on the definition that is used in the unique constraint.
