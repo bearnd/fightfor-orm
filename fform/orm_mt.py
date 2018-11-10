@@ -1982,6 +1982,7 @@ class DescriptorDefinition(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("mesh.descriptors.descriptor_id"),
         name="descriptor_id",
         nullable=False,
+        index=True,
     )
 
     source = sqlalchemy.Column(
