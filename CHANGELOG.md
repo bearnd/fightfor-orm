@@ -1,5 +1,11 @@
 ## Changelog
 
+### v0.15.0
+
+Issue No. 188: Design table to hold definitions for the different MeSH descriptors:
+
+- Added a new `DescriptorDefinition ` ORM class representing the new `descriptor_definitions` table that will contain MeSH descriptor definitions as defined in the UMLS.
+
 ### v0.14.1
 
 - Fixed bugs in the `studies` and `citations` relationships of the `User` class.
