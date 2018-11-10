@@ -1999,13 +1999,36 @@ class DescriptorDefinition(Base, OrmFightForBase):
         nullable=False,
     )
 
+    # MD5 hash of the description.
+    md5 = sqlalchemy.Column(
+        name="md5",
+        type_=sqlalchemy.types.LargeBinary(length=16),
+        index=True,
+        nullable=False,
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
         sqlalchemy.UniqueConstraint(
             'descriptor_id',
             'source',
+            'md5',
         ),
         # Set table schema.
         {"schema": "mesh"}
     )
+
+    @sqlalchemy.orm.validates("definition")
+    def update_md5(self, key, value):
+
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "definition": self.definition,
+        }
+        attrs[key] = value
+
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
+
+        return value
