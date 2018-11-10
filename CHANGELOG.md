@@ -1,5 +1,10 @@
 ## Changelog
 
+### v0.15.2
+
+- Updated the `DescriptorDefinition` class and added an `md5` field on the definition that is used in the unique constraint.
+- Updated the `iodu_descriptor_synonym` method and renamed it to `iodi_descriptor_synonym` as the usage of MD5s on the definition precludes the definition from being updated.
+
 ### v0.15.1
 
 - Added a new `iodu_descriptor_synonym` method to the `DalMesh` class.

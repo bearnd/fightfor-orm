@@ -1721,20 +1721,22 @@ class DalMesh(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodu_descriptor_synonym(
+    def iodi_descriptor_synonym(
         self,
         descriptor_id: int,
         source: DescriptorDefinitionSourceType,
         definition: str,
+        md5: bytes,
         session: sqlalchemy.orm.Session = None,
     ) -> int:
-        """Creates a new `DescriptorDefinition` record in an IODU manner.
+        """Creates a new `DescriptorDefinition` record in an IODI manner.
 
         Args:
             descriptor_id (int): Foreign key to a `descriptors` record.
             source (DescriptorDefinitionSourceType): The descriptor definition
                 source code.
             definition (str): The definition.
+            md5 (bytes): The definition MD5.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
@@ -1751,13 +1753,9 @@ class DalMesh(DalFightForBase):
                 "descriptor_id": descriptor_id,
                 "source": source,
                 "definition": definition,
+                "md5": md5,
             }
-        ).on_conflict_do_update(
-            index_elements=["descriptor_id", "source"],
-            set_={
-                "definition": definition,
-            }
-        )  # type: Insert
+        ).on_conflict_do_nothing()  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
