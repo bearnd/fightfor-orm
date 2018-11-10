@@ -1,5 +1,10 @@
 ## Changelog
 
+### v0.15.1
+
+- Added a new `iodu_descriptor_synonym` method to the `DalMesh` class.
+- Added an index to the `descriptor_id` field of the `DescriptorDefinition` class.
+
 ### v0.15.0
 
 Issue No. 188: Design table to hold definitions for the different MeSH descriptors:

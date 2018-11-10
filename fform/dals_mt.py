@@ -47,6 +47,8 @@ from fform.orm_mt import SupplementalClassType
 from fform.orm_mt import DescriptorSynonym
 from fform.orm_mt import QualifierSynonym
 from fform.orm_mt import SupplementalSynonym
+from fform.orm_mt import DescriptorDefinition
+from fform.orm_mt import DescriptorDefinitionSourceType
 from fform.utils import return_first_item
 from fform.utils import lists_equal_length
 
@@ -1716,3 +1718,58 @@ class DalMesh(DalFightForBase):
         ).on_conflict_do_nothing()
 
         session.execute(statement)
+
+    @return_first_item
+    @with_session_scope()
+    def iodu_descriptor_synonym(
+        self,
+        descriptor_id: int,
+        source: DescriptorDefinitionSourceType,
+        definition: str,
+        session: sqlalchemy.orm.Session = None,
+    ) -> int:
+        """Creates a new `DescriptorDefinition` record in an IODU manner.
+
+        Args:
+            descriptor_id (int): Foreign key to a `descriptors` record.
+            source (DescriptorDefinitionSourceType): The descriptor definition
+                source code.
+            definition (str): The definition.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `DescriptorDefinition` record.
+        """
+
+        # Upsert the `DescriptorDefinition` record.
+        statement = insert(
+            DescriptorDefinition,
+            values={
+                "descriptor_id": descriptor_id,
+                "source": source,
+                "definition": definition,
+            }
+        ).on_conflict_do_update(
+            index_elements=["descriptor_id", "source"],
+            set_={
+                "definition": definition,
+            }
+        )  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        if result.inserted_primary_key:
+            return result.inserted_primary_key
+        else:
+            obj = self.get_by_attrs(
+                orm_class=DescriptorDefinition,
+                attrs_names_values={
+                    "descriptor_id": descriptor_id,
+                    "source": source,
+                },
+                session=session,
+            )  # type: DescriptorDefinition
+            return obj.descriptor_definition_id
