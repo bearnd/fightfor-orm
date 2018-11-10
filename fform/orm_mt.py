@@ -57,6 +57,73 @@ class SupplementalClassType(EnumBase):
     FOUR = "4"
 
 
+class DescriptorDefinitionSourceType(EnumBase):
+    """ Enumeration of the descriptor definition source types."""
+
+    AIR = "AIR"
+    ALT = "ALT"
+    AOT = "AOT"
+    CCC = "CCC"
+    CHV = "CHV"
+    CSP = "CSP"
+    FMA = "FMA"
+    GO = "GO"
+    HL7V30 = "HL7V3.0"
+    HPO = "HPO"
+    ICF = "ICF"
+    ICF_CY = "ICF-CY"
+    JABL = "JABL"
+    LNC = "LNC"
+    MCM = "MCM"
+    MDR = "MDR"
+    MDRCZE = "MDRCZE"
+    MDRDUT = "MDRDUT"
+    MDRFRE = "MDRFRE"
+    MDRGER = "MDRGER"
+    MDRHUN = "MDRHUN"
+    MDRITA = "MDRITA"
+    MDRJPN = "MDRJPN"
+    MDRPOR = "MDRPOR"
+    MDRSPA = "MDRSPA"
+    MEDLINEPLUS = "MEDLINEPLUS"
+    MSH = "MSH"
+    MSHCZE = "MSHCZE"
+    MSHFRE = "MSHFRE"
+    MSHNOR = "MSHNOR"
+    MSHPOR = "MSHPOR"
+    MSHSCR = "MSHSCR"
+    MSHSPA = "MSHSPA"
+    NANDA_I = "NANDA-I"
+    NCI = "NCI"
+    NCI_BRIDG = "NCI_BRIDG"
+    NCI_BioC = "NCI_BioC"
+    NCI_CDISC = "NCI_CDISC"
+    NCI_CRCH = "NCI_CRCH"
+    NCI_CTCAE = "NCI_CTCAE"
+    NCI_CTEP_SDC = "NCI_CTEP-SDC"
+    NCI_CareLex = "NCI_CareLex"
+    NCI_DICOM = "NCI_DICOM"
+    NCI_FDA = "NCI_FDA"
+    NCI_GAIA = "NCI_GAIA"
+    NCI_KEGG = "NCI_KEGG"
+    NCI_NCI_GLOSS = "NCI_NCI-GLOSS"
+    NCI_NICHD = "NCI_NICHD"
+    NDFRT = "NDFRT"
+    NIC = "NIC"
+    NOC = "NOC"
+    NUCCPT = "NUCCPT"
+    OMS = "OMS"
+    PDQ = "PDQ"
+    PNDS = "PNDS"
+    PSY = "PSY"
+    SCTSPA = "SCTSPA"
+    SNOMEDCT_US = "SNOMEDCT_US"
+    SOP = "SOP"
+    SPN = "SPN"
+    UMD = "UMD"
+    UWDA = "UWDA"
+
+
 class TreeNumber(Base, OrmFightForBase):
     """Table of `<TreeNumber>` element records."""
 
@@ -1894,3 +1961,50 @@ class SupplementalSynonym(Base, OrmFightForBase):
         self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
+
+
+class DescriptorDefinition(Base, OrmFightForBase):
+    """Table of MeSH descriptor definitions as defined in the UMLS."""
+
+    # Set table name.
+    __tablename__ = "descriptor_definitions"
+
+    # Autoincrementing primary key ID.
+    descriptor_definition_id = sqlalchemy.Column(
+        name="descriptor_definition_id",
+        type_=sqlalchemy.types.BigInteger(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the descriptor ID.
+    descriptor_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("mesh.descriptors.descriptor_id"),
+        name="descriptor_id",
+        nullable=False,
+    )
+
+    source = sqlalchemy.Column(
+        name="source",
+        type_=sqlalchemy.types.Enum(DescriptorDefinitionSourceType),
+        nullable=False,
+        index=True,
+    )
+
+    # The descriptor synonym.
+    definition = sqlalchemy.Column(
+        name="definition",
+        type_=sqlalchemy.types.UnicodeText(),
+        nullable=False,
+    )
+
+    # Set table arguments.
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint(
+            'descriptor_id',
+            'source',
+        ),
+        # Set table schema.
+        {"schema": "mesh"}
+    )
