@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.15.4
+
+- Added new relationships between the `Descriptor` and `DescriptorDefinition` classes.
+
 ### v0.15.3
 
 - Renamed the `iodi_descriptor_synonym` method to `iodi_descriptor_definition` as it was wrongly named.
