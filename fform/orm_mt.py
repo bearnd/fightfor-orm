@@ -1,7 +1,5 @@
 # coding=utf-8
 
-import hashlib
-
 import sqlalchemy.orm
 
 from fform.orm_base import Base
@@ -1035,6 +1033,14 @@ class Descriptor(Base, OrmFightForBase):
     synonyms = sqlalchemy.orm.relationship(
         argument="DescriptorSynonym",
         back_populates="descriptor",
+        uselist=True,
+    )
+
+    # Relationship to a list of `DescriptorDefinition` records.
+    definitions = sqlalchemy.orm.relationship(
+        argument="DescriptorDefinition",
+        back_populates="descriptor",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -1787,6 +1793,7 @@ class DescriptorSynonym(Base, OrmFightForBase):
     descriptor = sqlalchemy.orm.relationship(
         argument="Descriptor",
         back_populates="synonyms",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -2005,6 +2012,13 @@ class DescriptorDefinition(Base, OrmFightForBase):
         type_=sqlalchemy.types.LargeBinary(length=16),
         index=True,
         nullable=False,
+    )
+
+    # Relationship to a `Descriptor` record.
+    descriptor = sqlalchemy.orm.relationship(
+        argument="Descriptor",
+        back_populates="definitions",
+        uselist=False,
     )
 
     # Set table arguments.
