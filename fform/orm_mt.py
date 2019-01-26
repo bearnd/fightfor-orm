@@ -8,7 +8,7 @@ from fform.utils import EnumBase
 
 
 class DescriptorClassType(EnumBase):
-    """Enumeration of the descriptor-class types."""
+    """ Enumeration of the descriptor-class types."""
 
     ONE = "1"
     TWO = "2"
@@ -17,7 +17,7 @@ class DescriptorClassType(EnumBase):
 
 
 class RelationNameType(EnumBase):
-    """Enumeration of the relation-name types."""
+    """ Enumeration of the relation-name types."""
 
     NRW = "NRW"
     BRD = "BRD"
@@ -25,7 +25,7 @@ class RelationNameType(EnumBase):
 
 
 class LexicalTagType(EnumBase):
-    """Enumeration of the lexical-tag types."""
+    """ Enumeration of the lexical-tag types."""
 
     ABB = "ABB"
     ABX = "ABX"
@@ -40,14 +40,14 @@ class LexicalTagType(EnumBase):
 
 
 class EntryCombinationType(EnumBase):
-    """Enumeration of the entry-combination types."""
+    """ Enumeration of the entry-combination types."""
 
     ECIN = "ECIN"
     ECOUT = "ECOUT"
 
 
 class SupplementalClassType(EnumBase):
-    """Enumeration of the supplemental-class types."""
+    """ Enumeration of the supplemental-class types."""
 
     ONE = "1"
     TWO = "2"
@@ -123,7 +123,7 @@ class DescriptorDefinitionSourceType(EnumBase):
 
 
 class TreeNumber(Base, OrmFightForBase):
-    """Table of `<TreeNumber>` element records."""
+    """ Table of `<TreeNumber>` element records."""
 
     # Set table name.
     __tablename__ = "tree_numbers"
@@ -188,7 +188,7 @@ class TreeNumber(Base, OrmFightForBase):
 
 
 class ThesaurusId(Base, OrmFightForBase):
-    """Table of `<ThesaurusID>` element records."""
+    """ Table of `<ThesaurusID>` element records."""
 
     # Set table name.
     __tablename__ = "thesaurus_ids"
@@ -246,7 +246,7 @@ class ThesaurusId(Base, OrmFightForBase):
 
 
 class Term(Base, OrmFightForBase):
-    """Table of `<Term>` element records."""
+    """ Table of `<Term>` element records."""
 
     # Set table name.
     __tablename__ = "terms"
@@ -259,7 +259,7 @@ class Term(Base, OrmFightForBase):
         autoincrement="auto",
     )
 
-    # Referring to the `<ConceptUI>` element.
+    # Referring to the `<TermUI>` element.
     ui = sqlalchemy.Column(
         name="ui",
         type_=sqlalchemy.types.Unicode(),
@@ -267,7 +267,7 @@ class Term(Base, OrmFightForBase):
         unique=True,
     )
 
-    # Referring to the `<ConceptName>` element.
+    # Referring to the `<String>` element.
     name = sqlalchemy.Column(
         name="name",
         type_=sqlalchemy.types.Unicode(),
@@ -331,7 +331,7 @@ class Term(Base, OrmFightForBase):
 
 
 class TermThesaurusId(Base, OrmFightForBase):
-    """Associative table between `Term` and `ThesaurusId` records."""
+    """ Associative table between `Term` and `ThesaurusId` records."""
 
     # Set table name.
     __tablename__ = "term_thesaurus_ids"
@@ -370,7 +370,7 @@ class TermThesaurusId(Base, OrmFightForBase):
 
 
 class Concept(Base, OrmFightForBase):
-    """Table of `<Concept>` element records."""
+    """ Table of `<Concept>` element records."""
 
     # Set table name.
     __tablename__ = "concepts"
@@ -472,8 +472,9 @@ class Concept(Base, OrmFightForBase):
 
 
 class ConceptRelatedConcept(Base, OrmFightForBase):
-    """Associative table between `Concept` and other `Concept` records
-    referenced in concept-relation elements."""
+    """ Associative table between `Concept` and other `Concept` records
+        referenced in concept-relation elements.
+    """
 
     # Set table name.
     __tablename__ = "concept_related_concepts"
@@ -486,14 +487,14 @@ class ConceptRelatedConcept(Base, OrmFightForBase):
         autoincrement="auto",
     )
 
-    # Foreign key to the descriptor ID.
+    # Foreign key to the concept ID.
     concept_id = sqlalchemy.Column(
         sqlalchemy.ForeignKey("mesh.concepts.concept_id"),
         name="concept_id",
         nullable=False,
     )
 
-    # Foreign key to the related descriptor ID.
+    # Foreign key to the related concept ID.
     related_concept_id = sqlalchemy.Column(
         sqlalchemy.ForeignKey("mesh.concepts.concept_id"),
         name="related_concept_id",
@@ -518,7 +519,7 @@ class ConceptRelatedConcept(Base, OrmFightForBase):
 
 
 class ConceptTerm(Base, OrmFightForBase):
-    """Associative table between `Concept` and `Term` records."""
+    """ Associative table between `Concept` and `Term` records."""
 
     # Set table name.
     __tablename__ = "concept_terms"
@@ -587,7 +588,7 @@ class ConceptTerm(Base, OrmFightForBase):
 
 
 class Qualifier(Base, OrmFightForBase):
-    """Table of `<QualifierRecord>` element records."""
+    """ Table of `<QualifierRecord>` element records."""
 
     # Set table name.
     __tablename__ = "qualifiers"
@@ -692,7 +693,7 @@ class Qualifier(Base, OrmFightForBase):
 
 
 class QualifierConcept(Base, OrmFightForBase):
-    """Associative table between `Qualifier` and `Concept` records."""
+    """ Associative table between `Qualifier` and `Concept` records."""
 
     # Set table name.
     __tablename__ = "qualifier_concepts"
@@ -737,7 +738,7 @@ class QualifierConcept(Base, OrmFightForBase):
 
 
 class QualifierTreeNumber(Base, OrmFightForBase):
-    """Associative table between `Qualifier` and `TreeNumber` records."""
+    """ Associative table between `Qualifier` and `TreeNumber` records."""
 
     # Set table name.
     __tablename__ = "qualifier_tree_numbers"
@@ -776,7 +777,7 @@ class QualifierTreeNumber(Base, OrmFightForBase):
 
 
 class PreviousIndexing(Base, OrmFightForBase):
-    """Table of `<PreviousIndexing>` element records."""
+    """ Table of `<PreviousIndexing>` element records."""
 
     # Set table name.
     __tablename__ = "previous_indexings"
@@ -841,9 +842,10 @@ class PreviousIndexing(Base, OrmFightForBase):
 
 
 class EntryCombination(Base, OrmFightForBase):
-    """Associative table between `Descriptor` and `Qualifier` records denoting
-    descriptor-qualifier combinations defined in `<EntryCombination>`,
-    `<IndexingInformation>`, and `<HeadingMappedTo>` elements."""
+    """ Associative table between `Descriptor` and `Qualifier` records denoting
+        descriptor-qualifier combinations defined in `<EntryCombination>`,
+        `<IndexingInformation>`, and `<HeadingMappedTo>` elements.
+    """
 
     # Set table name.
     __tablename__ = "entry_combinations"
@@ -894,7 +896,7 @@ class EntryCombination(Base, OrmFightForBase):
 
 
 class Descriptor(Base, OrmFightForBase):
-    """Table of `<DescriptorRecord>` element records."""
+    """ Table of `<DescriptorRecord>` element records."""
 
     # Set table name.
     __tablename__ = "descriptors"
@@ -952,7 +954,9 @@ class Descriptor(Base, OrmFightForBase):
         nullable=True,
     )
 
-    # Relationship to a list of `Qualifier` records.
+    # Relationship to a list of `Qualifier` records. Based on the
+    # `<AllowableQualifier>` elements under the `<AllowableQualifiersList>`
+    # element.
     qualifiers = sqlalchemy.orm.relationship(
         argument="Qualifier",
         secondary="mesh.descriptor_allowable_qualifiers",
@@ -994,19 +998,23 @@ class Descriptor(Base, OrmFightForBase):
         nullable=True,
     )
 
-    # Relationship to a list of `PreviousIndexing` records.
+    # Relationship to a list of `PreviousIndexing` records. Based on the
+    # `<PreviousIndexing>` elements under the `<PreviousIndexingList>` element.
     previous_indexings = sqlalchemy.orm.relationship(
         argument="PreviousIndexing",
         secondary="mesh.descriptor_previous_indexings",
         back_populates="descriptors",
     )
 
-    # Relationship to a list of `EntryCombination` records.
+    # Relationship to a list of `EntryCombination` records. Based on the
+    # `<SeeRelatedDescriptor>` elements under the `<SeeRelatedList>` element.
     entry_combinations = sqlalchemy.orm.relationship(
         argument="EntryCombination",
         secondary="mesh.descriptor_entry_combinations",
         back_populates="descriptors",
     )
+
+    # TODO: `<SeeRelatedList>` element.
 
     # Referring to the `<ConsiderAlso>` element.
     consider_also = sqlalchemy.Column(
@@ -1014,6 +1022,8 @@ class Descriptor(Base, OrmFightForBase):
         type_=sqlalchemy.types.Unicode(),
         nullable=True,
     )
+
+    # TODO: `<PharmacologicalActionList>` element.
 
     # Relationship to a list of `TreeNumber` records.
     tree_numbers = sqlalchemy.orm.relationship(
@@ -1051,7 +1061,9 @@ class Descriptor(Base, OrmFightForBase):
 
 
 class DescriptorEntryCombination(Base, OrmFightForBase):
-    """Associative table between `Descriptor` and `EntryCombination` records."""
+    """ Associative table between `Descriptor` and `EntryCombination`
+        records.
+    """
 
     # Set table name.
     __tablename__ = "descriptor_entry_combinations"
@@ -1090,7 +1102,7 @@ class DescriptorEntryCombination(Base, OrmFightForBase):
 
 
 class DescriptorConcept(Base, OrmFightForBase):
-    """Associative table between `Descriptor` and `Concept` records."""
+    """ Associative table between `Descriptor` and `Concept` records."""
 
     # Set table name.
     __tablename__ = "descriptor_concepts"
@@ -1135,7 +1147,9 @@ class DescriptorConcept(Base, OrmFightForBase):
 
 
 class DescriptorPreviousIndexing(Base, OrmFightForBase):
-    """Associative table between `Descriptor` and `PreviousIndexing` records."""
+    """ Associative table between `Descriptor` and `PreviousIndexing`
+        records.
+    """
 
     # Set table name.
     __tablename__ = "descriptor_previous_indexings"
@@ -1174,8 +1188,14 @@ class DescriptorPreviousIndexing(Base, OrmFightForBase):
 
 
 class DescriptorAllowableQualifier(Base, OrmFightForBase):
-    """Associative table between `Descriptor` and `Qualifier` records denoting
-    which qualifiers are allowed for a given descriptor."""
+    """ Associative table between `Descriptor` and `Qualifier` records denoting
+        which qualifiers are allowed for a given descriptor.
+
+    Note:
+        The field values of these records are based on the values of the
+        `<AllowableQualifier>` elements under the `<AllowableQualifiersList>`
+        element.
+    """
 
     # Set table name.
     __tablename__ = "descriptor_allowable_qualifiers"
@@ -1219,7 +1239,7 @@ class DescriptorAllowableQualifier(Base, OrmFightForBase):
 
 
 class DescriptorTreeNumber(Base, OrmFightForBase):
-    """Associative table between `Descriptor` and `TreeNumber` records."""
+    """ Associative table between `Descriptor` and `TreeNumber` records."""
 
     # Set table name.
     __tablename__ = "descriptor_tree_numbers"
@@ -1258,8 +1278,9 @@ class DescriptorTreeNumber(Base, OrmFightForBase):
 
 
 class DescriptorPharmacologicalActionDescriptor(Base, OrmFightForBase):
-    """Associative table between `Descriptor` and other `Descriptor` records
-    referenced in pharmacological-actions."""
+    """ Associative table between `Descriptor` and other `Descriptor` records
+        referenced in pharmacological-actions.
+    """
 
     # Set table name.
     __tablename__ = "descriptor_pharmacological_action_descriptors"
@@ -1299,8 +1320,9 @@ class DescriptorPharmacologicalActionDescriptor(Base, OrmFightForBase):
 
 
 class DescriptorRelatedDescriptor(Base, OrmFightForBase):
-    """Associative table between `Descriptor` and other `Descriptor` records
-    referenced in see-related elements."""
+    """ Associative table between `Descriptor` and other `Descriptor` records
+        referenced in see-related elements.
+    """
 
     # Set table name.
     __tablename__ = "descriptor_related_descriptors"
@@ -1337,7 +1359,7 @@ class DescriptorRelatedDescriptor(Base, OrmFightForBase):
 
 
 class Source(Base, OrmFightForBase):
-    """Table of `<Source>` element records."""
+    """ Table of `<Source>` element records."""
 
     # Set table name.
     __tablename__ = "sources"
@@ -1395,7 +1417,7 @@ class Source(Base, OrmFightForBase):
 
 
 class Supplemental(Base, OrmFightForBase):
-    """Table of `<SupplementalRecord>` element records."""
+    """ Table of `<SupplementalRecord>` element records."""
 
     # Set table name.
     __tablename__ = "supplementals"
@@ -1509,8 +1531,9 @@ class Supplemental(Base, OrmFightForBase):
 
 
 class SupplementalHeadingMappedTo(Base, OrmFightForBase):
-    """Associative table between `Descriptor` and `EntryCombination` records
-    via `<HeadingMappedTo>` elements."""
+    """ Associative table between `Descriptor` and `EntryCombination` records
+        via `<HeadingMappedTo>` elements.
+    """
 
     # Set table name.
     __tablename__ = "supplemental_heading_mapped_tos"
@@ -1549,8 +1572,9 @@ class SupplementalHeadingMappedTo(Base, OrmFightForBase):
 
 
 class SupplementalIndexingInformation(Base, OrmFightForBase):
-    """Associative table between `Descriptor` and `EntryCombination` records
-    via `<IndexingInformation>` elements."""
+    """ Associative table between `Descriptor` and `EntryCombination` records
+        via `<IndexingInformation>` elements.
+    """
 
     # Set table name.
     __tablename__ = "supplemental_indexing_informations"
@@ -1589,7 +1613,7 @@ class SupplementalIndexingInformation(Base, OrmFightForBase):
 
 
 class SupplementalConcept(Base, OrmFightForBase):
-    """Associative table between `Supplemental` and `Concept` records."""
+    """ Associative table between `Supplemental` and `Concept` records."""
 
     # Set table name.
     __tablename__ = "supplemental_concepts"
@@ -1634,8 +1658,9 @@ class SupplementalConcept(Base, OrmFightForBase):
 
 
 class SupplementalPreviousIndexing(Base, OrmFightForBase):
-    """Associative table between `Supplemental` and `PreviousIndexing`
-    records."""
+    """ Associative table between `Supplemental` and `PreviousIndexing`
+        records.
+    """
 
     # Set table name.
     __tablename__ = "supplemental_previous_indexings"
@@ -1674,8 +1699,9 @@ class SupplementalPreviousIndexing(Base, OrmFightForBase):
 
 
 class SupplementalPharmacologicalActionDescriptor(Base, OrmFightForBase):
-    """Associative table between `Supplemental` and `Descriptor` records
-    referenced in pharmacological-actions."""
+    """ Associative table between `Supplemental` and `Descriptor` records
+        referenced in pharmacological-actions.
+    """
 
     # Set table name.
     __tablename__ = "supplemental_pharmacological_action_descriptors"
@@ -1715,7 +1741,7 @@ class SupplementalPharmacologicalActionDescriptor(Base, OrmFightForBase):
 
 
 class SupplementalSource(Base, OrmFightForBase):
-    """Associative table between `Supplemental` and `Source` records."""
+    """ Associative table between `Supplemental` and `Source` records."""
 
     # Set table name.
     __tablename__ = "supplemental_sources"
@@ -1754,7 +1780,7 @@ class SupplementalSource(Base, OrmFightForBase):
 
 
 class DescriptorSynonym(Base, OrmFightForBase):
-    """Table of MeSH descriptor synonyms as defined in the UMLS."""
+    """ Table of MeSH descriptor synonyms as defined in the UMLS."""
 
     # Set table name.
     __tablename__ = "descriptor_synonyms"
@@ -1827,7 +1853,7 @@ class DescriptorSynonym(Base, OrmFightForBase):
 
 
 class QualifierSynonym(Base, OrmFightForBase):
-    """Table of MeSH qualifier synonyms as defined in the UMLS."""
+    """ Table of MeSH qualifier synonyms as defined in the UMLS."""
 
     # Set table name.
     __tablename__ = "qualifier_synonyms"
@@ -1899,7 +1925,7 @@ class QualifierSynonym(Base, OrmFightForBase):
 
 
 class SupplementalSynonym(Base, OrmFightForBase):
-    """Table of MeSH supplemental synonyms as defined in the UMLS."""
+    """ Table of MeSH supplemental synonyms as defined in the UMLS."""
 
     # Set table name.
     __tablename__ = "supplemental_synonyms"
@@ -1971,7 +1997,7 @@ class SupplementalSynonym(Base, OrmFightForBase):
 
 
 class DescriptorDefinition(Base, OrmFightForBase):
-    """Table of MeSH descriptor definitions as defined in the UMLS."""
+    """ Table of MeSH descriptor definitions as defined in the UMLS."""
 
     # Set table name.
     __tablename__ = "descriptor_definitions"
