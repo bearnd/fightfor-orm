@@ -157,6 +157,7 @@ class TreeNumber(Base, OrmFightForBase):
         argument="Descriptor",
         secondary="mesh.descriptor_tree_numbers",
         back_populates="tree_numbers",
+        uselist=True,
     )
 
     # Relationship to a list of `Qualifier` records.
@@ -164,6 +165,7 @@ class TreeNumber(Base, OrmFightForBase):
         argument="Qualifier",
         secondary="mesh.qualifier_tree_numbers",
         back_populates="tree_numbers",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -222,6 +224,7 @@ class ThesaurusId(Base, OrmFightForBase):
         argument="Term",
         secondary="mesh.term_thesaurus_ids",
         back_populates="thesaurus_ids",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -321,6 +324,7 @@ class Term(Base, OrmFightForBase):
         argument="Concept",
         secondary="mesh.concept_terms",
         back_populates="terms",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -441,6 +445,7 @@ class Concept(Base, OrmFightForBase):
         argument="Term",
         secondary="mesh.concept_terms",
         back_populates="concepts",
+        uselist=True,
     )
 
     # Relationship to a list of `Qualifier` records.
@@ -448,6 +453,7 @@ class Concept(Base, OrmFightForBase):
         argument="Qualifier",
         secondary="mesh.qualifier_concepts",
         back_populates="concepts",
+        uselist=True,
     )
 
     # Relationship to a list of `Descriptor` records.
@@ -455,6 +461,7 @@ class Concept(Base, OrmFightForBase):
         argument="Descriptor",
         secondary="mesh.descriptor_concepts",
         back_populates="concepts",
+        uselist=True,
     )
 
     # Relationship to a list of `Supplemental` records.
@@ -462,6 +469,7 @@ class Concept(Base, OrmFightForBase):
         argument="Supplemental",
         secondary="mesh.supplemental_concepts",
         back_populates="concepts",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -663,6 +671,7 @@ class Qualifier(Base, OrmFightForBase):
         argument="TreeNumber",
         secondary="mesh.qualifier_tree_numbers",
         back_populates="qualifiers",
+        uselist=True,
     )
 
     # Relationship to a list of `Concept` records.
@@ -670,6 +679,7 @@ class Qualifier(Base, OrmFightForBase):
         argument="Concept",
         secondary="mesh.qualifier_concepts",
         back_populates="qualifiers",
+        uselist=True,
     )
 
     # Relationship to a list of `Descriptor` records.
@@ -677,12 +687,14 @@ class Qualifier(Base, OrmFightForBase):
         argument="Descriptor",
         secondary="mesh.descriptor_allowable_qualifiers",
         back_populates="qualifiers",
+        uselist=True,
     )
 
     # Relationship to a list of `QualifierSynonym` records.
     synonyms = sqlalchemy.orm.relationship(
         argument="QualifierSynonym",
         back_populates="qualifier",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -884,6 +896,7 @@ class EntryCombination(Base, OrmFightForBase):
     descriptors = sqlalchemy.orm.relationship(
         argument="Descriptor",
         back_populates="entry_combinations",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -961,6 +974,7 @@ class Descriptor(Base, OrmFightForBase):
         argument="Qualifier",
         secondary="mesh.descriptor_allowable_qualifiers",
         back_populates="descriptors",
+        uselist=True,
     )
 
     # Referring to the `<Annotation>` element.
@@ -1004,6 +1018,7 @@ class Descriptor(Base, OrmFightForBase):
         argument="PreviousIndexing",
         secondary="mesh.descriptor_previous_indexings",
         back_populates="descriptors",
+        uselist=True,
     )
 
     # Relationship to a list of `EntryCombination` records. Based on the
@@ -1012,6 +1027,7 @@ class Descriptor(Base, OrmFightForBase):
         argument="EntryCombination",
         secondary="mesh.descriptor_entry_combinations",
         back_populates="descriptors",
+        uselist=True,
     )
 
     # TODO: `<SeeRelatedList>` element.
@@ -1030,6 +1046,7 @@ class Descriptor(Base, OrmFightForBase):
         argument="TreeNumber",
         secondary="mesh.descriptor_tree_numbers",
         back_populates="descriptors",
+        uselist=True,
     )
 
     # Relationship to a list of `Concept` records.
@@ -1037,6 +1054,7 @@ class Descriptor(Base, OrmFightForBase):
         argument="Concept",
         secondary="mesh.descriptor_concepts",
         back_populates="descriptors",
+        uselist=True,
     )
 
     # Relationship to a list of `DescriptorSynonym` records.
@@ -1393,6 +1411,7 @@ class Source(Base, OrmFightForBase):
         argument="Supplemental",
         secondary="mesh.supplemental_sources",
         back_populates="sources",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -1487,6 +1506,7 @@ class Supplemental(Base, OrmFightForBase):
         argument="PreviousIndexing",
         secondary="mesh.supplemental_previous_indexings",
         back_populates="supplementals",
+        uselist=True,
     )
 
     # Relationship to a list of `EntryCombination` records defined via
@@ -1494,6 +1514,7 @@ class Supplemental(Base, OrmFightForBase):
     heading_mapped_tos = sqlalchemy.orm.relationship(
         argument="EntryCombination",
         secondary="mesh.supplemental_heading_mapped_tos",
+        uselist=True,
     )
 
     # Relationship to a list of `EntryCombination` records defined via
@@ -1501,6 +1522,7 @@ class Supplemental(Base, OrmFightForBase):
     indexing_informations = sqlalchemy.orm.relationship(
         argument="EntryCombination",
         secondary="mesh.supplemental_indexing_informations",
+        uselist=True,
     )
 
     # Relationship to a list of `Source` records.
@@ -1508,6 +1530,7 @@ class Supplemental(Base, OrmFightForBase):
         argument="Source",
         secondary="mesh.supplemental_sources",
         back_populates="supplementals",
+        uselist=True,
     )
 
     # Relationship to a list of `Concept` records.
@@ -1515,12 +1538,14 @@ class Supplemental(Base, OrmFightForBase):
         argument="Concept",
         secondary="mesh.supplemental_concepts",
         back_populates="supplementals",
+        uselist=True,
     )
 
     # Relationship to a list of `SupplementalSynonym` records.
     synonyms = sqlalchemy.orm.relationship(
         argument="SupplementalSynonym",
         back_populates="supplemental",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -1892,6 +1917,7 @@ class QualifierSynonym(Base, OrmFightForBase):
     qualifier = sqlalchemy.orm.relationship(
         argument="Qualifier",
         back_populates="synonyms",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -1964,6 +1990,7 @@ class SupplementalSynonym(Base, OrmFightForBase):
     supplemental = sqlalchemy.orm.relationship(
         argument="Supplemental",
         back_populates="synonyms",
+        uselist=True,
     )
 
     # Set table arguments.
