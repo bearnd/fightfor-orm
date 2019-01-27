@@ -305,11 +305,13 @@ class Term(Base, OrmFightForBase):
         nullable=True,
     )
 
-    # Relationship to a list of `ThesaurusId` records.
+    # Relationship to a list of `ThesaurusId` records. Based on the
+    # `<ThesaurusID>` elements under the `<ThesaurusIDlist>` element.
     thesaurus_ids = sqlalchemy.orm.relationship(
         argument="ThesaurusId",
         secondary="mesh.term_thesaurus_ids",
         back_populates="terms",
+        uselist=True,
     )
 
     # Referring to the `<TermNote>` element.
@@ -509,7 +511,10 @@ class Concept(Base, OrmFightForBase):
         uselist=True,
     )
 
-    # Relationship to a list of `Term` records.
+    # TODO: `<ConceptRelationList>` element.
+
+    # Relationship to a list of `Term` records. Based on the `<Term>` elements
+    # under the `<TermList>` element.
     terms = sqlalchemy.orm.relationship(
         argument="Term",
         secondary="mesh.concept_terms",
