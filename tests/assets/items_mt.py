@@ -4,6 +4,7 @@ import datetime
 from typing import Tuple, Dict
 
 from fform.orm_mt import Term
+from fform.orm_mt import DescriptorClassType
 from fform.dals_mt import DalMesh
 
 
@@ -168,5 +169,46 @@ def create_tree_number(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
         setattr(obj, k, v)
 
     obj_id = dal.iodi_tree_number(**refr)
+
+    return obj_id, refr
+
+
+def create_descriptor(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
+    """ Inserts a new `descriptors` record.
+
+    Args:
+        dal (DalMesh): The DAL used to interact with the DB.
+
+    Returns:
+        Tuple(int, Dict):
+            - The PK ID of the new record.
+            - The inserted record reference.
+    """
+
+    refr = {
+        "descriptor_class": DescriptorClassType.ONE,
+        "ui": "D000056",
+        "name": "Accident Prevention",
+        "created": datetime.date(1999, 1, 1),
+        "revised": datetime.date(2008, 7, 8),
+        "estabished": datetime.date(1966, 1, 1),
+        "annotation": "general or unspecified; prefer specifics",
+        "history_note": "70(69)",
+        "nlm_classification_number": "WA 275",
+        "online_note": "use CALCIMYCIN to search A 23187 1975-90",
+        "public_mesh_note": ("96; was ABATE 1972-95 (see under INSECTICIDES,"
+                             " ORGANOTHIOPHOSPHATE 1972-90)"),
+        "consider_also": "consider_also",
+    }
+
+    # Override any reference pairs with values under `kwargs`.
+    for k, v in kwargs.items():
+        refr[k] = v
+
+    obj = Term()
+    for k, v in refr.items():
+        setattr(obj, k, v)
+
+    obj_id = dal.iodu_descriptor(**refr)
 
     return obj_id, refr
