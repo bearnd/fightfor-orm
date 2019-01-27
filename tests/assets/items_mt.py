@@ -104,3 +104,40 @@ def create_concept(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
     obj_id = dal.iodu_concept(**refr)
 
     return obj_id, refr
+
+
+def create_qualifier(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
+    """ Inserts a new `qualifiers` record.
+
+    Args:
+        dal (DalMesh): The DAL used to interact with the DB.
+
+    Returns:
+        Tuple(int, Dict):
+            - The PK ID of the new record.
+            - The inserted record reference.
+    """
+
+    refr = {
+        "ui": "Q000000981",
+        "name": "diagnostic imaging",
+        "created": datetime.date(2016, 6, 29),
+        "revised": datetime.date(2016, 6, 8),
+        "established": datetime.date(2017, 1, 1),
+        "annotation": ("subheading only; coordinate with specific  imaging "
+                       "technique if pertinent"),
+        "history_note": "2017(1967)",
+        "online_note": "online_note",
+    }
+
+    # Override any reference pairs with values under `kwargs`.
+    for k, v in kwargs.items():
+        refr[k] = v
+
+    obj = Term()
+    for k, v in refr.items():
+        setattr(obj, k, v)
+
+    obj_id = dal.iodu_qualifier(**refr)
+
+    return obj_id, refr
