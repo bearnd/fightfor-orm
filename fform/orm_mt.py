@@ -452,6 +452,7 @@ class Concept(Base, OrmFightForBase):
         type_=sqlalchemy.types.Unicode(),
         nullable=False,
         unique=True,
+        index=True,
     )
 
     # Referring to the `<ConceptName>` element.
@@ -459,6 +460,8 @@ class Concept(Base, OrmFightForBase):
         name="name",
         type_=sqlalchemy.types.Unicode(),
         nullable=False,
+        unique=True,
+        index=True,
     )
 
     # Referring to the `<CASN1Name>` element.
@@ -473,7 +476,6 @@ class Concept(Base, OrmFightForBase):
         name="registry_number",
         type_=sqlalchemy.types.Unicode(),
         nullable=True,
-        index=True,
     )
 
     # Referring to the `<ScopeNote>` element.
@@ -723,6 +725,7 @@ class Qualifier(Base, OrmFightForBase):
         type_=sqlalchemy.types.Unicode(),
         nullable=False,
         unique=True,
+        index=True,
     )
 
     # Referring to the `<QualifierName>` element.
@@ -730,6 +733,8 @@ class Qualifier(Base, OrmFightForBase):
         name="name",
         type_=sqlalchemy.types.Unicode(),
         nullable=False,
+        unique=True,
+        index=True,
     )
 
     # Referring to the value of the `<DateCreated>` element.
@@ -1044,7 +1049,7 @@ class Descriptor(Base, OrmFightForBase):
         type_=sqlalchemy.types.Unicode(),
         nullable=False,
         unique=True,
-        index=False
+        index=True,
     )
 
     # Referring to the `<DescriptorName>` element.
@@ -1052,6 +1057,9 @@ class Descriptor(Base, OrmFightForBase):
         name="name",
         type_=sqlalchemy.types.Unicode(),
         nullable=False,
+        unique=True,
+        index=True,
+
     )
 
     # Referring to the value of the `<DateCreated>` element.
@@ -1571,7 +1579,7 @@ class Supplemental(Base, OrmFightForBase):
         type_=sqlalchemy.types.Unicode(),
         nullable=False,
         unique=True,
-        index=False
+        index=True,
     )
 
     # Referring to the `<SupplementalRecordName>` element.
@@ -1579,6 +1587,8 @@ class Supplemental(Base, OrmFightForBase):
         name="name",
         type_=sqlalchemy.types.Unicode(),
         nullable=False,
+        unique=True,
+        index=True,
     )
 
     # Referring to the value of the `<DateCreated>` element.
