@@ -39,7 +39,7 @@ class DalTestBase(unittest.TestCase):
 
 class DalCtTestBase(DalTestBase):
 
-    def setup_dal(self):
+    def setup_dal(self) -> DalClinicalTrials:
         # Instantiate a DAL.
         dal = DalClinicalTrials(
             sql_username=self.cfg.sql_username,
@@ -54,7 +54,7 @@ class DalCtTestBase(DalTestBase):
 
 class DalPubmedTestBase(DalTestBase):
 
-    def setup_dal(self):
+    def setup_dal(self) -> DalPubmed:
         # Instantiate a DAL.
         dal = DalPubmed(
             sql_username=self.cfg.sql_username,
@@ -69,7 +69,7 @@ class DalPubmedTestBase(DalTestBase):
 
 class DalAppTestBase(DalTestBase):
 
-    def setup_dal(self):
+    def setup_dal(self) -> DalApp:
         # Instantiate a DAL.
         dal = DalApp(
             sql_username=self.cfg.sql_username,
