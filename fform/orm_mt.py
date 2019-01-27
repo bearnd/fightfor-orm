@@ -373,6 +373,65 @@ class TermThesaurusId(Base, OrmFightForBase):
     )
 
 
+class RelatedRegistryNumber(Base, OrmFightForBase):
+    """ Table of `<RelatedRegistryNumber>` element records."""
+
+    # Set table name.
+    __tablename__ = "related_registry_numbers"
+
+    # Autoincrementing primary key ID.
+    related_registry_number_id = sqlalchemy.Column(
+        name="related_registry_number_id",
+        type_=sqlalchemy.types.BigInteger(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Referring to the `<RelatedRegistryNumber>` element.
+    related_registry_number = sqlalchemy.Column(
+        name="related_registry_number",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+    )
+
+    # MD5 hash of the related-registry-number.
+    md5 = sqlalchemy.Column(
+        name="md5",
+        type_=sqlalchemy.types.LargeBinary(length=16),
+        unique=True,
+        index=True,
+        nullable=False,
+    )
+
+    # Relationship to a list of `Concept` records.
+    concepts = sqlalchemy.orm.relationship(
+        argument="Concept",
+        secondary="mesh.concept_related_registry_numbers",
+        back_populates="concepts",
+        uselist=True,
+    )
+
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "mesh"
+    }
+
+    @sqlalchemy.orm.validates("related_registry_number")
+    def update_md5(self, key, value):
+
+        # Assemble the class attributes into a `dict`.
+        attrs = {
+            "related_registry_number": self.related_registry_number,
+        }
+        attrs[key] = value
+
+        # Calculate and update the `md5` attribute.
+        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
+
+        return value
+
+
 class Concept(Base, OrmFightForBase):
     """ Table of `<Concept>` element records."""
 
@@ -438,7 +497,15 @@ class Concept(Base, OrmFightForBase):
         nullable=True,
     )
 
-    # TODO: RelatedRegistryNumberList (nullable)
+    # Relationship to a list of `RelatedRegistryNumber` records. Based on the
+    # `<RelatedRegistryNumber>` elements under the `<RelatedRegistryNumberList>`
+    # element.
+    related_registry_numbers = sqlalchemy.orm.relationship(
+        argument="RelatedRegistryNumber",
+        secondary="mesh.concept_related_registry_numbers",
+        back_populates="concepts",
+        uselist=True,
+    )
 
     # Relationship to a list of `Term` records.
     terms = sqlalchemy.orm.relationship(
@@ -477,6 +544,47 @@ class Concept(Base, OrmFightForBase):
         # Set table schema.
         "schema": "mesh"
     }
+
+
+class ConceptRelatedRegistryNumber(Base, OrmFightForBase):
+    """ Associative table between `Concept` and `RelatedRegistryNumber`
+        records.
+    """
+
+    # Set table name.
+    __tablename__ = "concept_related_registry_numbers"
+
+    # Autoincrementing primary key ID.
+    concept_related_registry_number_id = sqlalchemy.Column(
+        name="concept_related_registry_number_id",
+        type_=sqlalchemy.types.BigInteger(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the concept ID.
+    concept_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("mesh.concepts.concept_id"),
+        name="concept_id",
+        nullable=False,
+    )
+
+    # Foreign key to the related-registry-number ID.
+    related_registry_number_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey(
+            "mesh.related_registry_numbers.related_registry_number_id",
+        ),
+        name="related_registry_number_id",
+        nullable=False,
+    )
+
+    # Set table arguments.
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint("concept_id", "related_registry_number_id"),
+        # Set table schema.
+        {"schema": "mesh"}
+    )
 
 
 class ConceptRelatedConcept(Base, OrmFightForBase):
