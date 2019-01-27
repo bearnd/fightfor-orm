@@ -11,7 +11,7 @@ from tests.bases import DalMtTestBase
 from tests.assets.items_mt import create_concept
 
 
-class DalMtTermTest(DalMtTestBase):
+class DalMtConceptTest(DalMtTestBase):
 
     def test_iodu_get_concept(self):
         """ Tests the IODU insertion of a `Concept` record via the
