@@ -69,3 +69,38 @@ def create_thesaurus_id(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
     obj_id = dal.iodi_thesaurus_id(**refr)
 
     return obj_id, refr
+
+
+def create_concept(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
+    """ Inserts a new `concepts` record.
+
+    Args:
+        dal (DalMesh): The DAL used to interact with the DB.
+
+    Returns:
+        Tuple(int, Dict):
+            - The PK ID of the new record.
+            - The inserted record reference.
+    """
+
+    refr = {
+        "ui": "M0000033",
+        "name": "Abortion, Incomplete",
+        "casn1_name": "casn1_name",
+        "registry_number": "registry_number",
+        "scope_note": "scope_note",
+        "translators_english_scope_note": "translators_english_scope_note",
+        "translators_scope_note": "translators_scope_note",
+    }
+
+    # Override any reference pairs with values under `kwargs`.
+    for k, v in kwargs.items():
+        refr[k] = v
+
+    obj = Term()
+    for k, v in refr.items():
+        setattr(obj, k, v)
+
+    obj_id = dal.iodu_concept(**refr)
+
+    return obj_id, refr
