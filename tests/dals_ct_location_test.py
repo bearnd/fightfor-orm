@@ -166,7 +166,7 @@ class DalCtLocationTest(DalCtTestBase):
 
         self.assertEqual(obj_id, 4)
 
-    def test_delete_person(self):
+    def test_delete_location(self):
         """Tests the deletion of a `Location` record via the `delete` method of
         the `DalClinicalTrials` class."""
 
