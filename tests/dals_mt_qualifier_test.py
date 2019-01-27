@@ -115,15 +115,15 @@ class DalMtQualifierTest(DalMtTestBase):
         obj_original = self.dal.get(Qualifier, obj_id)  # type: Qualifier
 
         # Assert that the different fields of the record match.
-        self.assertEqual(obj.qualifier_id, obj_id)
-        self.assertEqual(obj.ui, refr["ui"])
-        self.assertEqual(obj.name, refr["name"])
-        self.assertEqual(obj.created, refr["created"])
-        self.assertEqual(obj.revised, refr["revised"])
-        self.assertEqual(obj.established, refr["established"])
-        self.assertEqual(obj.annotation, refr["annotation"])
-        self.assertEqual(obj.history_note, refr["history_note"])
-        self.assertEqual(obj.online_note, refr["online_note"])
+        self.assertEqual(obj_original.qualifier_id, obj_id)
+        self.assertEqual(obj_original.ui, refr["ui"])
+        self.assertEqual(obj_original.name, refr["name"])
+        self.assertEqual(obj_original.created, refr["created"])
+        self.assertEqual(obj_original.revised, refr["revised"])
+        self.assertEqual(obj_original.established, refr["established"])
+        self.assertEqual(obj_original.annotation, refr["annotation"])
+        self.assertEqual(obj_original.history_note, refr["history_note"])
+        self.assertEqual(obj_original.online_note, refr["online_note"])
 
         # Update the record.
         self.dal.update_attr_value(
