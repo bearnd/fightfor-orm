@@ -149,6 +149,6 @@ class DalMtDescriptorTest(DalMtTestBase):
         obj_updated = self.dal.get(Descriptor, obj_id)  # type: Descriptor
 
         # Assert that the ID remained the same.
-        self.assertEqual(obj_updated.qualifier_id, 1)
+        self.assertEqual(obj_updated.descriptor_id, 1)
         # Assert that attribute changed.
         self.assertEqual(obj_updated.history_note, "different history note")
