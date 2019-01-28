@@ -253,3 +253,32 @@ def create_entry_combination(
     obj_id = dal.iodu_entry_combination(**refr)
 
     return obj_id, refr
+
+
+def create_previous_indexing(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
+    """ Inserts a new `previous_indexings` record.
+
+    Args:
+        dal (DalMesh): The DAL used to interact with the DB.
+
+    Returns:
+        Tuple(int, Dict):
+            - The PK ID of the new record.
+            - The inserted record reference.
+    """
+
+    refr = {
+        "previous_indexing": "Amoeba (1966-1987)",
+    }
+
+    # Override any reference pairs with values under `kwargs`.
+    for k, v in kwargs.items():
+        refr[k] = v
+
+    obj = Term()
+    for k, v in refr.items():
+        setattr(obj, k, v)
+
+    obj_id = dal.iodi_previous_indexing(**refr)
+
+    return obj_id, refr
