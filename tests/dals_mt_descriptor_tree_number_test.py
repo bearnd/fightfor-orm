@@ -10,7 +10,6 @@ from fform.orm_mt import DescriptorTreeNumber
 from tests.bases import DalMtTestBase
 from tests.assets.items_mt import create_tree_number
 from tests.assets.items_mt import create_descriptor
-from tests.assets.items_mt import create_entry_combination
 
 
 class DalMtTermDescriptorTreeNumberTest(DalMtTestBase):
