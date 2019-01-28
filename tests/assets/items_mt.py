@@ -191,7 +191,7 @@ def create_descriptor(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
         "name": "Accident Prevention",
         "created": datetime.date(1999, 1, 1),
         "revised": datetime.date(2008, 7, 8),
-        "estabished": datetime.date(1966, 1, 1),
+        "established": datetime.date(1966, 1, 1),
         "annotation": "general or unspecified; prefer specifics",
         "history_note": "70(69)",
         "nlm_classification_number": "WA 275",
