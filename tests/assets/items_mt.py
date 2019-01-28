@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-from typing import Tuple, Dict
+from typing import Tuple, Dict, Optional
 
 from fform.orm_mt import Term
 from fform.orm_mt import DescriptorClassType
+from fform.orm_mt import EntryCombinationType as ECT
 from fform.dals_mt import DalMesh
 
 
@@ -210,5 +211,45 @@ def create_descriptor(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
         setattr(obj, k, v)
 
     obj_id = dal.iodu_descriptor(**refr)
+
+    return obj_id, refr
+
+
+def create_entry_combination(
+    dal: DalMesh,
+    descriptor_id: int,
+    qualifier_id: int,
+    combination_type: Optional[ECT] = ECT.ECIN,
+    **kwargs
+) -> Tuple[int, Dict]:
+    """ Inserts a new `entry_combinations` record.
+
+    Args:
+        dal (DalMesh): The DAL used to interact with the DB.
+        descriptor_id (int): The PK ID of the `descriptors` record.
+        qualifier_id (int): The PK ID of the `qualifiers` record.
+        combination_type (Optional[ECT] = ECT.ECIN): The combination type.
+
+    Returns:
+        Tuple(int, Dict):
+            - The PK ID of the new record.
+            - The inserted record reference.
+    """
+
+    refr = {
+        "descriptor_id": descriptor_id,
+        "qualifier_id": qualifier_id,
+        "combination_type": combination_type,
+    }
+
+    # Override any reference pairs with values under `kwargs`.
+    for k, v in kwargs.items():
+        refr[k] = v
+
+    obj = Term()
+    for k, v in refr.items():
+        setattr(obj, k, v)
+
+    obj_id = dal.iodu_entry_combination(**refr)
 
     return obj_id, refr
