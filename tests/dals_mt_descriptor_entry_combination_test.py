@@ -13,7 +13,7 @@ from tests.assets.items_mt import create_descriptor
 from tests.assets.items_mt import create_entry_combination
 
 
-class DalMtTermDescriptorEntryCombinationTest(DalMtTestBase):
+class DalMtDescriptorEntryCombinationTest(DalMtTestBase):
     """ Defines unit-tests for the `DescriptorEntryCombination` class as well as
         the `iodi_descriptor_entry_combination` method of the `DalMesh` class.
     """
