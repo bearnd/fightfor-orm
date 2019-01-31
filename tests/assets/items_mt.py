@@ -6,6 +6,7 @@ from typing import Tuple, Dict, Optional
 from fform.orm_mt import Term
 from fform.orm_mt import DescriptorClassType
 from fform.orm_mt import EntryCombinationType as Ect
+from fform.orm_mt import SupplementalClassType
 from fform.dals_mt import DalMesh
 
 
@@ -282,3 +283,39 @@ def create_previous_indexing(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
     obj_id = dal.iodi_previous_indexing(**refr)
 
     return obj_id, refr
+
+
+def create_supplemental(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
+    """ Inserts a new `supplementals` record.
+
+    Args:
+        dal (DalMesh): The DAL used to interact with the DB.
+
+    Returns:
+        Tuple(int, Dict):
+            - The PK ID of the new record.
+            - The inserted record reference.
+    """
+
+    refr = {
+        "supplemental_class": SupplementalClassType.ONE,
+        "ui": "C000002",
+        "name": "bevonium",
+        "created": datetime.date(1971, 1, 1),
+        "revised": datetime.date(2018, 9, 24),
+        "note": "structure given in first source",
+        "frequency": "1",
+    }
+
+    # Override any reference pairs with values under `kwargs`.
+    for k, v in kwargs.items():
+        refr[k] = v
+
+    obj = Term()
+    for k, v in refr.items():
+        setattr(obj, k, v)
+
+    obj_id = dal.iodu_supplemental(**refr)
+
+    return obj_id, refr
+
