@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import datetime
 from typing import Optional, Tuple, Dict

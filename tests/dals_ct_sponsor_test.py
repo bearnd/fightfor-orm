@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 from fform.orm_ct import Sponsor
 from fform.orm_ct import AgencyClassType

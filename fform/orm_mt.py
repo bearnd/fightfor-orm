@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import sqlalchemy.orm
 
@@ -409,7 +409,7 @@ class RelatedRegistryNumber(Base, OrmFightForBase):
     concepts = sqlalchemy.orm.relationship(
         argument="Concept",
         secondary="mesh.concept_related_registry_numbers",
-        back_populates="concepts",
+        back_populates="related_registry_numbers",
         uselist=True,
     )
 
