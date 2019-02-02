@@ -21,7 +21,7 @@ class DalMtTermSupplementalPharmacologicalActionDescriptorTest(DalMtTestBase):
         `DalMesh` class.
     """
 
-    def test_iodi_get_supplemental_previous_indexing(self):
+    def test_iodi_get_supplemental_pharmacological_action_descriptor(self):
         """ Tests the IODI insertion of a
             `SupplementalPharmacologicalActionDescriptor` record via the
             `iodi_supplemental_pharmacological_action_descriptor` method of the
