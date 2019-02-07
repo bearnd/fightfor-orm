@@ -1,10 +1,11 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import abc
 import unittest
 
 from fform.dals_ct import DalClinicalTrials
 from fform.dals_pubmed import DalPubmed
+from fform.dals_mt import DalMesh
 from fform.dals_app import DalApp
 from fform.orm_base import Base
 
@@ -39,7 +40,7 @@ class DalTestBase(unittest.TestCase):
 
 class DalCtTestBase(DalTestBase):
 
-    def setup_dal(self):
+    def setup_dal(self) -> DalClinicalTrials:
         # Instantiate a DAL.
         dal = DalClinicalTrials(
             sql_username=self.cfg.sql_username,
@@ -54,7 +55,7 @@ class DalCtTestBase(DalTestBase):
 
 class DalPubmedTestBase(DalTestBase):
 
-    def setup_dal(self):
+    def setup_dal(self) -> DalPubmed:
         # Instantiate a DAL.
         dal = DalPubmed(
             sql_username=self.cfg.sql_username,
@@ -67,9 +68,24 @@ class DalPubmedTestBase(DalTestBase):
         return dal
 
 
+class DalMtTestBase(DalTestBase):
+
+    def setup_dal(self) -> DalMesh:
+        # Instantiate a DAL.
+        dal = DalMesh(
+            sql_username=self.cfg.sql_username,
+            sql_password=self.cfg.sql_password,
+            sql_host=self.cfg.sql_host,
+            sql_port=self.cfg.sql_port,
+            sql_db=self.cfg.sql_db
+        )
+
+        return dal
+
+
 class DalAppTestBase(DalTestBase):
 
-    def setup_dal(self):
+    def setup_dal(self) -> DalApp:
         # Instantiate a DAL.
         dal = DalApp(
             sql_username=self.cfg.sql_username,

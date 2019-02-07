@@ -445,7 +445,7 @@ class DalFightForBase(DalBase):
         # If sorting has been requested and the number of objects matches the
         # number of attribute values, i.e., a record object was found for each
         # combination of attribute values, then do the sorting.
-        if do_sort and len(objs) == len(list(attr_values)[0]):
+        if do_sort and len(objs) == len(attr_values):
             objs = self.order_objs_by_attr(
                 objs=objs,
                 attr_name=attr_name,

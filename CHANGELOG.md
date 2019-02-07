@@ -1,5 +1,28 @@
 ## Changelog
 
+### v0.16.0
+
+- Removed the `QualifierSynonym` and `SupplementalSynonym` tables as well as their corresponding DAL methods and unit-tests.
+
+194-mesh-2019-unit-tests:
+
+- Added the MeSH schemata for the different record types.
+- Added type annotations to the `setup_dal` methods of the derived unit-test base-classes.
+- Added a new `DalMtTestbase` base-class for unit-testing under the MeSH database.
+- Added unit-tests for the different MeSH ORM classes and DAL methods.
+
+194-mesh-2019-review-orm:
+
+- Updated comments and docstrings.
+- Added `uselist` arguments in the ORM relationship attributes.
+- Added new tables relating to the `RelatedRegistryNumber` elements and also added the relevant relationship attribute to the `Concept` class.
+
+186-articles-md5-fix:
+
+- Updated the way the Makefile runs unit-tests.
+- Updated the `update_md5` method to calculate the MD5 field based on all the class fields.
+- Added more unit-tests.
+
 ### v0.15.4
 
 - Added new relationships between the `Descriptor` and `DescriptorDefinition` classes.

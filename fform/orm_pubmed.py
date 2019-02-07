@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import sqlalchemy.orm
 from geoalchemy2 import Geometry
@@ -452,12 +452,36 @@ class Article(Base, OrmFightForBase):
         "schema": "pubmed"
     }
 
-    @sqlalchemy.orm.validates("title")
+    @sqlalchemy.orm.validates(
+        "publication_year",
+        "publication_month",
+        "publication_day",
+        "date_published",
+        "publication_model",
+        "journal_id",
+        "journal_volume",
+        "journal_issue",
+        "title",
+        "pagination",
+        "language",
+        "title_vernacular",
+    )
     def update_md5(self, key, value):
 
         # Assemble the class attributes into a `dict`.
         attrs = {
+            "publication_year": self.publication_year,
+            "publication_month": self.publication_month,
+            "publication_day": self.publication_day,
+            "date_published": self.date_published,
+            "publication_model": self.publication_model,
+            "journal_id": self.journal_id,
+            "journal_volume": self.journal_volume,
+            "journal_issue": self.journal_issue,
             "title": self.title,
+            "pagination": self.pagination,
+            "language": self.language,
+            "title_vernacular": self.title_vernacular,
         }
         attrs[key] = value
 

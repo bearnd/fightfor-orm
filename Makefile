@@ -54,13 +54,13 @@ lint: ## check style with flake8
 	flake8 fform tests
 
 test: ## run tests quickly with the default Python
-	python -m unittest tests/*
+	python -m unittest tests/*_test.py
 
 test-all: ## run tests on every Python version with tox
 	tox
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source fform -m pytest
+	coverage run --source fform -m unittest tests/*_test.py
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
