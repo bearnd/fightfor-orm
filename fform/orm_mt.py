@@ -808,13 +808,6 @@ class Qualifier(Base, OrmFightForBase):
         uselist=True,
     )
 
-    # Relationship to a list of `QualifierSynonym` records.
-    synonyms = sqlalchemy.orm.relationship(
-        argument="QualifierSynonym",
-        back_populates="qualifier",
-        uselist=True,
-    )
-
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -1664,13 +1657,6 @@ class Supplemental(Base, OrmFightForBase):
         uselist=True,
     )
 
-    # Relationship to a list of `SupplementalSynonym` records.
-    synonyms = sqlalchemy.orm.relationship(
-        argument="SupplementalSynonym",
-        back_populates="supplemental",
-        uselist=True,
-    )
-
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -1977,152 +1963,6 @@ class DescriptorSynonym(Base, OrmFightForBase):
         # Add a pg_trgm trigram index on the `synonym` field.
         sqlalchemy.Index(
             'ix_mesh_descriptor_synonyms_synonym_trgm',
-            sqlalchemy.text("synonym gin_trgm_ops"),
-            postgresql_using='gin',
-            postgresql_ops={"description": "gin_trgm_ops"},
-        ),
-        # Set table schema.
-        {"schema": "mesh"}
-    )
-
-    @sqlalchemy.orm.validates("synonym")
-    def update_md5(self, key, value):
-
-        # Assemble the class attributes into a `dict`.
-        attrs = {
-            "synonym": self.synonym,
-        }
-        attrs[key] = value
-
-        # Calculate and update the `md5` attribute.
-        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
-
-        return value
-
-
-class QualifierSynonym(Base, OrmFightForBase):
-    """ Table of MeSH qualifier synonyms as defined in the UMLS."""
-
-    # Set table name.
-    __tablename__ = "qualifier_synonyms"
-
-    # Autoincrementing primary key ID.
-    qualifier_synonym_id = sqlalchemy.Column(
-        name="qualifier_synonym_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the qualifier ID.
-    qualifier_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("mesh.qualifiers.qualifier_id"),
-        name="qualifier_id",
-        nullable=False,
-    )
-
-    # The descriptor synonym.
-    synonym = sqlalchemy.Column(
-        name="synonym",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=False,
-    )
-
-    # MD5 hash of the synonym.
-    md5 = sqlalchemy.Column(
-        name="md5",
-        type_=sqlalchemy.types.LargeBinary(length=16),
-        index=True,
-        nullable=False,
-    )
-
-    # Relationship to a `Qualifier` record.
-    qualifier = sqlalchemy.orm.relationship(
-        argument="Qualifier",
-        back_populates="synonyms",
-        uselist=False,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('qualifier_id', 'md5'),
-        # Add a pg_trgm trigram index on the `synonym` field.
-        sqlalchemy.Index(
-            'ix_mesh_qualifier_synonyms_synonym_trgm',
-            sqlalchemy.text("synonym gin_trgm_ops"),
-            postgresql_using='gin',
-            postgresql_ops={"description": "gin_trgm_ops"},
-        ),
-        # Set table schema.
-        {"schema": "mesh"}
-    )
-
-    @sqlalchemy.orm.validates("synonym")
-    def update_md5(self, key, value):
-
-        # Assemble the class attributes into a `dict`.
-        attrs = {
-            "synonym": self.synonym,
-        }
-        attrs[key] = value
-
-        # Calculate and update the `md5` attribute.
-        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
-
-        return value
-
-
-class SupplementalSynonym(Base, OrmFightForBase):
-    """ Table of MeSH supplemental synonyms as defined in the UMLS."""
-
-    # Set table name.
-    __tablename__ = "supplemental_synonyms"
-
-    # Autoincrementing primary key ID.
-    supplemental_synonym_id = sqlalchemy.Column(
-        name="supplemental_synonym_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Foreign key to the concept ID.
-    supplemental_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("mesh.supplementals.supplemental_id"),
-        name="supplemental_id",
-        nullable=False,
-    )
-
-    # The descriptor synonym.
-    synonym = sqlalchemy.Column(
-        name="synonym",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=False,
-    )
-
-    # MD5 hash of the synonym.
-    md5 = sqlalchemy.Column(
-        name="md5",
-        type_=sqlalchemy.types.LargeBinary(length=16),
-        index=True,
-        nullable=False,
-    )
-
-    # Relationship to a `Supplemental` record.
-    supplemental = sqlalchemy.orm.relationship(
-        argument="Supplemental",
-        back_populates="synonyms",
-        uselist=True,
-    )
-
-    # Set table arguments.
-    __table_args__ = (
-        # Set unique constraint.
-        sqlalchemy.UniqueConstraint('supplemental_id', 'md5'),
-        # Add a pg_trgm trigram index on the `synonym` field.
-        sqlalchemy.Index(
-            'ix_mesh_supplemental_synonyms_synonym_trgm',
             sqlalchemy.text("synonym gin_trgm_ops"),
             postgresql_using='gin',
             postgresql_ops={"description": "gin_trgm_ops"},
