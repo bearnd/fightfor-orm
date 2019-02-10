@@ -15,10 +15,12 @@ import sqlalchemy
 import sqlalchemy.orm
 
 from fform.orm_base import OrmBase
+from fform.orm_base import OrmFightForBase
 from fform.loggers import create_logger
 from fform.excs import MissingAttributeError
 from fform.excs import InvalidArgumentsError
 from fform.excs import RecordMissingError
+from fform.excs import RelationshipDoesNotExist
 
 
 def with_session_scope(**dec_kwargs):
@@ -227,16 +229,16 @@ class DalFightForBase(DalBase):
     @with_session_scope()
     def get(
         self,
-        orm_class: Type[OrmBase],
+        orm_class: Type[OrmFightForBase],
         pk: int,
         session: Optional[sqlalchemy.orm.Session] = None,
-    ) -> Type[OrmBase]:
-        """Retrieves the record object of `orm_class` type through the value of
-        its primary-key ID.
+    ) -> Type[OrmFightForBase]:
+        """ Retrieves the record object of `orm_class` type through the value of
+            its primary-key ID.
 
         Args:
-            orm_class (Type[OrmBase]): An object of a class derived off
-                `OrmBase` implementing the `attr_name` attribute.
+            orm_class (Type[OrmFightForBase]): An object of a class derived off
+                `OrmFightForBase`.
             pk (int): The primary-key ID of the record to be retrieved.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be retrieved. Defaults to `None`
@@ -244,8 +246,8 @@ class DalFightForBase(DalBase):
                 terminated upon completion.
 
         Returns:
-            Type[OrmBase]: The record object of type `orm_class` matching the
-                primary-key ID and `None` if no record exists.
+            Type[OrmFightForBase]: The record object of type `orm_class`
+                matching the primary-key ID and `None` if no record exists.
         """
 
         query = session.query(orm_class)
@@ -257,10 +259,109 @@ class DalFightForBase(DalBase):
 
         return obj
 
+    @staticmethod
+    def add_joinedloads(
+        query: sqlalchemy.orm.Query,
+        orm_class: Type[OrmFightForBase],
+        joined_relationships: List[str],
+    ) -> sqlalchemy.orm.Query:
+        """ Adds `joinedload` directives to an SQLAlchemy query.
+
+        This method forces joins to relationships of an ORM object by injecting
+        calls to the `sqlalchemy.orm.joinedload` function under the
+        `sqlalchemy.orm.Query.options` method. The names of relationship
+        attributes defined under the `orm_cls` are passed as strings and should
+        they be defined in the class they're added for a joined-load.
+
+        Args:
+            query (sqlalchemy.orm.Query): The SQLAlchemy `Query` object to be
+                modified with `joinedload` directives.
+            orm_class (OrmBase): The ORM class on which the query is being
+                performed and which should contain the relationship attributes
+                defined under `joined_relationships`.
+            joined_relationships (List[str]): A list of the relationship
+                attributes defined under `orm_cls` in the form of strings.
+
+        Returns:
+            sqlalchemy.orm.Query: The (possibly) amended query with the
+                joined-load directives.
+
+        Raises:
+            RelationshipDoesNotExist: Raised if any of the attribute names
+                under `joined_relationships` aren't defined under the `orm_cls`
+                class.
+        """
+
+        if joined_relationships:
+
+            joinedloads = []
+            for joined_relationship in joined_relationships:
+                if not hasattr(orm_class, joined_relationship):
+                    msg = "Relationship '{}' not defined under ORM class '{}'."
+                    msg_fmt = msg.format(
+                        joined_relationship,
+                        orm_class.__name__,
+                    )
+                    raise RelationshipDoesNotExist(msg_fmt)
+
+                joinedloads.append(
+                    sqlalchemy.orm.joinedload(
+                        getattr(orm_class, joined_relationship)
+                    )
+                )
+
+            query = query.options(*joinedloads)
+
+        return query
+
+    @with_session_scope()
+    def get_joined(
+        self,
+        orm_class: Type[OrmFightForBase],
+        pk: int,
+        joined_relationships: List[str],
+        session: Optional[sqlalchemy.orm.Session] = None,
+    ) -> Type[OrmFightForBase]:
+        """ Retrieves the record object of `orm_class` type through the value of
+            its primary-key ID performing a joined-load against named
+            attributes representing ORM relationships.
+
+        Args:
+            orm_class (Type[OrmFightForBase]): An object of a class derived off
+                `OrmFightForBase`.
+            pk (int): The primary-key ID of the record to be retrieved.
+            joined_relationships (List[str]): A list of `orm_class` type
+                relationship attributes to be join-loaded alongside with the
+                `orm_class` record object.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be retrieved. Defaults to `None`
+                in which case a new session is automatically created and
+                terminated upon completion.
+
+        Returns:
+            Type[OrmFightForBase]: The record object of type `orm_class`
+                matching the primary-key ID and `None` if no record exists.
+        """
+
+        query = session.query(orm_class)
+        query = query.filter(
+            getattr(orm_class, orm_class.get_pk_name()) == pk
+        )
+
+        query = self.add_joinedloads(
+            query=query,
+            orm_class=orm_class,
+            joined_relationships=joined_relationships
+        )
+
+        obj = query.one_or_none()
+
+        return obj
+
     @with_session_scope()
     def update_attr_value(
         self,
-        orm_class: Type[OrmBase],
+        orm_class: Type[OrmFightForBase],
         pk: int,
         attr_name: str,
         attr_value: Any,
@@ -270,7 +371,7 @@ class DalFightForBase(DalBase):
         `orm_class` type identified through its primary-key ID.
 
         Args:
-            orm_class (Type[OrmBase]): An object of a class derived off
+            orm_class (Type[OrmFightForBase]): An object of a class derived off
                 `OrmBase` implementing the `attr_name` attribute.
             pk (int): The primary-key ID of the record to be updated.
             attr_name (str): The name of the attribute to be updated.
@@ -316,7 +417,7 @@ class DalFightForBase(DalBase):
     @with_session_scope()
     def delete(
         self,
-        orm_class: Type[OrmBase],
+        orm_class: Type[OrmFightForBase],
         pk: int,
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> None:
@@ -324,8 +425,8 @@ class DalFightForBase(DalBase):
         `orm_class` type through its primary-key ID.
 
         Args:
-            orm_class (Type[OrmBase]): A class derived off `OrmBase` which
-                represents the record to be deleted.
+            orm_class (Type[OrmFightForBase]): A class derived off `OrmBase`
+                which represents the record to be deleted.
             pk (int): The primary-key ID of the record to be deleted.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be deleted. Defaults to `None` in
@@ -342,11 +443,11 @@ class DalFightForBase(DalBase):
     @with_session_scope()
     def get_by_attr(
         self,
-        orm_class: Type[OrmBase],
+        orm_class: Type[OrmFightForBase],
         attr_name: str,
         attr_value: Any,
         session: Optional[sqlalchemy.orm.Session] = None,
-    ) -> Type[OrmBase]:
+    ) -> Type[OrmFightForBase]:
         """Retrieves the record object of `orm_class` type through the value of
         a given attribute.
 
@@ -356,7 +457,7 @@ class DalFightForBase(DalBase):
             should multiple records with a given attribute value be found.
 
         Args:
-            orm_class (Type[OrmBase]): An object of a class derived off
+            orm_class (Type[OrmFightForBase]): An object of a class derived off
                 `OrmBase` implementing the `attr_name` attribute.
             attr_name (str): The attribute name to be used in filtering out a
                 single record.
@@ -368,8 +469,8 @@ class DalFightForBase(DalBase):
                 terminated upon completion.
 
         Returns:
-            Type[OrmBase]: The record object of type `orm_class` matching the
-                attribute value and `None` if no record exists.
+            Type[OrmFightForBase]: The record object of type `orm_class`
+                matching the attribute value and `None` if no record exists.
 
         Raises:
             MissingAttributeError: Raised when the `orm_class` does not define
@@ -396,7 +497,7 @@ class DalFightForBase(DalBase):
     @with_session_scope()
     def bget_by_attr(
         self,
-        orm_class: Type[OrmBase],
+        orm_class: Type[OrmFightForBase],
         attr_name: str,
         attr_values: List[Any],
         do_sort: bool = True,
@@ -406,7 +507,7 @@ class DalFightForBase(DalBase):
         values of a given attribute.
 
         Args:
-            orm_class (Type[OrmBase]): An object of a class derived off
+            orm_class (Type[OrmFightForBase]): An object of a class derived off
                 `OrmBase` implementing the `attr_name` attribute.
             attr_name (str): The attribute name to be used in filtering out the
                 records.
@@ -457,10 +558,10 @@ class DalFightForBase(DalBase):
     @with_session_scope()
     def get_by_attrs(
         self,
-        orm_class: Type[OrmBase],
+        orm_class: Type[OrmFightForBase],
         attrs_names_values: Dict[str, Any],
         session: Optional[sqlalchemy.orm.Session] = None,
-    ) -> Type[OrmBase]:
+    ) -> Type[OrmFightForBase]:
         """Retrieves the record object of `orm_class` type through attribute
         name-value pairs.
 
@@ -471,7 +572,7 @@ class DalFightForBase(DalBase):
             found.
 
         Args:
-            orm_class (Type[OrmBase]): An object of a class derived off
+            orm_class (Type[OrmFightForBase]): An object of a class derived off
                 `OrmBase` implementing the defined attributes.
             attrs_names_values (Dict[str, Any]): A dictionary of attribute
                 name:value pairs to be used in filtering out a single record.
@@ -481,8 +582,9 @@ class DalFightForBase(DalBase):
                 terminated upon completion.
 
         Returns:
-            Type[OrmBase]: The record object of type `orm_class` matching the
-                attribute name-value pairs and `None` if no record exists.
+            Type[OrmFightForBase]: The record object of type `orm_class`
+                matching the attribute name-value pairs and `None` if no record
+                exists.
 
         Raises:
             MissingAttributeError: Raised when the `orm_class` does not define
@@ -513,7 +615,7 @@ class DalFightForBase(DalBase):
     @with_session_scope()
     def bget_by_attrs(
         self,
-        orm_class: Type[OrmBase],
+        orm_class: Type[OrmFightForBase],
         attrs_names_values: Dict[str, List[Any]],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> List[Type[OrmBase]]:
@@ -521,7 +623,7 @@ class DalFightForBase(DalBase):
         attribute name-value pairs.
 
         Args:
-            orm_class (Type[OrmBase]): An object of a class derived off
+            orm_class (Type[OrmFightForBase]): An object of a class derived off
                 `OrmBase` implementing the `attr_name` attribute.
             attrs_names_values (Dict[str, List[Any]]): A dictionary of attribute
                 name:list of values pairs to be used in filtering out the

@@ -25,3 +25,9 @@ class RecordMissingError(Exception):
     """Exception raised when the requested record does not exist."""
     def __init__(self, message, *args):
         super(RecordMissingError, self).__init__(message, *args)
+
+
+class RelationshipDoesNotExist(Exception):
+    """Exception raised when the requested relationship does not exist."""
+    def __init__(self, message, *args):
+        super(RelationshipDoesNotExist, self).__init__(message, *args)
