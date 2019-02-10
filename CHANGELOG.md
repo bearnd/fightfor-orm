@@ -1,5 +1,14 @@
 ## Changelog
 
+### v0.17.0
+
+Issue No. 198: Add a `get_joined` method to `DalBase`.:
+
+- Added a new exception class.
+- Updated the types of the methods in the `DalMesh` class to be specific to the `OrmFightForBase` class instead of the `OrmBase` which doesn’t define all the necessary properties.
+- Added a new `get_joined` method to the `DalFightForBase` class to retrieve records by PK performing join-loads on relationship attributes. Also added the `add_joinedloads` to the same class to facilitate amendment of the SQLAlchemy query to add the joined-loads.
+- Added new unit-tests.
+
 ### v0.16.0
 
 - Removed the `QualifierSynonym` and `SupplementalSynonym` tables as well as their corresponding DAL methods and unit-tests.
