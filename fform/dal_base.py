@@ -20,6 +20,7 @@ from fform.loggers import create_logger
 from fform.excs import MissingAttributeError
 from fform.excs import InvalidArgumentsError
 from fform.excs import RecordMissingError
+from fform.excs import RelationshipDoesNotExist
 
 
 def with_session_scope(**dec_kwargs):
@@ -252,6 +253,105 @@ class DalFightForBase(DalBase):
         query = session.query(orm_class)
         query = query.filter(
             getattr(orm_class, orm_class.get_pk_name()) == pk
+        )
+
+        obj = query.one_or_none()
+
+        return obj
+
+    @staticmethod
+    def add_joinedloads(
+        query: sqlalchemy.orm.Query,
+        orm_class: Type[OrmFightForBase],
+        joined_relationships: List[str],
+    ) -> sqlalchemy.orm.Query:
+        """ Adds `joinedload` directives to an SQLAlchemy query.
+
+        This method forces joins to relationships of an ORM object by injecting
+        calls to the `sqlalchemy.orm.joinedload` function under the
+        `sqlalchemy.orm.Query.options` method. The names of relationship
+        attributes defined under the `orm_cls` are passed as strings and should
+        they be defined in the class they're added for a joined-load.
+
+        Args:
+            query (sqlalchemy.orm.Query): The SQLAlchemy `Query` object to be
+                modified with `joinedload` directives.
+            orm_class (OrmBase): The ORM class on which the query is being
+                performed and which should contain the relationship attributes
+                defined under `joined_relationships`.
+            joined_relationships (List[str]): A list of the relationship
+                attributes defined under `orm_cls` in the form of strings.
+
+        Returns:
+            sqlalchemy.orm.Query: The (possibly) amended query with the
+                joined-load directives.
+
+        Raises:
+            RelationshipDoesNotExist: Raised if any of the attribute names
+                under `joined_relationships` aren't defined under the `orm_cls`
+                class.
+        """
+
+        if joined_relationships:
+
+            joinedloads = []
+            for joined_relationship in joined_relationships:
+                if not hasattr(orm_class, joined_relationship):
+                    msg = "Relationship '{}' not defined under ORM class '{}'."
+                    msg_fmt = msg.format(
+                        joined_relationship,
+                        orm_class.__name__,
+                    )
+                    raise RelationshipDoesNotExist(msg_fmt)
+
+                joinedloads.append(
+                    sqlalchemy.orm.joinedload(
+                        getattr(orm_class, joined_relationship)
+                    )
+                )
+
+            query = query.options(*joinedloads)
+
+        return query
+
+    @with_session_scope()
+    def get_joined(
+        self,
+        orm_class: Type[OrmFightForBase],
+        pk: int,
+        joined_relationships: List[str],
+        session: Optional[sqlalchemy.orm.Session] = None,
+    ) -> Type[OrmFightForBase]:
+        """ Retrieves the record object of `orm_class` type through the value of
+            its primary-key ID performing a joined-load against named
+            attributes representing ORM relationships.
+
+        Args:
+            orm_class (Type[OrmFightForBase]): An object of a class derived off
+                `OrmFightForBase`.
+            pk (int): The primary-key ID of the record to be retrieved.
+            joined_relationships (List[str]): A list of `orm_class` type
+                relationship attributes to be join-loaded alongside with the
+                `orm_class` record object.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be retrieved. Defaults to `None`
+                in which case a new session is automatically created and
+                terminated upon completion.
+
+        Returns:
+            Type[OrmFightForBase]: The record object of type `orm_class`
+                matching the primary-key ID and `None` if no record exists.
+        """
+
+        query = session.query(orm_class)
+        query = query.filter(
+            getattr(orm_class, orm_class.get_pk_name()) == pk
+        )
+
+        query = self.add_joinedloads(
+            query=query,
+            orm_class=orm_class,
+            joined_relationships=joined_relationships
         )
 
         obj = query.one_or_none()
