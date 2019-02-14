@@ -2135,7 +2135,7 @@ class Study(Base, OrmFightForBase):
     phase = sqlalchemy.Column(
         name="phase",
         type_=sqlalchemy.types.Enum(PhaseType),
-        nullable=False,
+        nullable=True,
         index=True,
     )
 
