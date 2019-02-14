@@ -11,7 +11,7 @@ from fform.utils import EnumBase
 
 
 class ActualType(EnumBase):
-    """Enumeration of the actual types."""
+    """ Enumeration of the actual types."""
 
     ACTUAL = "Actual"
     ANTICIPATED = "Anticipated"
@@ -19,14 +19,14 @@ class ActualType(EnumBase):
 
 
 class YesNoType(EnumBase):
-    """Enumeration of the yes/no types."""
+    """ Enumeration of the yes/no types."""
 
     YES = "Yes"
     NO = "No"
 
 
 class RecruitmentStatusType(EnumBase):
-    """Enumeration of the recruitment-status types."""
+    """ Enumeration of the recruitment-status types/"""
 
     ACTIVE_NOT = "Active, not recruiting"
     COMPLETED = "Completed"
@@ -39,7 +39,7 @@ class RecruitmentStatusType(EnumBase):
 
 
 class AgencyClassType(EnumBase):
-    """Enumeration of the agency-class types."""
+    """ Enumeration of the agency-class types."""
 
     NIH = "NIH"
     US = "U.S. Fed"
@@ -48,7 +48,7 @@ class AgencyClassType(EnumBase):
 
 
 class InterventionType(EnumBase):
-    """Enumeration of the intervention types."""
+    """ Enumeration of the intervention types."""
 
     BEHAVIORAL = "Behavioral"
     BIOLOGICAL = "Biological"
@@ -64,14 +64,14 @@ class InterventionType(EnumBase):
 
 
 class SamplingMethodType(EnumBase):
-    """Enumeration of the sampling-method types."""
+    """ Enumeration of the sampling-method types."""
 
     PROBABILITY = "Probability Sample"
     NON_PROBABILITY = "Non-Probability Sample"
 
 
 class GenderType(EnumBase):
-    """Enumeration of the gender types."""
+    """ Enumeration of the gender types."""
 
     FEMALE = "Female"
     MALE = "Male"
@@ -79,7 +79,7 @@ class GenderType(EnumBase):
 
 
 class RoleType(EnumBase):
-    """Enumeration of the role types."""
+    """ Enumeration of the role types."""
 
     PRINCIPAL = "Principal Investigator"
     SUB = "Sub-Investigator"
@@ -88,7 +88,7 @@ class RoleType(EnumBase):
 
 
 class ResponsiblePartyType(EnumBase):
-    """Enumeration of the responsible-party types."""
+    """ Enumeration of the responsible-party types."""
 
     SPONSOR = "Sponsor"
     PRINCIPAL = "Principal Investigator"
@@ -96,7 +96,7 @@ class ResponsiblePartyType(EnumBase):
 
 
 class MeasureParameterType(EnumBase):
-    """Enumeration of the measure-parameter types."""
+    """ Enumeration of the measure-parameter types."""
 
     GEOMETRIC = "Geometric Mean"
     GLS_MEAN = "Geometric Least Squares Mean"
@@ -110,7 +110,7 @@ class MeasureParameterType(EnumBase):
 
 
 class MeasureDispersionType(EnumBase):
-    """Enumeration of the measure-dispersion types."""
+    """ Enumeration of the measure-dispersion types."""
 
     CI_80 = "80% Confidence Interval"
     CI_90 = "90% Confidence Interval"
@@ -125,7 +125,7 @@ class MeasureDispersionType(EnumBase):
 
 
 class NonInferiorityType(EnumBase):
-    """Enumeration of the non-inferiority types."""
+    """ Enumeration of the non-inferiority types."""
 
     SUPERIORITY = "Superiority"
     NON_INFERIORITY = "Non-Inferiority"
@@ -134,21 +134,21 @@ class NonInferiorityType(EnumBase):
 
 
 class NumSidesType(EnumBase):
-    """Enumeration of the number of sides."""
+    """ Enumeration of the number of sides."""
 
     ONE = "1-Sided"
     TWO = "2-Sided"
 
 
 class AnalysisDispersionType(EnumBase):
-    """Enumeration of the analysis-dispersion types."""
+    """ Enumeration of the analysis-dispersion types."""
 
     SD = "Standard Deviation"
     SEM = "Standard Error of the Mean"
 
 
 class OutcomeType(EnumBase):
-    """Enumeration of the outcome types."""
+    """ Enumeration of the outcome types."""
 
     PRIMARY = "Primary"
     SECONDARY = "Secondary"
@@ -157,14 +157,14 @@ class OutcomeType(EnumBase):
 
 
 class EventAssessmentType(EnumBase):
-    """Enumeration of the event-assessment types."""
+    """ Enumeration of the event-assessment types."""
 
     SYSTEMATIC = "Systematic Assessment"
     NON_SYSTEMATIC = "Non-systematic Assessment"
 
 
 class PiEmployeeType(EnumBase):
-    """Enumeration of the pi-employee types."""
+    """ Enumeration of the pi-employee types."""
 
     ARE_EMPLOYED = ("All Principal Investigators ARE employed by the "
                     "organization sponsoring the study.")
@@ -173,7 +173,7 @@ class PiEmployeeType(EnumBase):
 
 
 class ExpandedAccessStatusType(EnumBase):
-    """Enumeration of the expanded-access-status types."""
+    """ Enumeration of the expanded-access-status types."""
 
     AVAILABLE = "Available"
     UNAVAILABLE = "No longer available"
@@ -182,19 +182,19 @@ class ExpandedAccessStatusType(EnumBase):
 
 
 class RedactedRecordStatusType(EnumBase):
-    """Enumeration of the redacted-record-status types."""
+    """ Enumeration of the redacted-record-status types."""
 
     WITHHELD = "Withheld"
 
 
 class UnknownStatusType(EnumBase):
-    """Enumeration of the unknown-status types."""
+    """ Enumeration of the unknown-status types."""
 
     UNKNOWN = "Unknown status"
 
 
 class OverallStatusType(EnumBase):
-    """Enumeration of the overall-status types."""
+    """ Enumeration of the overall-status types."""
 
     ACTIVE_NOT = "Active, not recruiting"
     COMPLETED = "Completed"
@@ -213,7 +213,7 @@ class OverallStatusType(EnumBase):
 
 
 class StudyType(EnumBase):
-    """Enumeration of the study types."""
+    """ Enumeration of the study types."""
 
     EXPANDED = "Expanded Access"
     INTERVENTIONAL = "Interventional"
@@ -223,7 +223,7 @@ class StudyType(EnumBase):
 
 
 class PhaseType(EnumBase):
-    """Enumeration of the phase types."""
+    """ Enumeration of the phase types."""
 
     NA = "N/A"
     PHASE_1_EARLY = "Early Phase 1"
@@ -236,7 +236,7 @@ class PhaseType(EnumBase):
 
 
 class BiospecRetentionType(EnumBase):
-    """Enumeration of the biospec-retention types."""
+    """ Enumeration of the biospec-retention types."""
 
     NONE = "None Retained"
     SAMPLES_W_DNA = "Samples With DNA"
@@ -244,35 +244,35 @@ class BiospecRetentionType(EnumBase):
 
 
 class SponsorType(EnumBase):
-    """Enumeration of the sponsor types."""
+    """ Enumeration of the sponsor types."""
 
     LEAD = "lead_sponsor"
     COLLABORATOR = "collaborator"
 
 
 class InvestigatorType(EnumBase):
-    """Enumeration of the investigator types."""
+    """ Enumeration of the investigator types."""
 
     LOCATION = "location"
     OVERALL = "overall"
 
 
 class ReferenceType(EnumBase):
-    """Enumeration of the reference types."""
+    """ Enumeration of the reference types."""
 
     STANDARD = "Standard"
     RESULTS = "Results"
 
 
 class MeshTermType(EnumBase):
-    """Enumeration of the mesh-term types."""
+    """ Enumeration of the mesh-term types."""
 
     CONDITION = "Condition"
     INTERVENTION = "Intervention"
 
 
 class Sponsor(Base, OrmFightForBase):
-    """Table of `<sponsor>` element record."""
+    """ Table of `<sponsor>` element record."""
 
     # Set table name.
     __tablename__ = "sponsors"
@@ -296,9 +296,9 @@ class Sponsor(Base, OrmFightForBase):
     agency_class = sqlalchemy.Column(
         name="class",
         type_=sqlalchemy.types.Enum(AgencyClassType),
-        nullable=False,
+        nullable=True,
         default=None,
-        index=True
+        index=True,
     )
 
     # MD5 hash of the keyword.
@@ -314,13 +314,13 @@ class Sponsor(Base, OrmFightForBase):
     studies = sqlalchemy.orm.relationship(
         argument="Study",
         secondary="clinicaltrials.study_sponsors",
-        back_populates="sponsors"
+        back_populates="sponsors",
     )
 
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
     @sqlalchemy.orm.validates(
@@ -343,7 +343,7 @@ class Sponsor(Base, OrmFightForBase):
 
 
 class Keyword(Base, OrmFightForBase):
-    """Table of `<keyword>` element records."""
+    """ Table of `<keyword>` element records."""
 
     # Set table name.
     __tablename__ = "keywords"
@@ -378,13 +378,13 @@ class Keyword(Base, OrmFightForBase):
     studies = sqlalchemy.orm.relationship(
         argument="Study",
         secondary="clinicaltrials.study_keywords",
-        back_populates="keywords"
+        back_populates="keywords",
     )
 
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
     @sqlalchemy.orm.validates("keyword")
@@ -407,7 +407,7 @@ class Keyword(Base, OrmFightForBase):
 
 
 class Condition(Base, OrmFightForBase):
-    """Table of `<condition>` element records."""
+    """ Table of `<condition>` element records."""
 
     # Set table name.
     __tablename__ = "conditions"
@@ -448,7 +448,7 @@ class Condition(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
     @sqlalchemy.orm.validates("condition")
@@ -471,8 +471,9 @@ class Condition(Base, OrmFightForBase):
 
 
 class Facility(Base, OrmFightForBase):
-    """Table of `<facility>` elements and their underlying `<address>` element
-    records."""
+    """ Table of `<facility>` elements and their underlying `<address>` element
+        records.
+    """
 
     # Set table name.
     __tablename__ = "facilities"
@@ -542,7 +543,7 @@ class Facility(Base, OrmFightForBase):
         type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
-        nullable=False
+        nullable=False,
     )
 
     # Relationship to a `FacilityCanonical` record.
@@ -554,13 +555,13 @@ class Facility(Base, OrmFightForBase):
     studies = sqlalchemy.orm.relationship(
         argument="Study",
         secondary="clinicaltrials.study_facilities",
-        back_populates="facilities"
+        back_populates="facilities",
     )
 
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
     @sqlalchemy.orm.validates(
@@ -588,8 +589,9 @@ class Facility(Base, OrmFightForBase):
 
 
 class Person(Base, OrmFightForBase):
-    """Table of person records normalized out of `<contact>` and
-    `<investigator> element records."""
+    """ Table of person records normalized out of `<contact>` and
+        `<investigator> element records.
+    """
 
     # Set table name.
     __tablename__ = "persons"
@@ -636,13 +638,13 @@ class Person(Base, OrmFightForBase):
         type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
-        nullable=False
+        nullable=False,
     )
 
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
     @sqlalchemy.orm.validates(
@@ -668,7 +670,7 @@ class Person(Base, OrmFightForBase):
 
 
 class Contact(Base, OrmFightForBase):
-    """Table of `<contact>` elements records."""
+    """ Table of `<contact>` elements records."""
 
     # Set table name.
     __tablename__ = "contacts"
@@ -715,7 +717,7 @@ class Contact(Base, OrmFightForBase):
         type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
-        nullable=False
+        nullable=False,
     )
 
     # Relationship to a `Person` record.
@@ -726,7 +728,7 @@ class Contact(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
     @sqlalchemy.orm.validates(
@@ -757,7 +759,7 @@ class Contact(Base, OrmFightForBase):
 
 
 class Investigator(Base, OrmFightForBase):
-    """Table of `<investigator>` elements records."""
+    """ Table of `<investigator>` elements records."""
 
     # Set table name.
     __tablename__ = "investigators"
@@ -782,7 +784,7 @@ class Investigator(Base, OrmFightForBase):
         name="role",
         type_=sqlalchemy.types.Enum(RoleType),
         nullable=True,
-        index=True
+        index=True,
     )
 
     # Investigator affiliation (referring to the `<affiliation>` element).
@@ -798,7 +800,7 @@ class Investigator(Base, OrmFightForBase):
         type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
-        nullable=False
+        nullable=False,
     )
 
     # Relationship to a `Person` record.
@@ -815,7 +817,7 @@ class Investigator(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
     @sqlalchemy.orm.validates(
@@ -839,7 +841,7 @@ class Investigator(Base, OrmFightForBase):
 
 
 class Location(Base, OrmFightForBase):
-    """Table of `<location>` elements records."""
+    """ Table of `<location>` elements records."""
 
     # Set table name.
     __tablename__ = "locations"
@@ -865,7 +867,7 @@ class Location(Base, OrmFightForBase):
         name="status",
         type_=sqlalchemy.types.Enum(RecruitmentStatusType),
         nullable=True,
-        index=True
+        index=True,
     )
 
     # Foreign key to the primary contact ID.
@@ -888,25 +890,25 @@ class Location(Base, OrmFightForBase):
         type_=sqlalchemy.types.LargeBinary(length=16),
         unique=True,
         index=True,
-        nullable=False
+        nullable=False,
     )
 
     # Relationship to a `Facility` record.
     facility = sqlalchemy.orm.relationship(
         argument="Facility",
-        foreign_keys=facility_id
+        foreign_keys=facility_id,
     )
 
     # Relationship to a `Contact` record for the primary contact.
     contact_primary = sqlalchemy.orm.relationship(
         argument="Contact",
-        foreign_keys=contact_primary_id
+        foreign_keys=contact_primary_id,
     )
 
     # Relationship to a `Contact` record for the backup contact.
     contact_backup = sqlalchemy.orm.relationship(
         argument="Contact",
-        foreign_keys=contact_backup_id
+        foreign_keys=contact_backup_id,
     )
 
     # Relationship to a list of `Investigator` records.
@@ -925,7 +927,7 @@ class Location(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = (
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
     @sqlalchemy.orm.validates(
@@ -949,7 +951,7 @@ class Location(Base, OrmFightForBase):
 
 
 class LocationInvestigator(Base, OrmFightForBase):
-    """Associative table between `Location` and `Investigator` records."""
+    """ Associative table between `Location` and `Investigator` records."""
 
     # Set table name.
     __tablename__ = "location_investigators"
@@ -980,12 +982,12 @@ class LocationInvestigator(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('location_id', 'investigator_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class OversightInfo(Base, OrmFightForBase):
-    """Table of `<oversight_info>` elements records."""
+    """ Table of `<oversight_info>` elements records."""
 
     # Set table name.
     __tablename__ = "oversight_infos"
@@ -1002,53 +1004,53 @@ class OversightInfo(Base, OrmFightForBase):
     has_dmc = sqlalchemy.Column(
         name="has_dmc",
         type_=sqlalchemy.types.Boolean(),
-        nullable=True
+        nullable=True,
     )
 
     # Referring to the `<is_fda_regulated_drug>` element.
     is_fda_regulated_drug = sqlalchemy.Column(
         name="is_fda_regulated_drug",
         type_=sqlalchemy.types.Boolean(),
-        nullable=True
+        nullable=True,
     )
 
     # Referring to the `<is_fda_regulated_device>` element.
     is_fda_regulated_device = sqlalchemy.Column(
         name="is_fda_regulated_device",
         type_=sqlalchemy.types.Boolean(),
-        nullable=True
+        nullable=True,
     )
 
     # Referring to the `<is_unapproved_device>` element.
     is_unapproved_device = sqlalchemy.Column(
         name="is_unapproved_device",
         type_=sqlalchemy.types.Boolean(),
-        nullable=True
+        nullable=True,
     )
 
     # Referring to the `<is_ppsd>` element.
     is_ppsd = sqlalchemy.Column(
         name="is_ppsd",
         type_=sqlalchemy.types.Boolean(),
-        nullable=True
+        nullable=True,
     )
 
     # Referring to the `<is_us_export>` element.
     is_us_export = sqlalchemy.Column(
         name="is_us_export",
         type_=sqlalchemy.types.Boolean(),
-        nullable=True
+        nullable=True,
     )
 
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
 class ExpandedAccessInfo(Base, OrmFightForBase):
-    """Table of `<expanded_access_info>` elements records."""
+    """ Table of `<expanded_access_info>` elements records."""
 
     # Set table name.
     __tablename__ = "expanded_access_infos"
@@ -1065,32 +1067,32 @@ class ExpandedAccessInfo(Base, OrmFightForBase):
     expanded_access_type_individual = sqlalchemy.Column(
         name="individual",
         type_=sqlalchemy.types.Boolean(),
-        nullable=True
+        nullable=True,
     )
 
     # Referring to the `<expanded_access_type_intermediate>` element.
     expanded_access_type_intermediate = sqlalchemy.Column(
         name="intermediate",
         type_=sqlalchemy.types.Boolean(),
-        nullable=True
+        nullable=True,
     )
 
     # Referring to the `<expanded_access_type_treatment>` element.
     expanded_access_type_treatment = sqlalchemy.Column(
         name="treatment",
         type_=sqlalchemy.types.Boolean(),
-        nullable=True
+        nullable=True,
     )
 
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
 class StudyDesignInfo(Base, OrmFightForBase):
-    """Table of `<study_design_info>` elements records."""
+    """ Table of `<study_design_info>` elements records."""
 
     # Set table name.
     __tablename__ = "study_design_infos"
@@ -1162,12 +1164,12 @@ class StudyDesignInfo(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
 class ProtocolOutcome(Base, OrmFightForBase):
-    """Table of `<protocol_outcome>` elements records."""
+    """ Table of `<protocol_outcome>` elements records."""
 
     # Set table name.
     __tablename__ = "protocol_outcomes"
@@ -1211,12 +1213,12 @@ class ProtocolOutcome(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
 class Enrollment(Base, OrmFightForBase):
-    """Table of `<enrollment>` element records."""
+    """ Table of `<enrollment>` element records."""
 
     # Set table name.
     __tablename__ = "enrollments"
@@ -1246,12 +1248,12 @@ class Enrollment(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
 class ArmGroup(Base, OrmFightForBase):
-    """Table of `<arm_group>` element records."""
+    """ Table of `<arm_group>` element records."""
 
     # Set table name.
     __tablename__ = "arm_groups"
@@ -1296,12 +1298,12 @@ class ArmGroup(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
 class Intervention(Base, OrmFightForBase):
-    """Table of `<intervention>` element records."""
+    """ Table of `<intervention>` element records."""
 
     # Set table name.
     __tablename__ = "interventions"
@@ -1356,12 +1358,13 @@ class Intervention(Base, OrmFightForBase):
     aliases = sqlalchemy.orm.relationship(
         argument="Alias",
         secondary="clinicaltrials.intervention_aliases",
+        uselist=True,
     )
 
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
     @sqlalchemy.orm.validates(
@@ -1384,7 +1387,7 @@ class Intervention(Base, OrmFightForBase):
 
 
 class Alias(Base, OrmFightForBase):
-    """Table of aliases."""
+    """ Table of aliases."""
 
     # Set table name.
     __tablename__ = "aliases"
@@ -1416,7 +1419,7 @@ class Alias(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
     @sqlalchemy.orm.validates("alias")
@@ -1439,7 +1442,7 @@ class Alias(Base, OrmFightForBase):
 
 
 class InterventionAlias(Base, OrmFightForBase):
-    """Associative table between `Intervention` and `Alias` records."""
+    """ Associative table between `Intervention` and `Alias` records."""
 
     # Set table name.
     __tablename__ = "intervention_aliases"
@@ -1471,12 +1474,12 @@ class InterventionAlias(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('intervention_id', 'alias_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class InterventionArmGroup(Base, OrmFightForBase):
-    """Associative table between `Intervention` and `ArmGroup` records."""
+    """ Associative table between `Intervention` and `ArmGroup` records."""
 
     # Set table name.
     __tablename__ = "intervention_arm_groups"
@@ -1508,12 +1511,12 @@ class InterventionArmGroup(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('intervention_id', 'arm_group_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class Eligibility(Base, OrmFightForBase):
-    """Table of `<eligibility>` element records."""
+    """ Table of `<eligibility>` element records."""
 
     # Set table name.
     __tablename__ = "eligibilities"
@@ -1551,7 +1554,7 @@ class Eligibility(Base, OrmFightForBase):
     gender = sqlalchemy.Column(
         name="gender",
         type_=sqlalchemy.types.Enum(GenderType),
-        nullable=True,
+        nullable=False,
         index=True,
     )
 
@@ -1595,12 +1598,12 @@ class Eligibility(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
 class Reference(Base, OrmFightForBase):
-    """Table of `<reference>` element records."""
+    """ Table of `<reference>` element records."""
 
     # Set table name.
     __tablename__ = "references"
@@ -1646,12 +1649,12 @@ class Reference(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
 class ResponsibleParty(Base, OrmFightForBase):
-    """Table of `<responsible_party>` element records."""
+    """ Table of `<responsible_party>` element records."""
 
     # Set table name.
     __tablename__ = "responsible_parties"
@@ -1709,12 +1712,12 @@ class ResponsibleParty(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
 class MeshTerm(Base, OrmFightForBase):
-    """Table of `<mesh_term>` element records."""
+    """ Table of `<mesh_term>` element records."""
 
     # Set table name.
     __tablename__ = "mesh_terms"
@@ -1761,7 +1764,7 @@ class MeshTerm(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
     @sqlalchemy.orm.validates("term")
@@ -1780,7 +1783,7 @@ class MeshTerm(Base, OrmFightForBase):
 
 
 class PatientData(Base, OrmFightForBase):
-    """Table of `<patient_data>` element records."""
+    """ Table of `<patient_data>` element records."""
 
     # Set table name.
     __tablename__ = "patient_datas"
@@ -1807,16 +1810,86 @@ class PatientData(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a list of `PatientDataIpdInfoType` records.
+    ipd_info_types = sqlalchemy.orm.relationship(
+        argument="PatientDataIpdInfoType",
+        back_populates="patient_data",
+        uselist=True,
+    )
+
+    # Referring to the value of the `<ipd_time_frame>` element.
+    ipd_time_frame = sqlalchemy.Column(
+        name="ipd_time_frame",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Referring to the value of the `<ipd_access_criteria>` element.
+    ipd_access_criteria = sqlalchemy.Column(
+        name="ipd_access_criteria",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Referring to the value of the `<ipd_url>` element.
+    ipd_url = sqlalchemy.Column(
+        name="ipd_url",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
+    }
+
+
+class PatientDataIpdInfoType(Base, OrmFightForBase):
+    """ Table for `<ipd_info_type>` records."""
+
+    # Set table name.
+    __tablename__ = "patient_data_ipd_info_types"
+
+    # Autoincrementing primary key ID.
+    patient_data_ipd_info_type = sqlalchemy.Column(
+        name="patient_data_ipd_info_type_id",
+        type_=sqlalchemy.types.BigInteger(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the patient-data ID.
+    patient_data_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("clinicaltrials.patient_datas.patient_data_id"),
+        name="patient_data_id",
+        nullable=False,
+    )
+
+    # Referring to the value of the `<ipd_info_type>` element.
+    ipd_info_type = sqlalchemy.Column(
+        name="ipd_info_type",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+    )
+
+    # Relationship to a `PatientData` record.
+    patient_data = sqlalchemy.orm.relationship(
+        argument="PatientData",
+        back_populates="ipd_info_types",
+        uselist=False,
+    )
+
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "clinicaltrials",
     }
 
 
 # TODO: Issue No.50
 class StudyDoc(Base, OrmFightForBase):
-    """Table of `<study_doc>` element records."""
+    """ Table of `<study_doc>` element records."""
 
     # Set table name.
     __tablename__ = "study_docs"
@@ -1860,13 +1933,14 @@ class StudyDoc(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
 class StudyDates(Base, OrmFightForBase):
-    """Table of secondary dates pertaining to a `<clinical_study>` element
-    record."""
+    """ Table of secondary dates pertaining to a `<clinical_study>` element
+        record.
+    """
 
     # Set table name.
     __tablename__ = "study_dates"
@@ -1966,12 +2040,12 @@ class StudyDates(Base, OrmFightForBase):
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
 class Study(Base, OrmFightForBase):
-    """Table of `<clinical_study>` element records."""
+    """ Table of `<clinical_study>` element records."""
 
     # Set table name.
     __tablename__ = "studies"
@@ -1991,11 +2065,11 @@ class Study(Base, OrmFightForBase):
         nullable=True,
     )
 
-    # Referring to the value of the `<secondary_id>` element.
-    secondary_id = sqlalchemy.Column(
-        name="secondary_id",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
+    # Relationship to a list of `StudySecondaryId` records.
+    secondary_ids = sqlalchemy.orm.relationship(
+        argument="StudySecondaryId",
+        back_populates="study",
+        uselist=True,
     )
 
     # Referring to the value of the `<nct_id>` element.
@@ -2080,7 +2154,7 @@ class Study(Base, OrmFightForBase):
         name="overall_status",
         type_=sqlalchemy.types.Enum(OverallStatusType),
         nullable=False,
-        index=True
+        index=True,
     )
 
     # Referring to the value of the `<last_known_status>` element.
@@ -2088,7 +2162,7 @@ class Study(Base, OrmFightForBase):
         name="last_known_status",
         type_=sqlalchemy.types.Enum(OverallStatusType),
         nullable=True,
-        index=True
+        index=True,
     )
 
     # Referring to the value of the `<why_stopped>` element.
@@ -2131,8 +2205,8 @@ class Study(Base, OrmFightForBase):
     phase = sqlalchemy.Column(
         name="phase",
         type_=sqlalchemy.types.Enum(PhaseType),
-        nullable=False,
-        index=True
+        nullable=True,
+        index=True,
     )
 
     # Referring to the value of the `<study_type>` element.
@@ -2140,7 +2214,7 @@ class Study(Base, OrmFightForBase):
         name="study_type",
         type_=sqlalchemy.types.Enum(StudyType),
         nullable=False,
-        index=True
+        index=True,
     )
 
     # Foreign key to the expanded-access-info ID.
@@ -2227,7 +2301,7 @@ class Study(Base, OrmFightForBase):
         name="biospec_retention",
         type_=sqlalchemy.types.Enum(BiospecRetentionType),
         nullable=True,
-        index=True
+        index=True,
     )
 
     # Referring to the value of the `<biospec_desc>` element.
@@ -2265,7 +2339,7 @@ class Study(Base, OrmFightForBase):
     # Relationship to a `Contact` record of 'primary' type.
     contact_primary = sqlalchemy.orm.relationship(
         argument="Contact",
-        foreign_keys=contact_primary_id
+        foreign_keys=contact_primary_id,
     )
 
     # Foreign key to a contact ID of 'backup' type.
@@ -2278,28 +2352,28 @@ class Study(Base, OrmFightForBase):
     # Relationship to a `Contact` record of 'backup' type.
     contact_backup = sqlalchemy.orm.relationship(
         argument="Contact",
-        foreign_keys=contact_backup_id
+        foreign_keys=contact_backup_id,
     )
 
     # Relationship to a list of `Location` records.
     locations = sqlalchemy.orm.relationship(
         argument="Location",
         secondary="clinicaltrials.study_locations",
-        back_populates="studies"
+        back_populates="studies",
     )
 
     # Relationship to a list of `Facility` records.
     facilities = sqlalchemy.orm.relationship(
         argument="Facility",
         secondary="clinicaltrials.study_facilities",
-        back_populates="studies"
+        back_populates="studies",
     )
 
     # Relationship to a list of `FacilityCanonical` records.
     facilities_canonical = sqlalchemy.orm.relationship(
         argument="FacilityCanonical",
         secondary="clinicaltrials.study_facilities",
-        back_populates="studies"
+        back_populates="studies",
     )
 
     # Relationship to a list of `StudyReference` records.
@@ -2383,17 +2457,61 @@ class Study(Base, OrmFightForBase):
         secondary="clinicaltrials.study_study_docs",
     )
 
+    # TODO: pending_results
     # TODO: clinical_results
 
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
+class StudySecondaryId(Base, OrmFightForBase):
+    """ Table for `<secondary_id>` records."""
+
+    # Set table name.
+    __tablename__ = "study_secondary_ids"
+
+    # Autoincrementing primary key ID.
+    study_secondary_id_id = sqlalchemy.Column(
+        name="patient_data_ipd_info_type_id",
+        type_=sqlalchemy.types.BigInteger(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the study ID.
+    study_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
+        name="study_id",
+        nullable=False,
+    )
+
+    # Referring to the value of the `<secondary_id>` element.
+    secondary_id = sqlalchemy.Column(
+        name="secondary_id",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="secondary_ids",
+        uselist=False,
+    )
+
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "clinicaltrials",
+    }
+
+
+
 class StudyAlias(Base, OrmFightForBase):
-    """Associative table between `Study` and `Alias` records."""
+    """ Associative table between `Study` and `Alias` records."""
 
     # Set table name.
     __tablename__ = "study_aliases"
@@ -2425,12 +2543,12 @@ class StudyAlias(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'alias_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class StudySponsor(Base, OrmFightForBase):
-    """Associative table between `Study` and `Sponsor` records."""
+    """ Associative table between `Study` and `Sponsor` records."""
 
     # Set table name.
     __tablename__ = "study_sponsors"
@@ -2462,7 +2580,7 @@ class StudySponsor(Base, OrmFightForBase):
         name="type",
         type_=sqlalchemy.types.Enum(SponsorType),
         nullable=False,
-        index=True
+        index=True,
     )
 
     # Set table arguments.
@@ -2470,12 +2588,12 @@ class StudySponsor(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'sponsor_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class StudyOutcome(Base, OrmFightForBase):
-    """Associative table between `Study` and `ProtocolOutcome` records."""
+    """ Associative table between `Study` and `ProtocolOutcome` records."""
 
     # Set table name.
     __tablename__ = "study_outcomes"
@@ -2531,12 +2649,12 @@ class StudyOutcome(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'protocol_outcome_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class StudyCondition(Base, OrmFightForBase):
-    """Associative table between `Study` and `Condition` records."""
+    """ Associative table between `Study` and `Condition` records."""
 
     # Set table name.
     __tablename__ = "study_conditions"
@@ -2570,12 +2688,12 @@ class StudyCondition(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'condition_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class StudyArmGroup(Base, OrmFightForBase):
-    """Associative table between `Study` and `ArmGroup` records."""
+    """ Associative table between `Study` and `ArmGroup` records."""
 
     # Set table name.
     __tablename__ = "study_arm_groups"
@@ -2607,12 +2725,12 @@ class StudyArmGroup(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'arm_group_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class StudyIntervention(Base, OrmFightForBase):
-    """Associative table between `Study` and `Intervention` records."""
+    """ Associative table between `Study` and `Intervention` records."""
 
     # Set table name.
     __tablename__ = "study_interventions"
@@ -2646,12 +2764,12 @@ class StudyIntervention(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'intervention_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class StudyInvestigator(Base, OrmFightForBase):
-    """Associative table between `Study` and `Investigator` records."""
+    """ Associative table between `Study` and `Investigator` records."""
 
     # Set table name.
     __tablename__ = "study_investigators"
@@ -2683,12 +2801,12 @@ class StudyInvestigator(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'investigator_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class StudyLocation(Base, OrmFightForBase):
-    """Associative table between `Study` and `Location` records."""
+    """ Associative table between `Study` and `Location` records."""
 
     # Set table name.
     __tablename__ = "study_locations"
@@ -2720,12 +2838,12 @@ class StudyLocation(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'location_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class StudyReference(Base, OrmFightForBase):
-    """Associative table between `Study` and `Reference` records."""
+    """ Associative table between `Study` and `Reference` records."""
 
     # Set table name.
     __tablename__ = "study_references"
@@ -2757,7 +2875,7 @@ class StudyReference(Base, OrmFightForBase):
         name="type",
         type_=sqlalchemy.types.Enum(ReferenceType),
         nullable=False,
-        index=True
+        index=True,
     )
 
     # Relationship to a `Study` record.
@@ -2779,12 +2897,12 @@ class StudyReference(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'reference_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class StudyKeyword(Base, OrmFightForBase):
-    """Associative table between `Study` and `Keyword` records."""
+    """ Associative table between `Study` and `Keyword` records."""
 
     # Set table name.
     __tablename__ = "study_keywords"
@@ -2816,12 +2934,12 @@ class StudyKeyword(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'keyword_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class StudyMeshTerm(Base, OrmFightForBase):
-    """Associative table between `Study` and `MeshTerm` records."""
+    """ Associative table between `Study` and `MeshTerm` records."""
 
     # Set table name.
     __tablename__ = "study_mesh_terms"
@@ -2855,7 +2973,7 @@ class StudyMeshTerm(Base, OrmFightForBase):
         name="type",
         type_=sqlalchemy.types.Enum(MeshTermType),
         nullable=False,
-        index=True
+        index=True,
     )
 
     # Relationship to a list of `Study` records.
@@ -2884,12 +3002,12 @@ class StudyMeshTerm(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'mesh_term_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class StudyStudyDoc(Base, OrmFightForBase):
-    """Associative table between `Study` and `StudyDoc` records."""
+    """ Associative table between `Study` and `StudyDoc` records."""
 
     # Set table name.
     __tablename__ = "study_study_docs"
@@ -2921,13 +3039,14 @@ class StudyStudyDoc(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'study_doc_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
 
 
 class FacilityCanonical(Base, OrmFightForBase):
-    """Table storing canonicalized version of study facilities with data
-    retrieved from the Google Maps API."""
+    """ Table storing canonicalized version of study facilities with data
+        retrieved from the Google Maps API.
+    """
 
     # Set table name.
     __tablename__ = "facilities_canonical"
@@ -3197,19 +3316,20 @@ class FacilityCanonical(Base, OrmFightForBase):
     studies = sqlalchemy.orm.relationship(
         argument="Study",
         secondary="clinicaltrials.study_facilities",
-        back_populates="facilities_canonical"
+        back_populates="facilities_canonical",
     )
 
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
-        "schema": "clinicaltrials"
+        "schema": "clinicaltrials",
     }
 
 
 class StudyFacility(Base, OrmFightForBase):
-    """Associative table between `Study`, `Facility` and `FacilityCanonical`
-    records."""
+    """ Associative table between `Study`, `Facility` and `FacilityCanonical`
+        records.
+    """
 
     # Set table name.
     __tablename__ = "study_facilities"
@@ -3253,5 +3373,5 @@ class StudyFacility(Base, OrmFightForBase):
         # Set unique constraint.
         sqlalchemy.UniqueConstraint('study_id', 'facility_id'),
         # Set table schema.
-        {"schema": "clinicaltrials"}
+        {"schema": "clinicaltrials"},
     )
