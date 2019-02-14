@@ -2065,11 +2065,11 @@ class Study(Base, OrmFightForBase):
         nullable=True,
     )
 
-    # Referring to the value of the `<secondary_id>` element.
-    secondary_id = sqlalchemy.Column(
-        name="secondary_id",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=True,
+    # Relationship to a list of `StudySecondaryId` records.
+    secondary_ids = sqlalchemy.orm.relationship(
+        argument="StudySecondaryId",
+        back_populates="study",
+        uselist=True,
     )
 
     # Referring to the value of the `<nct_id>` element.
@@ -2465,6 +2465,49 @@ class Study(Base, OrmFightForBase):
         # Set table schema.
         "schema": "clinicaltrials",
     }
+
+
+class StudySecondaryId(Base, OrmFightForBase):
+    """ Table for `<secondary_id>` records."""
+
+    # Set table name.
+    __tablename__ = "study_secondary_ids"
+
+    # Autoincrementing primary key ID.
+    study_secondary_id_id = sqlalchemy.Column(
+        name="patient_data_ipd_info_type_id",
+        type_=sqlalchemy.types.BigInteger(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the study ID.
+    study_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("clinicaltrials.studies.study_id"),
+        name="study_id",
+        nullable=False,
+    )
+
+    # Referring to the value of the `<secondary_id>` element.
+    secondary_id = sqlalchemy.Column(
+        name="secondary_id",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="secondary_ids",
+        uselist=False,
+    )
+
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "clinicaltrials",
+    }
+
 
 
 class StudyAlias(Base, OrmFightForBase):
