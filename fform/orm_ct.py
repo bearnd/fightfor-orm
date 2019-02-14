@@ -1810,6 +1810,41 @@ class PatientData(Base, OrmFightForBase):
         nullable=True,
     )
 
+class PatientDataIpdInfoType(Base, OrmFightForBase):
+    """ Table for `<ipd_info_type>` records."""
+
+    # Set table name.
+    __tablename__ = "patient_data_ipd_info_types"
+
+    # Autoincrementing primary key ID.
+    patient_data_ipd_info_type = sqlalchemy.Column(
+        name="patient_data_ipd_info_type_id",
+        type_=sqlalchemy.types.BigInteger(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the patient-data ID.
+    patient_data_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("clinicaltrials.patient_datas.patient_data_id"),
+        name="patient_data_id",
+        nullable=False,
+    )
+
+    # Referring to the value of the `<ipd_info_type>` element.
+    ipd_info_type = sqlalchemy.Column(
+        name="ipd_info_type",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Relationship to a list of `PatientData` records.
+    patient_data = sqlalchemy.orm.relationship(
+        argument="PatientData",
+        back_populates="ipd_info_types",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
