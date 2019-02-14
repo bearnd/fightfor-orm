@@ -1810,6 +1810,41 @@ class PatientData(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a list of `PatientDataIpdInfoType` records.
+    ipd_info_types = sqlalchemy.orm.relationship(
+        argument="PatientDataIpdInfoType",
+        back_populates="patient_data",
+        uselist=True,
+    )
+
+    # Referring to the value of the `<ipd_time_frame>` element.
+    ipd_time_frame = sqlalchemy.Column(
+        name="ipd_time_frame",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Referring to the value of the `<ipd_access_criteria>` element.
+    ipd_access_criteria = sqlalchemy.Column(
+        name="ipd_access_criteria",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Referring to the value of the `<ipd_url>` element.
+    ipd_url = sqlalchemy.Column(
+        name="ipd_url",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=True,
+    )
+
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "clinicaltrials",
+    }
+
+
 class PatientDataIpdInfoType(Base, OrmFightForBase):
     """ Table for `<ipd_info_type>` records."""
 
@@ -1835,10 +1870,10 @@ class PatientDataIpdInfoType(Base, OrmFightForBase):
     ipd_info_type = sqlalchemy.Column(
         name="ipd_info_type",
         type_=sqlalchemy.types.Unicode(),
-        nullable=True,
+        nullable=False,
     )
 
-    # Relationship to a list of `PatientData` records.
+    # Relationship to a `PatientData` record.
     patient_data = sqlalchemy.orm.relationship(
         argument="PatientData",
         back_populates="ipd_info_types",
