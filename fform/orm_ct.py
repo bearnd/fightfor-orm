@@ -1554,7 +1554,7 @@ class Eligibility(Base, OrmFightForBase):
     gender = sqlalchemy.Column(
         name="gender",
         type_=sqlalchemy.types.Enum(GenderType),
-        nullable=True,
+        nullable=False,
         index=True,
     )
 
