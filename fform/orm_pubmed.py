@@ -85,7 +85,7 @@ class AbstractText(Base, OrmFightForBase):
         type_=sqlalchemy.types.Enum(AbstractTextCategory),
         nullable=True,
         default=AbstractTextCategory.UNASSIGNED,
-        index=True
+        index=True,
     )
 
     # Abstract text (value of the `<AbstractText>` element).
@@ -117,11 +117,17 @@ class AbstractText(Base, OrmFightForBase):
         "schema": "pubmed"
     }
 
-    @sqlalchemy.orm.validates("text")
+    @sqlalchemy.orm.validates(
+        "label",
+        "category",
+        "text",
+    )
     def update_md5(self, key, value):
 
         # Assemble the class attributes into a `dict`.
         attrs = {
+            "label": self.label,
+            "category": self.category,
             "text": self.text,
         }
         attrs[key] = value
@@ -218,7 +224,7 @@ class Affiliation(Base, OrmFightForBase):
     affiliation = sqlalchemy.Column(
         name="affiliation",
         type_=sqlalchemy.types.Unicode(),
-        nullable=False
+        nullable=False,
     )
 
     # Foreign key to the canonical affiliation ID.
@@ -227,12 +233,12 @@ class Affiliation(Base, OrmFightForBase):
             "pubmed.affiliations_canonical.affiliation_canonical_id"
         ),
         name="affiliation_canonical_id",
-        nullable=True
+        nullable=True,
     )
 
     # Relationship to a `AffiliationCanonical` record.
     affiliation_canonical = sqlalchemy.orm.relationship(
-        argument="AffiliationCanonical"
+        argument="AffiliationCanonical",
     )
 
     # MD5 hash of the `affiliation` field.
@@ -266,6 +272,7 @@ class Affiliation(Base, OrmFightForBase):
     @sqlalchemy.orm.validates(
         "affiliation",
         "affiliation_identifier",
+        "affiliation_identifier_source",
     )
     def update_md5(self, key, value):
 
@@ -273,6 +280,7 @@ class Affiliation(Base, OrmFightForBase):
         attrs = {
             "affiliation": self.affiliation,
             "affiliation_identifier": self.affiliation_identifier,
+            "affiliation_identifier_source": self.affiliation_identifier_source,
         }
         attrs[key] = value
 
@@ -1461,6 +1469,8 @@ class Journal(Base, OrmFightForBase):
     }
 
     @sqlalchemy.orm.validates(
+        "issn_type",
+        "issn",
         "title",
         "abbreviation",
     )
@@ -1468,6 +1478,8 @@ class Journal(Base, OrmFightForBase):
 
         # Assemble the class attributes into a `dict`.
         attrs = {
+            "issn_type": self.issn_type,
+            "issn": self.issn,
             "title": self.title,
             "abbreviation": self.abbreviation,
         }
