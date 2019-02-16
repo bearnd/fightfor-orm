@@ -117,11 +117,17 @@ class AbstractText(Base, OrmFightForBase):
         "schema": "pubmed"
     }
 
-    @sqlalchemy.orm.validates("text")
+    @sqlalchemy.orm.validates(
+        "label",
+        "category",
+        "text",
+    )
     def update_md5(self, key, value):
 
         # Assemble the class attributes into a `dict`.
         attrs = {
+            "label": self.label,
+            "category": self.category,
             "text": self.text,
         }
         attrs[key] = value
@@ -266,6 +272,7 @@ class Affiliation(Base, OrmFightForBase):
     @sqlalchemy.orm.validates(
         "affiliation",
         "affiliation_identifier",
+        "affiliation_identifier_source",
     )
     def update_md5(self, key, value):
 
@@ -273,6 +280,7 @@ class Affiliation(Base, OrmFightForBase):
         attrs = {
             "affiliation": self.affiliation,
             "affiliation_identifier": self.affiliation_identifier,
+            "affiliation_identifier_source": self.affiliation_identifier_source,
         }
         attrs[key] = value
 
@@ -1461,6 +1469,8 @@ class Journal(Base, OrmFightForBase):
     }
 
     @sqlalchemy.orm.validates(
+        "issn_type",
+        "issn",
         "title",
         "abbreviation",
     )
@@ -1468,6 +1478,8 @@ class Journal(Base, OrmFightForBase):
 
         # Assemble the class attributes into a `dict`.
         attrs = {
+            "issn_type": self.issn_type,
+            "issn": self.issn,
             "title": self.title,
             "abbreviation": self.abbreviation,
         }
