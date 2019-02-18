@@ -315,6 +315,14 @@ class Sponsor(Base, OrmFightForBase):
         argument="Study",
         secondary="clinicaltrials.study_sponsors",
         back_populates="sponsors",
+        uselist=True,
+    )
+
+    # Relationship to a list of `StudySponsor` records.
+    study_sponsors = sqlalchemy.orm.relationship(
+        argument="StudySponsor",
+        back_populates="sponsor",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -372,6 +380,13 @@ class Keyword(Base, OrmFightForBase):
         unique=True,
         index=True,
         nullable=False,
+    )
+
+    # Relationship to a list of `StudyKeyword` records.
+    study_keywords = sqlalchemy.orm.relationship(
+        argument="StudyKeyword",
+        back_populates="keyword",
+        uselist=True,
     )
 
     # Relationship to a list of `Study` records.
@@ -443,6 +458,13 @@ class Condition(Base, OrmFightForBase):
         argument="Study",
         secondary="clinicaltrials.study_conditions",
         back_populates="conditions"
+    )
+
+    # Relationship to a list of `StudyCondition` records.
+    study_conditions = sqlalchemy.orm.relationship(
+        argument="StudyCondition",
+        back_populates="condition",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -546,9 +568,24 @@ class Facility(Base, OrmFightForBase):
         nullable=False,
     )
 
+    # Relationship to a `Location` record.
+    locations = sqlalchemy.orm.relationship(
+        argument="Location",
+        back_populates="facility",
+        uselist=True,
+    )
+
     # Relationship to a `FacilityCanonical` record.
     facility_canonical = sqlalchemy.orm.relationship(
         argument="FacilityCanonical",
+        back_populates="facility",
+    )
+
+    # Relationship to a list of `StudyFacility` records.
+    study_facilities = sqlalchemy.orm.relationship(
+        argument="StudyFacility",
+        back_populates="facility",
+        uselist=True,
     )
 
     # Relationship to a list of `Study` records.
@@ -641,6 +678,20 @@ class Person(Base, OrmFightForBase):
         nullable=False,
     )
 
+    # Relationship to a list of `Contacts` record.
+    contacts = sqlalchemy.orm.relationship(
+        argument="Contact",
+        back_populates="person",
+        uselist=True,
+    )
+
+    # Relationship to a list of `Investigator` record.
+    investigators = sqlalchemy.orm.relationship(
+        argument="Investigator",
+        back_populates="person",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -723,6 +774,8 @@ class Contact(Base, OrmFightForBase):
     # Relationship to a `Person` record.
     person = sqlalchemy.orm.relationship(
         argument="Person",
+        back_populates="contacts",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -806,12 +859,30 @@ class Investigator(Base, OrmFightForBase):
     # Relationship to a `Person` record.
     person = sqlalchemy.orm.relationship(
         argument="Person",
+        back_populates="investigators",
+        uselist=False,
     )
 
     # Relationship to a list of `Location` records.
     locations = sqlalchemy.orm.relationship(
         argument="Location",
         secondary="clinicaltrials.location_investigators",
+        uselist=True,
+    )
+
+    # Relationship to a list of `Study` records.
+    studies = sqlalchemy.orm.relationship(
+        argument="Study",
+        secondary="clinicaltrials.study_investigators",
+        back_populates="investigators",
+        uselist=True,
+    )
+
+    # Relationship to a list of `StudyInvestigator` records.
+    study_investigators = sqlalchemy.orm.relationship(
+        argument="StudyInvestigator",
+        back_populates="investigator",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -897,24 +968,36 @@ class Location(Base, OrmFightForBase):
     facility = sqlalchemy.orm.relationship(
         argument="Facility",
         foreign_keys=facility_id,
+        back_populates="locations",
+        uselist=False,
     )
 
     # Relationship to a `Contact` record for the primary contact.
     contact_primary = sqlalchemy.orm.relationship(
         argument="Contact",
         foreign_keys=contact_primary_id,
+        uselist=False,
     )
 
     # Relationship to a `Contact` record for the backup contact.
     contact_backup = sqlalchemy.orm.relationship(
         argument="Contact",
         foreign_keys=contact_backup_id,
+        uselist=False,
     )
 
     # Relationship to a list of `Investigator` records.
     investigators = sqlalchemy.orm.relationship(
         argument="Investigator",
         secondary="clinicaltrials.location_investigators",
+        uselist=True,
+    )
+
+    # Relationship to a list of `StudyLocation` records.
+    study_locations = sqlalchemy.orm.relationship(
+        argument="StudyLocation",
+        back_populates="location",
+        uselist=True,
     )
 
     # Relationship to a list of `Studies` records.
@@ -922,6 +1005,7 @@ class Location(Base, OrmFightForBase):
         argument="Study",
         secondary="clinicaltrials.study_locations",
         back_populates="locations",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -1042,6 +1126,13 @@ class OversightInfo(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="oversight_info",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -1082,6 +1173,13 @@ class ExpandedAccessInfo(Base, OrmFightForBase):
         name="treatment",
         type_=sqlalchemy.types.Boolean(),
         nullable=True,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="expanded_access_info",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -1161,6 +1259,13 @@ class StudyDesignInfo(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_design_info",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -1210,6 +1315,14 @@ class ProtocolOutcome(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `Study` records.
+    studies = sqlalchemy.orm.relationship(
+        argument="Study",
+        secondary="clinicaltrials.study_outcomes",
+        back_populates="outcomes",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -1243,6 +1356,13 @@ class Enrollment(Base, OrmFightForBase):
         name="type",
         type_=sqlalchemy.types.Enum(ActualType),
         nullable=True,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="enrollment",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -1291,6 +1411,21 @@ class ArmGroup(Base, OrmFightForBase):
     interventions = sqlalchemy.orm.relationship(
         argument="Intervention",
         secondary="clinicaltrials.intervention_arm_groups",
+        back_populates="arm_groups",
+        uselist=True,
+    )
+
+    # Relationship to a list of `StudyArmGroup` records.
+    study_arm_groups = sqlalchemy.orm.relationship(
+        argument="StudyArmGroup",
+        back_populates="arm_group",
+        uselist=True,
+    )
+
+    # Relationship to a list of `Study` records.
+    studies = sqlalchemy.orm.relationship(
+        argument="Study",
+        secondary="clinicaltrials.study_arm_groups",
         back_populates="arm_groups",
         uselist=True,
     )
@@ -1358,6 +1493,22 @@ class Intervention(Base, OrmFightForBase):
     aliases = sqlalchemy.orm.relationship(
         argument="Alias",
         secondary="clinicaltrials.intervention_aliases",
+        back_populates="interventions",
+        uselist=True,
+    )
+
+    # Relationship to a list of `StudyIntervention` records.
+    study_interventions = sqlalchemy.orm.relationship(
+        argument="StudyIntervention",
+        back_populates="intervention",
+        uselist=True,
+    )
+
+    # Relationship to a list of `Study` records.
+    studies = sqlalchemy.orm.relationship(
+        argument="Study",
+        secondary="clinicaltrials.study_interventions",
+        back_populates="interventions",
         uselist=True,
     )
 
@@ -1414,6 +1565,29 @@ class Alias(Base, OrmFightForBase):
         unique=True,
         index=True,
         nullable=False,
+    )
+
+    # Relationship to a list of `Intervention` records.
+    interventions = sqlalchemy.orm.relationship(
+        argument="Intervention",
+        secondary="clinicaltrials.intervention_aliases",
+        back_populates="aliases",
+        uselist=True,
+    )
+
+    # Relationship to a list of `Study` records.
+    studies = sqlalchemy.orm.relationship(
+        argument="Study",
+        secondary="clinicaltrials.study_aliases",
+        back_populates="aliases",
+        uselist=True,
+    )
+
+    # Relationship to a list of `StudyAlias` records.
+    study_aliases = sqlalchemy.orm.relationship(
+        argument="StudyAlias",
+        back_populates="alias",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -1595,6 +1769,13 @@ class Eligibility(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="eligibility",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -1631,18 +1812,18 @@ class Reference(Base, OrmFightForBase):
         unique=True,
     )
 
+    # Relationship to a list of `StudyReference` records.
+    study_references = sqlalchemy.orm.relationship(
+        argument="StudyReference",
+        back_populates="reference",
+        uselist=True,
+    )
+
     # Relationship to a list of `Study` records.
     studies = sqlalchemy.orm.relationship(
         argument="Study",
         secondary="clinicaltrials.study_references",
         back_populates="references",
-        uselist=True,
-    )
-
-    # Relationship to a list of `StudyReference` records.
-    study_references = sqlalchemy.orm.relationship(
-        argument="StudyReference",
-        back_populates="reference",
         uselist=True,
     )
 
@@ -1707,6 +1888,13 @@ class ResponsibleParty(Base, OrmFightForBase):
         name="investigator_title",
         type_=sqlalchemy.types.Unicode(),
         nullable=True,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="responsible_party",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -1838,6 +2026,13 @@ class PatientData(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="patient_data",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -1928,6 +2123,21 @@ class StudyDoc(Base, OrmFightForBase):
         name="doc_comment",
         type_=sqlalchemy.types.Unicode(),
         nullable=True,
+    )
+
+    # Relationship to a list of `StudyStudyDoc` records.
+    study_study_docs = sqlalchemy.orm.relationship(
+        argument="StudyStudyDoc",
+        back_populates="study_doc",
+        uselist=True,
+    )
+
+    # Relationship to a list of `Study` records.
+    studies = sqlalchemy.orm.relationship(
+        argument="Study",
+        secondary="clinicaltrials.study_study_docs",
+        back_populates="study_docs",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -2037,6 +2247,13 @@ class StudyDates(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_dates",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -2080,10 +2297,19 @@ class Study(Base, OrmFightForBase):
         unique=True,
     )
 
+    # Relationship to a list of `StudyAlias` records.
+    study_aliases = sqlalchemy.orm.relationship(
+        argument="StudyAlias",
+        back_populates="study",
+        uselist=True,
+    )
+
     # Relationship to a list of `Alias` records.
     aliases = sqlalchemy.orm.relationship(
         argument="Alias",
         secondary="clinicaltrials.study_aliases",
+        back_populates="studies",
+        uselist=True,
     )
 
     # Referring to the value of the `<brief_title>` element.
@@ -2107,11 +2333,19 @@ class Study(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a list of `StudySponsor` records.
+    study_sponsors = sqlalchemy.orm.relationship(
+        argument="StudySponsor",
+        back_populates="study",
+        uselist=True,
+    )
+
     # Relationship to a list of `Sponsor` records.
     sponsors = sqlalchemy.orm.relationship(
         argument="Sponsor",
         secondary="clinicaltrials.study_sponsors",
         back_populates="studies",
+        uselist=True,
     )
 
     # Referring to the value of the `<source>` element.
@@ -2130,9 +2364,11 @@ class Study(Base, OrmFightForBase):
         nullable=True,
     )
 
-    # Relationship to a list of `OversightInfo` records.
+    # Relationship to a `OversightInfo` record.
     oversight_info = sqlalchemy.orm.relationship(
         argument="OversightInfo",
+        back_populates="study",
+        uselist=False,
     )
 
     # Referring to the value of the `<brief_summary>` element.
@@ -2226,9 +2462,11 @@ class Study(Base, OrmFightForBase):
         nullable=True,
     )
 
-    # Relationship to a list of `ExpandedAccessInfo` records.
-    expanded_info = sqlalchemy.orm.relationship(
+    # Relationship to a `ExpandedAccessInfo` record.
+    expanded_access_info = sqlalchemy.orm.relationship(
         argument="ExpandedAccessInfo",
+        back_populates="study",
+        uselist=False,
     )
 
     # Foreign key to the study-design-info ID.
@@ -2240,9 +2478,11 @@ class Study(Base, OrmFightForBase):
         nullable=True,
     )
 
-    # Relationship to a list of `StudyDesignInfo` records.
+    # Relationship to a `StudyDesignInfo` record.
     study_design_info = sqlalchemy.orm.relationship(
         argument="StudyDesignInfo",
+        back_populates="study",
+        uselist=False,
     )
 
     # Referring to the value of the `<target_duration>` element.
@@ -2263,6 +2503,8 @@ class Study(Base, OrmFightForBase):
     outcomes = sqlalchemy.orm.relationship(
         argument="ProtocolOutcome",
         secondary="clinicaltrials.study_outcomes",
+        back_populates="studies",
+        uselist=True,
     )
 
     # Foreign key to the enrollment ID.
@@ -2272,9 +2514,18 @@ class Study(Base, OrmFightForBase):
         nullable=True,
     )
 
-    # Relationship to a list of `Enrollment` records.
+    # Relationship to a `Enrollment` record.
     enrollment = sqlalchemy.orm.relationship(
         argument="Enrollment",
+        back_populates="study",
+        uselist=False,
+    )
+
+    # Relationship to a list of `StudyCondition` records.
+    study_conditions = sqlalchemy.orm.relationship(
+        argument="StudyCondition",
+        back_populates="study",
+        uselist=True,
     )
 
     # Relationship to a list of `Condition` records.
@@ -2282,18 +2533,37 @@ class Study(Base, OrmFightForBase):
         argument="Condition",
         secondary="clinicaltrials.study_conditions",
         back_populates="studies",
+        uselist=True,
+    )
+
+    # Relationship to a list of `StudyArmGroup` records.
+    study_arm_groups = sqlalchemy.orm.relationship(
+        argument="StudyArmGroup",
+        back_populates="study",
+        uselist=True,
     )
 
     # Relationship to a list of `ArmGroup` records.
     arm_groups = sqlalchemy.orm.relationship(
         argument="ArmGroup",
         secondary="clinicaltrials.study_arm_groups",
+        back_populates="studies",
+        uselist=True,
+    )
+
+    # Relationship to a list of `StudyIntervention` records.
+    study_interventions = sqlalchemy.orm.relationship(
+        argument="StudyIntervention",
+        back_populates="study",
+        uselist=True,
     )
 
     # Relationship to a list of `Intervention` records.
     interventions = sqlalchemy.orm.relationship(
         argument="Intervention",
         secondary="clinicaltrials.study_interventions",
+        back_populates="studies",
+        uselist=True,
     )
 
     # Referring to the value of the `<biospec_retention>` element.
@@ -2321,12 +2591,23 @@ class Study(Base, OrmFightForBase):
     # Relationship to an `Elligibility` record.
     eligibility = sqlalchemy.orm.relationship(
         argument="Eligibility",
+        back_populates="study",
+        uselist=False,
+    )
+
+    # Relationship to a list of `StudyInvestigator` records.
+    study_investigators = sqlalchemy.orm.relationship(
+        argument="StudyInvestigator",
+        back_populates="study",
+        uselist=True,
     )
 
     # Relationship to a list of `Investigator` records.
     investigators = sqlalchemy.orm.relationship(
         argument="Investigator",
         secondary="clinicaltrials.study_investigators",
+        back_populates="studies",
+        uselist=True,
     )
 
     # Foreign key to a contact ID of 'primary' type.
@@ -2340,6 +2621,7 @@ class Study(Base, OrmFightForBase):
     contact_primary = sqlalchemy.orm.relationship(
         argument="Contact",
         foreign_keys=contact_primary_id,
+        uselist=False,
     )
 
     # Foreign key to a contact ID of 'backup' type.
@@ -2353,6 +2635,14 @@ class Study(Base, OrmFightForBase):
     contact_backup = sqlalchemy.orm.relationship(
         argument="Contact",
         foreign_keys=contact_backup_id,
+        uselist=False,
+    )
+
+    # Relationship to a list of `StudyLocation` records.
+    study_locations = sqlalchemy.orm.relationship(
+        argument="StudyLocation",
+        back_populates="study",
+        uselist=True,
     )
 
     # Relationship to a list of `Location` records.
@@ -2360,6 +2650,14 @@ class Study(Base, OrmFightForBase):
         argument="Location",
         secondary="clinicaltrials.study_locations",
         back_populates="studies",
+        uselist=True,
+    )
+
+    # Relationship to a list of `StudyFacility` records.
+    study_facilities = sqlalchemy.orm.relationship(
+        argument="StudyFacility",
+        back_populates="study",
+        uselist=True,
     )
 
     # Relationship to a list of `Facility` records.
@@ -2367,6 +2665,7 @@ class Study(Base, OrmFightForBase):
         argument="Facility",
         secondary="clinicaltrials.study_facilities",
         back_populates="studies",
+        uselist=True,
     )
 
     # Relationship to a list of `FacilityCanonical` records.
@@ -2374,6 +2673,7 @@ class Study(Base, OrmFightForBase):
         argument="FacilityCanonical",
         secondary="clinicaltrials.study_facilities",
         back_populates="studies",
+        uselist=True,
     )
 
     # Relationship to a list of `StudyReference` records.
@@ -2401,6 +2701,8 @@ class Study(Base, OrmFightForBase):
     # Relationship to a list of `StudyDates` records.
     study_dates = sqlalchemy.orm.relationship(
         argument="StudyDates",
+        back_populates="study",
+        uselist=False,
     )
 
     # Foreign key to a responsible-party ID.
@@ -2415,6 +2717,15 @@ class Study(Base, OrmFightForBase):
     # Relationship to a `ResponsibleParty` record.
     responsible_party = sqlalchemy.orm.relationship(
         argument="ResponsibleParty",
+        back_populates="study",
+        uselist=False,
+    )
+
+    # Relationship to a list of `StudyKeyword` records.
+    study_keywords = sqlalchemy.orm.relationship(
+        argument="StudyKeyword",
+        back_populates="study",
+        uselist=True,
     )
 
     # Relationship to a list of `Keyword` records.
@@ -2422,6 +2733,7 @@ class Study(Base, OrmFightForBase):
         argument="Keyword",
         secondary="clinicaltrials.study_keywords",
         back_populates="studies",
+        uselist=True,
     )
 
     # Relationship to a list of `StudyMeshTerm` records.
@@ -2449,12 +2761,23 @@ class Study(Base, OrmFightForBase):
     # Relationship to a `PatientData` record.
     patient_data = sqlalchemy.orm.relationship(
         argument="PatientData",
+        back_populates="study",
+        uselist=False,
+    )
+
+    # Relationship to a list of `StudyStudyDoc` records.
+    study_study_docs = sqlalchemy.orm.relationship(
+        argument="StudyStudyDoc",
+        back_populates="study",
+        uselist=True,
     )
 
     # Relationship to a list of `StudyDoc` records.
     study_docs = sqlalchemy.orm.relationship(
         argument="StudyDoc",
         secondary="clinicaltrials.study_study_docs",
+        back_populates="studies",
+        uselist=True,
     )
 
     # TODO: pending_results
@@ -2509,7 +2832,6 @@ class StudySecondaryId(Base, OrmFightForBase):
     }
 
 
-
 class StudyAlias(Base, OrmFightForBase):
     """ Associative table between `Study` and `Alias` records."""
 
@@ -2536,6 +2858,20 @@ class StudyAlias(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.aliases.alias_id"),
         name="alias_id",
         nullable=False,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_aliases",
+        uselist=False,
+    )
+
+    # Relationship to a `Alias` record.
+    alias = sqlalchemy.orm.relationship(
+        argument="Alias",
+        back_populates="study_aliases",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -2581,6 +2917,20 @@ class StudySponsor(Base, OrmFightForBase):
         type_=sqlalchemy.types.Enum(SponsorType),
         nullable=False,
         index=True,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_sponsors",
+        uselist=False,
+    )
+
+    # Relationship to a `Sponsor` record.
+    sponsor = sqlalchemy.orm.relationship(
+        argument="Sponsor",
+        back_populates="study_sponsors",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -2683,6 +3033,20 @@ class StudyCondition(Base, OrmFightForBase):
         index=True,
     )
 
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_conditions",
+        uselist=False,
+    )
+
+    # Relationship to a `Condition` record.
+    condition = sqlalchemy.orm.relationship(
+        argument="Condition",
+        back_populates="study_conditions",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
@@ -2718,6 +3082,20 @@ class StudyArmGroup(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.arm_groups.arm_group_id"),
         name="arm_group_id",
         nullable=False,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_arm_groups",
+        uselist=False,
+    )
+
+    # Relationship to a `ArmGroup` record.
+    arm_group = sqlalchemy.orm.relationship(
+        argument="ArmGroup",
+        back_populates="study_arm_groups",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -2759,6 +3137,20 @@ class StudyIntervention(Base, OrmFightForBase):
         index=True,
     )
 
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_interventions",
+        uselist=False,
+    )
+
+    # Relationship to a `ArmGroup` record.
+    intervention = sqlalchemy.orm.relationship(
+        argument="Intervention",
+        back_populates="study_interventions",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
@@ -2796,6 +3188,20 @@ class StudyInvestigator(Base, OrmFightForBase):
         nullable=False,
     )
 
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_investigators",
+        uselist=False,
+    )
+
+    # Relationship to a `Investigator` record.
+    investigator = sqlalchemy.orm.relationship(
+        argument="Investigator",
+        back_populates="study_investigators",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
@@ -2831,6 +3237,20 @@ class StudyLocation(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.locations.location_id"),
         name="location_id",
         nullable=False,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_locations",
+        uselist=False,
+    )
+
+    # Relationship to a `Location` record.
+    location = sqlalchemy.orm.relationship(
+        argument="Location",
+        back_populates="study_locations",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -2927,6 +3347,20 @@ class StudyKeyword(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.keywords.keyword_id"),
         name="keyword_id",
         nullable=False,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_keywords",
+        uselist=False,
+    )
+
+    # Relationship to a `Keyword` record.
+    keyword = sqlalchemy.orm.relationship(
+        argument="Keyword",
+        back_populates="study_keywords",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -3032,6 +3466,20 @@ class StudyStudyDoc(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("clinicaltrials.study_docs.study_doc_id"),
         name="study_doc_id",
         nullable=False,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_study_docs",
+        uselist=False,
+    )
+
+    # Relationship to a `StudyDoc` record.
+    study_doc = sqlalchemy.orm.relationship(
+        argument="StudyDoc",
+        back_populates="study_study_docs",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -3312,11 +3760,26 @@ class FacilityCanonical(Base, OrmFightForBase):
         nullable=True,
     )
 
+    # Relationship to a `Facility` record.
+    facility = sqlalchemy.orm.relationship(
+        argument="Facility",
+        back_populates="facility_canonical",
+        uselist=False,
+    )
+
+    # Relationship to a list of `StudyFacility` records.
+    study_facilities = sqlalchemy.orm.relationship(
+        argument="StudyFacility",
+        back_populates="facility_canonical",
+        uselist=True,
+    )
+
     # Relationship to a list of `Study` records.
     studies = sqlalchemy.orm.relationship(
         argument="Study",
         secondary="clinicaltrials.study_facilities",
         back_populates="facilities_canonical",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -3366,6 +3829,27 @@ class StudyFacility(Base, OrmFightForBase):
         name="facility_canonical_id",
         nullable=True,
         index=True,
+    )
+
+    # Relationship to a `Study` record.
+    study = sqlalchemy.orm.relationship(
+        argument="Study",
+        back_populates="study_facilities",
+        uselist=False,
+    )
+
+    # Relationship to a `Facility` record.
+    facility = sqlalchemy.orm.relationship(
+        argument="Facility",
+        back_populates="study_facilities",
+        uselist=False,
+    )
+
+    # Relationship to a `FacilityCanonical` record.
+    facility_canonical = sqlalchemy.orm.relationship(
+        argument="FacilityCanonical",
+        back_populates="study_facilities",
+        uselist=False,
     )
 
     # Set table arguments.
