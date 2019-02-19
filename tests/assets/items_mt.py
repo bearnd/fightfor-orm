@@ -36,10 +36,6 @@ def create_term(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
     for k, v in kwargs.items():
         refr[k] = v
 
-    obj = Term()
-    for k, v in refr.items():
-        setattr(obj, k, v)
-
     obj_id = dal.iodu_term(**refr)
 
     return obj_id, refr
@@ -64,10 +60,6 @@ def create_thesaurus_id(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
     # Override any reference pairs with values under `kwargs`.
     for k, v in kwargs.items():
         refr[k] = v
-
-    obj = Term()
-    for k, v in refr.items():
-        setattr(obj, k, v)
 
     obj_id = dal.iodi_thesaurus_id(**refr)
 
@@ -99,10 +91,6 @@ def create_concept(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
     # Override any reference pairs with values under `kwargs`.
     for k, v in kwargs.items():
         refr[k] = v
-
-    obj = Term()
-    for k, v in refr.items():
-        setattr(obj, k, v)
 
     obj_id = dal.iodu_concept(**refr)
 
@@ -137,10 +125,6 @@ def create_qualifier(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
     for k, v in kwargs.items():
         refr[k] = v
 
-    obj = Term()
-    for k, v in refr.items():
-        setattr(obj, k, v)
-
     obj_id = dal.iodu_qualifier(**refr)
 
     return obj_id, refr
@@ -165,10 +149,6 @@ def create_tree_number(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
     # Override any reference pairs with values under `kwargs`.
     for k, v in kwargs.items():
         refr[k] = v
-
-    obj = Term()
-    for k, v in refr.items():
-        setattr(obj, k, v)
 
     obj_id = dal.iodi_tree_number(**refr)
 
@@ -207,10 +187,6 @@ def create_descriptor(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
     for k, v in kwargs.items():
         refr[k] = v
 
-    obj = Term()
-    for k, v in refr.items():
-        setattr(obj, k, v)
-
     obj_id = dal.iodu_descriptor(**refr)
 
     return obj_id, refr
@@ -247,10 +223,6 @@ def create_entry_combination(
     for k, v in kwargs.items():
         refr[k] = v
 
-    obj = Term()
-    for k, v in refr.items():
-        setattr(obj, k, v)
-
     obj_id = dal.iodu_entry_combination(**refr)
 
     return obj_id, refr
@@ -275,10 +247,6 @@ def create_previous_indexing(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
     # Override any reference pairs with values under `kwargs`.
     for k, v in kwargs.items():
         refr[k] = v
-
-    obj = Term()
-    for k, v in refr.items():
-        setattr(obj, k, v)
 
     obj_id = dal.iodi_previous_indexing(**refr)
 
@@ -311,10 +279,6 @@ def create_supplemental(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
     for k, v in kwargs.items():
         refr[k] = v
 
-    obj = Term()
-    for k, v in refr.items():
-        setattr(obj, k, v)
-
     obj_id = dal.iodu_supplemental(**refr)
 
     return obj_id, refr
@@ -339,10 +303,6 @@ def create_source(dal: DalMesh, **kwargs) -> Tuple[int, Dict]:
     # Override any reference pairs with values under `kwargs`.
     for k, v in kwargs.items():
         refr[k] = v
-
-    obj = Term()
-    for k, v in refr.items():
-        setattr(obj, k, v)
 
     obj_id = dal.iodi_source(**refr)
 
