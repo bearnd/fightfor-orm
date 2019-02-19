@@ -1074,14 +1074,14 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_arm_group(
+    def insert_arm_group(
         self,
         label: str,
         arm_group_type: Union[str, None],
         description: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `ArmGroup` record in an IODI manner.
+        """ Inserts a new `ArmGroup` record.
 
         Args:
             label (str): The arm-group label.
@@ -1108,7 +1108,7 @@ class DalClinicalTrials(DalFightForBase):
                 "type": arm_group_type,
                 "description": description,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
