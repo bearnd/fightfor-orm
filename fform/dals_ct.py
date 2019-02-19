@@ -882,14 +882,14 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_expanded_access_info(
+    def insert_expanded_access_info(
         self,
         expanded_access_type_individual: Union[bool, None],
         expanded_access_type_intermediate: Union[bool, None],
         expanded_access_type_treatment: Union[bool, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `ExpandedAccessInfo` record in an IODI manner.
+        """ Inserts a new `ExpandedAccessInfo` record.
 
         Args:
             expanded_access_type_individual (bool): Whether the study has
@@ -907,7 +907,7 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `ExpandedAccessInfo` record.
         """
 
-        obj = ExpandedAccessInfo
+        obj = ExpandedAccessInfo()
         obj.expanded_access_type_individual = expanded_access_type_individual
         obj.expanded_access_type_intermediate = (
             expanded_access_type_intermediate
@@ -921,7 +921,7 @@ class DalClinicalTrials(DalFightForBase):
                 "intermediate": obj.expanded_access_type_intermediate,
                 "treatment": obj.expanded_access_type_treatment,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
