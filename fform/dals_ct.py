@@ -929,7 +929,7 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_study_design_info(
+    def insert_study_design_info(
         self,
         allocation: Union[str, None],
         intervention_model: Union[str, None],
@@ -941,7 +941,7 @@ class DalClinicalTrials(DalFightForBase):
         masking_description: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `StudyDesignInfo` record in an IODI manner.
+        """ Inserts a new `StudyDesignInfo` record.
 
         Args:
             allocation (str): Study allocation.
@@ -962,7 +962,7 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyDesignInfo` record.
         """
 
-        obj = StudyDesignInfo
+        obj = StudyDesignInfo()
         obj.allocation = allocation
         obj.intervention_model = intervention_model
         obj.intervention_model_description = intervention_model_description
@@ -986,7 +986,7 @@ class DalClinicalTrials(DalFightForBase):
                 "masking": obj.masking,
                 "masking_description": obj.masking_description,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
