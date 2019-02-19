@@ -825,7 +825,7 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_oversight_info(
+    def insert_oversight_info(
         self,
         has_dmc: Union[bool, None],
         is_fda_regulated_drug: Union[bool, None],
@@ -835,7 +835,7 @@ class DalClinicalTrials(DalFightForBase):
         is_us_export: Union[bool, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `OversightInfo` record in an IODI manner.
+        """ Inserts a new `OversightInfo` record.
 
         Args:
             has_dmc (bool): Whether the study has DMC.
@@ -874,7 +874,7 @@ class DalClinicalTrials(DalFightForBase):
                 "is_ppsd": obj.is_ppsd,
                 "is_us_export": obj.is_us_export,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
