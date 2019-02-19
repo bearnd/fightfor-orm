@@ -1036,13 +1036,13 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_enrollment(
+    def insert_enrollment(
         self,
         value: str,
         enrollment_type: Union[ActualType, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `Enrollment` record in an IODI manner.
+        """ Inserts a new `Enrollment` record.
 
         Args:
             value (str): The enrollment value.
@@ -1066,7 +1066,7 @@ class DalClinicalTrials(DalFightForBase):
                 "value": obj.value,
                 "type": obj.enrollment_type,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
