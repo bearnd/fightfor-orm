@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines unit-tests for the `FacilityCanonical` class as well as the
+`iodu_facility_canonical` method of the `DalClinicalTrials` class.
+"""
+
 import copy
 
 from fform.orm_ct import FacilityCanonical

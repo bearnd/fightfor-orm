@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines unit-tests for the `Facility` class as well as the
+`iodi_facility` method of the `DalClinicalTrials` class.
+"""
+
 from fform.orm_ct import Facility
 
 from tests.bases import DalCtTestBase

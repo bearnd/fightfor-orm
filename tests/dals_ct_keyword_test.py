@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines unit-tests for the `Keyword` class as well as the
+`iodi_keyword` method of the `DalClinicalTrials` class.
+"""
+
 from fform.orm_ct import Keyword
 
 from tests.bases import DalCtTestBase

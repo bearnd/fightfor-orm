@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines unit-tests for the `Condition` class as well as the
+`iodi_condition` method of the `DalClinicalTrials` class.
+"""
+
 from fform.orm_ct import Condition
 
 from tests.bases import DalCtTestBase

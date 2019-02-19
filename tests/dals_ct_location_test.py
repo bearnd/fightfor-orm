@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines unit-tests for the `Location` class as well as the
+`iodu_location` method of the `DalClinicalTrials` class.
+"""
+
 from fform.orm_ct import Location
 from fform.orm_ct import RecruitmentStatusType
 

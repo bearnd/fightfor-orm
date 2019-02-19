@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines unit-tests for the `Contact` class as well as the
+`iodi_contact` method of the `DalClinicalTrials` class.
+"""
+
 import sqlalchemy.exc
 
 from fform.orm_ct import Contact
@@ -128,7 +133,7 @@ class DalCtContactTest(DalCtTestBase):
         # Delete the new record.
         self.dal.delete(Contact, obj_id)
 
-        # (Attempt to) retrieve the deleted record
+        # (Attempt to) retrieve the deleted record.
         obj = self.dal.get(Contact, obj_id)  # type: Contact
 
         self.assertIsNone(obj)

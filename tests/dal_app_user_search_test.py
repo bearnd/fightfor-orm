@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines unit-tests for the `UserSearch` class as well as the
+`iodu_user_search` method of the `DalApp` class.
+"""
+
 import uuid
 
 from fform.orm_app import UserSearch
