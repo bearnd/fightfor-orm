@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines functions to create fixture records of different types under
+the `mesh` schema.
+"""
+
 import datetime
 from typing import Tuple, Dict, Optional
 
-from fform.orm_mt import Term
 from fform.orm_mt import DescriptorClassType
 from fform.orm_mt import EntryCombinationType as Ect
 from fform.orm_mt import SupplementalClassType
