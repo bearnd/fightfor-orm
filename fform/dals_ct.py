@@ -1038,14 +1038,14 @@ class DalClinicalTrials(DalFightForBase):
     @with_session_scope()
     def insert_enrollment(
         self,
-        value: str,
+        value: int,
         enrollment_type: Union[ActualType, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
         """ Inserts a new `Enrollment` record.
 
         Args:
-            value (str): The enrollment value.
+            value (int): The enrollment value.
             enrollment_type (ActualType): The enrollment type.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
