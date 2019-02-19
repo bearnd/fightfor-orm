@@ -994,14 +994,14 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_protocol_outcome(
+    def insert_protocol_outcome(
         self,
         measure: str,
         time_frame: Union[str, None],
         description: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `ProtocolOutcome` record in an IODI manner.
+        """ Inserts a new `ProtocolOutcome` record.
 
         Args:
             measure (str): Protocol outcome measure.
@@ -1028,7 +1028,7 @@ class DalClinicalTrials(DalFightForBase):
                 "time_frame": obj.time_frame,
                 "description": obj.description,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
