@@ -1296,7 +1296,7 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_eligibility(
+    def insert_eligibility(
         self,
         study_pop: Union[str, None],
         sampling_method: Union[SamplingMethodType, None],
@@ -1309,7 +1309,7 @@ class DalClinicalTrials(DalFightForBase):
         healthy_volunteers: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `Eligibility` record in an IODI manner.
+        """ Inserts a new `Eligibility` record.
 
         Args:
             study_pop (str): The eligibility study population.
@@ -1356,7 +1356,7 @@ class DalClinicalTrials(DalFightForBase):
                 "maximum_age": obj.maximum_age,
                 "healthy_volunteers": obj.healthy_volunteers,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -1407,7 +1407,7 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_responsible_party(
+    def insert_responsible_party(
         self,
         name_title: Union[str, None],
         organization: Union[str, None],
@@ -1417,7 +1417,7 @@ class DalClinicalTrials(DalFightForBase):
         investigator_title: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `ResponsibleParty` record in an IODI manner.
+        """ Inserts a new `ResponsibleParty` record.
 
         Args:
             name_title (str): The name/title of the responsible party.
@@ -1457,7 +1457,7 @@ class DalClinicalTrials(DalFightForBase):
                 "investigator_full_name": obj.investigator_full_name,
                 "investigator_title": obj.investigator_title,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -1549,7 +1549,7 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_study_doc(
+    def insert_study_doc(
         self,
         doc_id: Union[str, None],
         doc_type: Union[str, None],
@@ -1557,7 +1557,7 @@ class DalClinicalTrials(DalFightForBase):
         doc_comment: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `StudyDoc` record in an IODI manner.
+        """ Inserts a new `StudyDoc` record.
 
         Args:
             doc_id (str): The study-doc ID.
@@ -1587,7 +1587,7 @@ class DalClinicalTrials(DalFightForBase):
                 "doc_url": obj.doc_url,
                 "doc_comment": obj.doc_comment,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -1595,7 +1595,7 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_study_dates(
+    def insert_study_dates(
         self,
         study_first_submitted: Union[datetime.date, None],
         study_first_submitted_qc: Union[datetime.date, None],
@@ -1611,7 +1611,7 @@ class DalClinicalTrials(DalFightForBase):
         last_update_posted: Union[datetime.date, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `StudyDates` record in an IODI manner.
+        """ Inserts a new `StudyDates` record.
 
         Args:
             study_first_submitted (datetime.date): The date the study was
