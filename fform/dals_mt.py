@@ -223,17 +223,7 @@ class DalMesh(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=Term,
-                attrs_names_values={
-                    "ui": ui,
-                },
-                session=session,
-            )  # type: Term
-            return obj.term_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -344,17 +334,7 @@ class DalMesh(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=Concept,
-                attrs_names_values={
-                    "ui": ui,
-                },
-                session=session,
-            )  # type: Concept
-            return obj.concept_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -397,18 +377,7 @@ class DalMesh(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=ConceptRelatedConcept,
-                attrs_names_values={
-                    "concept_id": concept_id,
-                    "related_concept_id": related_concept_id,
-                },
-                session=session,
-            )  # type: ConceptRelatedConcept
-            return obj.concept_related_concept_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -464,18 +433,7 @@ class DalMesh(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=ConceptTerm,
-                attrs_names_values={
-                    "concept_id": concept_id,
-                    "term_id": term_id,
-                },
-                session=session,
-            )  # type: ConceptTerm
-            return obj.concept_term_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -539,17 +497,7 @@ class DalMesh(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=Qualifier,
-                attrs_names_values={
-                    "ui": ui,
-                },
-                session=session,
-            )  # type: Qualifier
-            return obj.qualifier_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -592,18 +540,7 @@ class DalMesh(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=QualifierConcept,
-                attrs_names_values={
-                    "qualifier_id": qualifier_id,
-                    "concept_id": concept_id,
-                },
-                session=session,
-            )  # type: QualifierConcept
-            return obj.qualifier_concept_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -739,18 +676,7 @@ class DalMesh(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=EntryCombination,
-                attrs_names_values={
-                    "descriptor_id": descriptor_id,
-                    "qualifier_id": qualifier_id,
-                },
-                session=session,
-            )  # type: EntryCombination
-            return obj.entry_combination_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -832,17 +758,7 @@ class DalMesh(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=Descriptor,
-                attrs_names_values={
-                    "ui": ui,
-                },
-                session=session,
-            )  # type: Descriptor
-            return obj.descriptor_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -931,18 +847,7 @@ class DalMesh(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=DescriptorConcept,
-                attrs_names_values={
-                    "descriptor_id": descriptor_id,
-                    "concept_id": concept_id,
-                },
-                session=session,
-            )  # type: DescriptorConcept
-            return obj.entry_combination_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -1032,18 +937,7 @@ class DalMesh(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=DescriptorAllowableQualifier,
-                attrs_names_values={
-                    "descriptor_id": descriptor_id,
-                    "qualifier_id": qualifier_id,
-                },
-                session=session,
-            )  # type: DescriptorAllowableQualifier
-            return obj.descriptor_allowable_qualifier_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -1293,17 +1187,7 @@ class DalMesh(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=Supplemental,
-                attrs_names_values={
-                    "ui": ui,
-                },
-                session=session,
-            )  # type: Supplemental
-            return obj.supplemental_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -1443,18 +1327,7 @@ class DalMesh(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=SupplementalConcept,
-                attrs_names_values={
-                    "supplemental_id": supplemental_id,
-                    "concept_id": concept_id,
-                },
-                session=session,
-            )  # type: SupplementalConcept
-            return obj.supplemental_concept_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
