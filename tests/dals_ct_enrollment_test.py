@@ -19,7 +19,7 @@ class DalCtEnrollmentTest(DalCtTestBase):
             retrieval via the `get` method.
         """
 
-        # IODI a new `Enrollment` record.
+        # Insert a new `Enrollment` record.
         obj_id = self.dal.insert_enrollment(
             value=1,
             enrollment_type=ActualType.ACTUAL,
@@ -43,28 +43,28 @@ class DalCtEnrollmentTest(DalCtTestBase):
             ensure that no deduplication checks occurs.
         """
 
-        # IODI a new `Enrollment` record.
+        # Insert a new `Enrollment` record.
         obj_id = self.dal.insert_enrollment(
             value=1,
             enrollment_type=ActualType.ACTUAL,
         )
         self.assertEqual(obj_id, 1)
 
-        # IODI an identical `Enrollment` record.
+        # Insert an identical `Enrollment` record.
         obj_id = self.dal.insert_enrollment(
             value=1,
             enrollment_type=ActualType.ACTUAL,
         )
         self.assertEqual(obj_id, 2)
 
-        # IODI a new `Enrollment` record.
+        # Insert a new `Enrollment` record.
         obj_id = self.dal.insert_enrollment(
             value=2,
             enrollment_type=ActualType.ANTICIPATED,
         )
         self.assertEqual(obj_id, 3)
 
-        # IODI the same `Enrollment` record as before only lowercased.
+        # Insert the same `Enrollment` record as before only lowercased.
         obj_id = self.dal.insert_enrollment(
             value=2,
             enrollment_type=ActualType.ANTICIPATED,
@@ -76,7 +76,7 @@ class DalCtEnrollmentTest(DalCtTestBase):
             method of the `DalClinicalTrials` class.
         """
 
-        # IODI a new `Enrollment` record.
+        # Insert a new `Enrollment` record.
         obj_id = self.dal.insert_enrollment(
             value=1,
             enrollment_type=ActualType.ACTUAL,
