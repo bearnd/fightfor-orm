@@ -1512,17 +1512,23 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_patient_data(
+    def insert_patient_data(
         self,
         sharing_ipd: str,
         ipd_description: Union[str, None],
+        ipd_time_frame: Union[str, None],
+        ipd_access_criteria: Union[str, None],
+        ipd_url: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `PatientData` record in an IODI manner.
+        """ Inserts a new `PatientData` record.
 
         Args:
             sharing_ipd (str): The sharing IPD.
             ipd_description (str): The IPD description.
+            ipd_time_frame (str): The IPD time-frame.
+            ipd_access_criteria (str): The IPD access criteria.
+            ipd_url (str): The IPD URL.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
@@ -1535,14 +1541,24 @@ class DalClinicalTrials(DalFightForBase):
         obj = PatientData()
         obj.sharing_ipd = sharing_ipd
         obj.ipd_description = ipd_description
+        obj.ipd_time_frame = ipd_time_frame
+        obj.ipd_access_criteria = ipd_access_criteria
+        obj.ipd_url = ipd_url
 
         statement = insert(
             PatientData,
             values={
                 "sharing_ipd": obj.sharing_ipd,
                 "ipd_description": obj.ipd_description,
+                "ipd_time_frame": obj.ipd_time_frame,
+                "ipd_access_criteria": obj.ipd_access_criteria,
+                "ipd_url": obj.ipd_url,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        return result.inserted_primary_key
 
         result = session.execute(statement)  # type: ResultProxy
 
