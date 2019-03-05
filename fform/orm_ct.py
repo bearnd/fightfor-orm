@@ -2047,7 +2047,7 @@ class PatientDataIpdInfoType(Base, OrmFightForBase):
     __tablename__ = "patient_data_ipd_info_types"
 
     # Autoincrementing primary key ID.
-    patient_data_ipd_info_type = sqlalchemy.Column(
+    patient_data_ipd_info_type_id = sqlalchemy.Column(
         name="patient_data_ipd_info_type_id",
         type_=sqlalchemy.types.BigInteger(),
         primary_key=True,
@@ -2082,7 +2082,6 @@ class PatientDataIpdInfoType(Base, OrmFightForBase):
     }
 
 
-# TODO: Issue No.50
 class StudyDoc(Base, OrmFightForBase):
     """ Table of `<study_doc>` element records."""
 
@@ -2798,7 +2797,7 @@ class StudySecondaryId(Base, OrmFightForBase):
 
     # Autoincrementing primary key ID.
     study_secondary_id_id = sqlalchemy.Column(
-        name="patient_data_ipd_info_type_id",
+        name="study_secondary_id_id",
         type_=sqlalchemy.types.BigInteger(),
         primary_key=True,
         autoincrement="auto",
@@ -2949,8 +2948,8 @@ class StudyOutcome(Base, OrmFightForBase):
     __tablename__ = "study_outcomes"
 
     # Autoincrementing primary key ID.
-    study_primary_outcome_id = sqlalchemy.Column(
-        name="study_primary_outcome_id",
+    study_outcome_id = sqlalchemy.Column(
+        name="study_outcome_id",
         type_=sqlalchemy.types.BigInteger(),
         primary_key=True,
         autoincrement="auto",
