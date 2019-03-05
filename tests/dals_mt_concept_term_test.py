@@ -50,7 +50,7 @@ class DalMtConceptTermTest(DalMtTestBase):
         self.assertEqual(obj.lexical_tag, LexicalTagType.ABB)
         self.assertEqual(obj.is_record_preferred_term, True)
 
-    def test_iodu_concept_term(self):
+    def test_iodu_concept_term_duplicate(self):
         """ Tests the IODU insertion of duplicate `ConceptTerm` records to
             ensure deduplication functions as intended.
         """

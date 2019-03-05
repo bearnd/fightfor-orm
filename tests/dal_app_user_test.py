@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines unit-tests for the `User` class as well as the
+`iodi_user` method of the `DalApp` class.
+"""
+
 from fform.orm_app import User
 
 from tests.bases import DalAppTestBase
