@@ -24,7 +24,6 @@ from fform.orm_ct import ExpandedAccessInfo
 from fform.orm_ct import StudyDesignInfo
 from fform.orm_ct import ProtocolOutcome
 from fform.orm_ct import Enrollment
-from fform.orm_ct import ActualType
 from fform.orm_ct import ArmGroup
 from fform.orm_ct import Intervention
 from fform.orm_ct import Alias
@@ -52,6 +51,9 @@ from fform.orm_ct import StudyKeyword
 from fform.orm_ct import StudyMeshTerm
 from fform.orm_ct import StudyStudyDoc
 from fform.orm_ct import StudyDates
+from fform.orm_ct import FacilityCanonical
+from fform.orm_ct import StudyFacility
+from fform.orm_ct import ActualType
 from fform.orm_ct import AgencyClassType
 from fform.orm_ct import SponsorType
 from fform.orm_ct import RoleType
@@ -67,8 +69,6 @@ from fform.orm_ct import StudyType
 from fform.orm_ct import BiospecRetentionType
 from fform.orm_ct import MeshTermType
 from fform.orm_ct import ReferenceType
-from fform.orm_ct import FacilityCanonical
-from fform.orm_ct import StudyFacility
 from fform.utils import return_first_item
 
 
