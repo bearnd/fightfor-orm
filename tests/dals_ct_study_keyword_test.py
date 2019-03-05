@@ -1,0 +1,130 @@
+# -*- coding: utf-8 -*-
+
+"""
+This module defines unit-tests for the `StudyKeyword` class as well as the
+`iodi_study_keyword` method of the `DalClinicalTrials` class.
+"""
+
+import sqlalchemy.exc
+
+from fform.orm_ct import StudyKeyword
+
+from tests.bases import DalCtTestBase
+from tests.assets.items_ct import create_study
+from tests.assets.items_ct import create_keyword
+
+
+class DalCtStudyKeywordTest(DalCtTestBase):
+
+    def test_iodi_get_study_keyword(self):
+        """ Tests the insertion of a `StudyKeyword` record via the
+            `iodi_study_keyword` method of the `DalClinicalTrials` class and its
+             retrieval via the get` method.
+        """
+
+        # Create fixtures.
+        study_id, _ = create_study(dal=self.dal)
+        keyword_id, _ = create_keyword(dal=self.dal)
+
+        # IODI a new `StudyKeyword` record.
+        obj_id = self.dal.iodi_study_keyword(
+            study_id=study_id,
+            keyword_id=keyword_id,
+        )
+
+        self.assertEqual(obj_id, 1)
+
+        # Retrieve the new record.
+        obj = self.dal.get(StudyKeyword, obj_id)  # type: StudyKeyword
+
+        # Assert that the different fields of the record match.
+        self.assertEqual(obj.study_keyword_id, 1)
+        self.assertEqual(obj.study_id, study_id)
+        self.assertEqual(obj.keyword_id, keyword_id)
+
+    def test_iodi_study_keyword_missing_fk(self):
+        """ Tests the insertion of a `StudyKeyword` record via the
+            `iodi_study_keyword` method when the required FK is non-existing.
+        """
+
+        self.assertRaises(
+            sqlalchemy.exc.IntegrityError,
+            self.dal.iodi_study_keyword,
+            # This FK is invalid.
+            study_id=123,
+            keyword_id=123,
+        )
+
+    def test_iodi_study_keyword_duplicate(self):
+        """ Tests the IODI insertion of duplicate `StudyKeyword` records to
+            ensure deduplication functions as intended.
+        """
+
+        # Create fixtures.
+        study_id, _ = create_study(dal=self.dal)
+        keyword_id, _ = create_keyword(dal=self.dal)
+        keyword_02_id, _ = create_keyword(dal=self.dal, keyword="new_keyword")
+
+        # IODI a new `StudyKeyword` record.
+        obj_id = self.dal.iodi_study_keyword(
+            study_id=study_id,
+            keyword_id=keyword_id,
+        )
+
+        # The PK should be `1` as this is the first record.
+        self.assertEqual(obj_id, 1)
+
+        # IODI the same `StudyKeyword` record as before.
+        obj_id = self.dal.iodi_study_keyword(
+            study_id=study_id,
+            keyword_id=keyword_id,
+        )
+
+        # The PK should still be `1` as the record was identical thus no
+        # insertion should've occured.
+        self.assertEqual(obj_id, 1)
+
+        # IODI a new `StudyKeyword` record.
+        obj_id = self.dal.iodi_study_keyword(
+            study_id=study_id,
+            keyword_id=keyword_02_id,
+        )
+
+        # The PK should be `3` as the previous failed INSERT will have
+        # incremented the PK by 1.
+        self.assertEqual(obj_id, 3)
+
+        # IODU the same `StudyKeyword` record as before.
+        obj_id = self.dal.iodi_study_keyword(
+            study_id=study_id,
+            keyword_id=keyword_02_id,
+        )
+
+        # The PK should still be `3` as the record is identical to the one
+        # before.
+        self.assertEqual(obj_id, 3)
+
+    def test_delete_study_keyword(self):
+        """ Tests the deletion of a `StudyKeyword` record via the `delete`
+            method of the `DalClinicalTrials` class.
+        """
+
+        # Create fixtures.
+        study_id, _ = create_study(dal=self.dal)
+        keyword_id, _ = create_keyword(dal=self.dal)
+
+        # IODI a new `StudyKeyword` record.
+        obj_id = self.dal.iodi_study_keyword(
+            study_id=study_id,
+            keyword_id=keyword_id,
+        )
+
+        self.assertEqual(obj_id, 1)
+
+        # Delete the new record.
+        self.dal.delete(StudyKeyword, obj_id)
+
+        # (Attempt to) retrieve the deleted record.
+        obj = self.dal.get(StudyKeyword, obj_id)  # type: StudyKeyword
+
+        self.assertIsNone(obj)
