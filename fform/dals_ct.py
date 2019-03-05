@@ -531,16 +531,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attr(
-                orm_class=FacilityCanonical,
-                attr_name="google_place_id",
-                attr_value=obj.google_place_id,
-                session=session,
-            )  # type: FacilityCanonical
-            return obj.facility_canonical_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -762,16 +753,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attr(
-                orm_class=Location,
-                attr_name="md5",
-                attr_value=obj.md5,
-                session=session,
-            )  # type: Location
-            return obj.location_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -1421,17 +1403,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=Reference,
-                attrs_names_values={
-                    "pmid": obj.pmid,
-                },
-                session=session,
-            )  # type: Reference
-            return obj.reference_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -1913,16 +1885,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attr(
-                orm_class=Study,
-                attr_name="nct_id",
-                attr_value=obj.nct_id,
-                session=session,
-            )  # type: Study
-            return obj.study_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -2019,18 +1982,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=StudySponsor,
-                attrs_names_values={
-                    "study_id": obj.study_id,
-                    "sponsor_id": obj.sponsor_id,
-                },
-                session=session,
-            )  # type: StudySponsor
-            return obj.study_sponsor_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -2078,18 +2030,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=StudyOutcome,
-                attrs_names_values={
-                    "study_id": obj.study_id,
-                    "protocol_outcome_id": obj.protocol_outcome_id,
-                },
-                session=session,
-            )  # type: StudyOutcome
-            return obj.study_primary_outcome_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -2383,18 +2324,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=StudyReference,
-                attrs_names_values={
-                    "study_id": obj.study_id,
-                    "reference_id": obj.reference_id,
-                },
-                session=session,
-            )  # type: StudyReference
-            return obj.study_reference_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -2490,18 +2420,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=StudyMeshTerm,
-                attrs_names_values={
-                    "study_id": obj.study_id,
-                    "mesh_term_id": obj.mesh_term_id,
-                },
-                session=session,
-            )  # type: StudyMeshTerm
-            return obj.study_mesh_term_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -2598,15 +2517,4 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=StudyFacility,
-                attrs_names_values={
-                    "study_id": obj.study_id,
-                    "facility_id": obj.facility_id,
-                },
-                session=session,
-            )  # type: StudyFacility
-            return obj.study_facility_id
+        return result.inserted_primary_key
