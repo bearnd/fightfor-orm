@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines unit-tests for the `Sponsor` class as well as the
+`iodi_sponsor` method of the `DalClinicalTrials` class.
+"""
+
 from fform.orm_ct import Sponsor
 from fform.orm_ct import AgencyClassType
 

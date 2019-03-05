@@ -24,7 +24,6 @@ from fform.orm_ct import ExpandedAccessInfo
 from fform.orm_ct import StudyDesignInfo
 from fform.orm_ct import ProtocolOutcome
 from fform.orm_ct import Enrollment
-from fform.orm_ct import ActualType
 from fform.orm_ct import ArmGroup
 from fform.orm_ct import Intervention
 from fform.orm_ct import Alias
@@ -35,9 +34,11 @@ from fform.orm_ct import Reference
 from fform.orm_ct import ResponsibleParty
 from fform.orm_ct import MeshTerm
 from fform.orm_ct import PatientData
+from fform.orm_ct import PatientDataIpdInfoType
 from fform.orm_ct import StudyDoc
 from fform.orm_ct import Study
 from fform.orm_ct import StudyAlias
+from fform.orm_ct import StudySecondaryId
 from fform.orm_ct import StudySponsor
 from fform.orm_ct import StudyOutcome
 from fform.orm_ct import StudyCondition
@@ -50,6 +51,9 @@ from fform.orm_ct import StudyKeyword
 from fform.orm_ct import StudyMeshTerm
 from fform.orm_ct import StudyStudyDoc
 from fform.orm_ct import StudyDates
+from fform.orm_ct import FacilityCanonical
+from fform.orm_ct import StudyFacility
+from fform.orm_ct import ActualType
 from fform.orm_ct import AgencyClassType
 from fform.orm_ct import SponsorType
 from fform.orm_ct import RoleType
@@ -65,8 +69,6 @@ from fform.orm_ct import StudyType
 from fform.orm_ct import BiospecRetentionType
 from fform.orm_ct import MeshTermType
 from fform.orm_ct import ReferenceType
-from fform.orm_ct import FacilityCanonical
-from fform.orm_ct import StudyFacility
 from fform.utils import return_first_item
 
 
@@ -531,16 +533,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attr(
-                orm_class=FacilityCanonical,
-                attr_name="google_place_id",
-                attr_value=obj.google_place_id,
-                session=session,
-            )  # type: FacilityCanonical
-            return obj.facility_canonical_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -762,16 +755,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attr(
-                orm_class=Location,
-                attr_name="md5",
-                attr_value=obj.md5,
-                session=session,
-            )  # type: Location
-            return obj.location_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -825,7 +809,7 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_oversight_info(
+    def insert_oversight_info(
         self,
         has_dmc: Union[bool, None],
         is_fda_regulated_drug: Union[bool, None],
@@ -835,7 +819,7 @@ class DalClinicalTrials(DalFightForBase):
         is_us_export: Union[bool, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `OversightInfo` record in an IODI manner.
+        """ Inserts a new `OversightInfo` record.
 
         Args:
             has_dmc (bool): Whether the study has DMC.
@@ -874,7 +858,7 @@ class DalClinicalTrials(DalFightForBase):
                 "is_ppsd": obj.is_ppsd,
                 "is_us_export": obj.is_us_export,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -882,14 +866,14 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_expanded_access_info(
+    def insert_expanded_access_info(
         self,
         expanded_access_type_individual: Union[bool, None],
         expanded_access_type_intermediate: Union[bool, None],
         expanded_access_type_treatment: Union[bool, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `ExpandedAccessInfo` record in an IODI manner.
+        """ Inserts a new `ExpandedAccessInfo` record.
 
         Args:
             expanded_access_type_individual (bool): Whether the study has
@@ -907,7 +891,7 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `ExpandedAccessInfo` record.
         """
 
-        obj = ExpandedAccessInfo
+        obj = ExpandedAccessInfo()
         obj.expanded_access_type_individual = expanded_access_type_individual
         obj.expanded_access_type_intermediate = (
             expanded_access_type_intermediate
@@ -921,7 +905,7 @@ class DalClinicalTrials(DalFightForBase):
                 "intermediate": obj.expanded_access_type_intermediate,
                 "treatment": obj.expanded_access_type_treatment,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -929,7 +913,7 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_study_design_info(
+    def insert_study_design_info(
         self,
         allocation: Union[str, None],
         intervention_model: Union[str, None],
@@ -941,7 +925,7 @@ class DalClinicalTrials(DalFightForBase):
         masking_description: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `StudyDesignInfo` record in an IODI manner.
+        """ Inserts a new `StudyDesignInfo` record.
 
         Args:
             allocation (str): Study allocation.
@@ -962,7 +946,7 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyDesignInfo` record.
         """
 
-        obj = StudyDesignInfo
+        obj = StudyDesignInfo()
         obj.allocation = allocation
         obj.intervention_model = intervention_model
         obj.intervention_model_description = intervention_model_description
@@ -986,7 +970,7 @@ class DalClinicalTrials(DalFightForBase):
                 "masking": obj.masking,
                 "masking_description": obj.masking_description,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -994,14 +978,14 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_protocol_outcome(
+    def insert_protocol_outcome(
         self,
         measure: str,
         time_frame: Union[str, None],
         description: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `ProtocolOutcome` record in an IODI manner.
+        """ Inserts a new `ProtocolOutcome` record.
 
         Args:
             measure (str): Protocol outcome measure.
@@ -1028,7 +1012,7 @@ class DalClinicalTrials(DalFightForBase):
                 "time_frame": obj.time_frame,
                 "description": obj.description,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -1036,16 +1020,16 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_enrollment(
+    def insert_enrollment(
         self,
-        value: str,
+        value: int,
         enrollment_type: Union[ActualType, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `Enrollment` record in an IODI manner.
+        """ Inserts a new `Enrollment` record.
 
         Args:
-            value (str): The enrollment value.
+            value (int): The enrollment value.
             enrollment_type (ActualType): The enrollment type.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
@@ -1066,7 +1050,7 @@ class DalClinicalTrials(DalFightForBase):
                 "value": obj.value,
                 "type": obj.enrollment_type,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -1074,14 +1058,14 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_arm_group(
+    def insert_arm_group(
         self,
         label: str,
         arm_group_type: Union[str, None],
         description: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `ArmGroup` record in an IODI manner.
+        """ Inserts a new `ArmGroup` record.
 
         Args:
             label (str): The arm-group label.
@@ -1108,7 +1092,7 @@ class DalClinicalTrials(DalFightForBase):
                 "type": arm_group_type,
                 "description": description,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -1314,7 +1298,7 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_eligibility(
+    def insert_eligibility(
         self,
         study_pop: Union[str, None],
         sampling_method: Union[SamplingMethodType, None],
@@ -1327,7 +1311,7 @@ class DalClinicalTrials(DalFightForBase):
         healthy_volunteers: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `Eligibility` record in an IODI manner.
+        """ Inserts a new `Eligibility` record.
 
         Args:
             study_pop (str): The eligibility study population.
@@ -1374,7 +1358,7 @@ class DalClinicalTrials(DalFightForBase):
                 "maximum_age": obj.maximum_age,
                 "healthy_volunteers": obj.healthy_volunteers,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -1421,21 +1405,11 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=Reference,
-                attrs_names_values={
-                    "pmid": obj.pmid,
-                },
-                session=session,
-            )  # type: Reference
-            return obj.reference_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
-    def iodi_responsible_party(
+    def insert_responsible_party(
         self,
         name_title: Union[str, None],
         organization: Union[str, None],
@@ -1445,7 +1419,7 @@ class DalClinicalTrials(DalFightForBase):
         investigator_title: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `ResponsibleParty` record in an IODI manner.
+        """ Inserts a new `ResponsibleParty` record.
 
         Args:
             name_title (str): The name/title of the responsible party.
@@ -1485,7 +1459,7 @@ class DalClinicalTrials(DalFightForBase):
                 "investigator_full_name": obj.investigator_full_name,
                 "investigator_title": obj.investigator_title,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -1539,17 +1513,23 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_patient_data(
+    def insert_patient_data(
         self,
         sharing_ipd: str,
         ipd_description: Union[str, None],
+        ipd_time_frame: Union[str, None],
+        ipd_access_criteria: Union[str, None],
+        ipd_url: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `PatientData` record in an IODI manner.
+        """ Inserts a new `PatientData` record.
 
         Args:
             sharing_ipd (str): The sharing IPD.
             ipd_description (str): The IPD description.
+            ipd_time_frame (str): The IPD time-frame.
+            ipd_access_criteria (str): The IPD access criteria.
+            ipd_url (str): The IPD URL.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
@@ -1562,14 +1542,20 @@ class DalClinicalTrials(DalFightForBase):
         obj = PatientData()
         obj.sharing_ipd = sharing_ipd
         obj.ipd_description = ipd_description
+        obj.ipd_time_frame = ipd_time_frame
+        obj.ipd_access_criteria = ipd_access_criteria
+        obj.ipd_url = ipd_url
 
         statement = insert(
             PatientData,
             values={
                 "sharing_ipd": obj.sharing_ipd,
                 "ipd_description": obj.ipd_description,
+                "ipd_time_frame": obj.ipd_time_frame,
+                "ipd_access_criteria": obj.ipd_access_criteria,
+                "ipd_url": obj.ipd_url,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -1577,7 +1563,46 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_study_doc(
+    def insert_patient_data_ipd_info_type(
+        self,
+        patient_data_id: int,
+        ipd_info_type: str,
+        session: Optional[sqlalchemy.orm.Session] = None,
+    ) -> int:
+        """ Inserts a new `PatientDataIpdInfoType` record.
+
+        Args:
+            patient_data_id (int): The linked `PatientDate` record primary-key
+                ID.
+            ipd_info_type (str): The IPD info type.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `PatientDataIpdInfoType` record.
+        """
+
+        obj = PatientDataIpdInfoType()
+        obj.patient_data_id = patient_data_id
+        obj.ipd_info_type = ipd_info_type
+
+        statement = insert(
+            PatientDataIpdInfoType,
+            values={
+                "patient_data_id": obj.patient_data_id,
+                "ipd_info_type": obj.ipd_info_type,
+            }
+        )  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        return result.inserted_primary_key
+
+    @return_first_item
+    @with_session_scope()
+    def insert_study_doc(
         self,
         doc_id: Union[str, None],
         doc_type: Union[str, None],
@@ -1585,7 +1610,7 @@ class DalClinicalTrials(DalFightForBase):
         doc_comment: Union[str, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `StudyDoc` record in an IODI manner.
+        """ Inserts a new `StudyDoc` record.
 
         Args:
             doc_id (str): The study-doc ID.
@@ -1615,7 +1640,7 @@ class DalClinicalTrials(DalFightForBase):
                 "doc_url": obj.doc_url,
                 "doc_comment": obj.doc_comment,
             }
-        ).on_conflict_do_nothing()  # type: Insert
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
@@ -1623,7 +1648,7 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_study_dates(
+    def insert_study_dates(
         self,
         study_first_submitted: Union[datetime.date, None],
         study_first_submitted_qc: Union[datetime.date, None],
@@ -1639,7 +1664,7 @@ class DalClinicalTrials(DalFightForBase):
         last_update_posted: Union[datetime.date, None],
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `StudyDates` record in an IODI manner.
+        """ Inserts a new `StudyDates` record.
 
         Args:
             study_first_submitted (datetime.date): The date the study was
@@ -1719,7 +1744,6 @@ class DalClinicalTrials(DalFightForBase):
     def iodu_study(
         self,
         org_study_id: Union[str, None],
-        secondary_id: Union[str, None],
         nct_id: str,
         brief_title: str,
         acronym: Union[str, None],
@@ -1755,7 +1779,6 @@ class DalClinicalTrials(DalFightForBase):
 
         Args:
             org_study_id (str): The organizational study ID.
-            secondary_id (str): A secondary study ID.
             nct_id (str): The NCT study ID.
             brief_title (str): A brief study title.
             acronym (str): The study acronym.
@@ -1809,7 +1832,6 @@ class DalClinicalTrials(DalFightForBase):
 
         obj = Study()
         obj.org_study_id = org_study_id
-        obj.secondary_id = secondary_id
         obj.nct_id = nct_id
         obj.brief_title = brief_title
         obj.acronym = acronym
@@ -1844,7 +1866,6 @@ class DalClinicalTrials(DalFightForBase):
             Study,
             values={
                 "org_study_id": obj.org_study_id,
-                "secondary_id": obj.secondary_id,
                 "nct_id": obj.nct_id,
                 "brief_title": obj.brief_title,
                 "acronym": obj.acronym,
@@ -1879,7 +1900,6 @@ class DalClinicalTrials(DalFightForBase):
             index_elements=["nct_id"],
             set_={
                 "org_study_id": obj.org_study_id,
-                "secondary_id": obj.secondary_id,
                 "brief_title": obj.brief_title,
                 "acronym": obj.acronym,
                 "official_title": obj.official_title,
@@ -1913,16 +1933,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attr(
-                orm_class=Study,
-                attr_name="nct_id",
-                attr_value=obj.nct_id,
-                session=session,
-            )  # type: Study
-            return obj.study_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -2019,18 +2030,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=StudySponsor,
-                attrs_names_values={
-                    "study_id": obj.study_id,
-                    "sponsor_id": obj.sponsor_id,
-                },
-                session=session,
-            )  # type: StudySponsor
-            return obj.study_sponsor_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -2078,18 +2078,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=StudyOutcome,
-                attrs_names_values={
-                    "study_id": obj.study_id,
-                    "protocol_outcome_id": obj.protocol_outcome_id,
-                },
-                session=session,
-            )  # type: StudyOutcome
-            return obj.study_primary_outcome_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -2383,18 +2372,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=StudyReference,
-                attrs_names_values={
-                    "study_id": obj.study_id,
-                    "reference_id": obj.reference_id,
-                },
-                session=session,
-            )  # type: StudyReference
-            return obj.study_reference_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -2490,18 +2468,7 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=StudyMeshTerm,
-                attrs_names_values={
-                    "study_id": obj.study_id,
-                    "mesh_term_id": obj.mesh_term_id,
-                },
-                session=session,
-            )  # type: StudyMeshTerm
-            return obj.study_mesh_term_id
+        return result.inserted_primary_key
 
     @return_first_item
     @with_session_scope()
@@ -2598,15 +2565,42 @@ class DalClinicalTrials(DalFightForBase):
 
         result = session.execute(statement)  # type: ResultProxy
 
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attrs(
-                orm_class=StudyFacility,
-                attrs_names_values={
-                    "study_id": obj.study_id,
-                    "facility_id": obj.facility_id,
-                },
-                session=session,
-            )  # type: StudyFacility
-            return obj.study_facility_id
+        return result.inserted_primary_key
+
+    @return_first_item
+    @with_session_scope()
+    def insert_study_secondary_id(
+        self,
+        study_id: int,
+        secondary_id: str,
+        session: Optional[sqlalchemy.orm.Session] = None,
+    ) -> int:
+        """ Inserts a new `StudySecondaryId` record.
+
+        Args:
+            study_id (int): The linked `Study` record primary-key ID.
+            secondary_id (str): The secondary ID of the study.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `StudySecondaryId` record.
+        """
+
+        obj = StudySecondaryId()
+        obj.study_id = study_id
+        obj.secondary_id = secondary_id
+
+        statement = insert(
+            StudySecondaryId,
+            values={
+                "study_id": obj.study_id,
+                "secondary_id": obj.secondary_id,
+            }
+        )  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        return result.inserted_primary_key

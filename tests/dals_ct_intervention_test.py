@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines unit-tests for the `Intervention` class as well as the
+`iodi_intervention` method of the `DalClinicalTrials` class.
+"""
+
 from fform.orm_ct import Intervention
 from fform.orm_ct import InterventionType
 

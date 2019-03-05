@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines unit-tests for the `Person` class as well as the
+`iodi_person` method of the `DalClinicalTrials` class.
+"""
+
 from fform.orm_ct import Person
 
 from tests.bases import DalCtTestBase
