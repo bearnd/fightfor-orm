@@ -35,6 +35,7 @@ from fform.orm_ct import Reference
 from fform.orm_ct import ResponsibleParty
 from fform.orm_ct import MeshTerm
 from fform.orm_ct import PatientData
+from fform.orm_ct import PatientDataIpdInfoType
 from fform.orm_ct import StudyDoc
 from fform.orm_ct import Study
 from fform.orm_ct import StudyAlias
@@ -1559,6 +1560,41 @@ class DalClinicalTrials(DalFightForBase):
         result = session.execute(statement)  # type: ResultProxy
 
         return result.inserted_primary_key
+
+    @return_first_item
+    @with_session_scope()
+    def insert_patient_data_ipd_info_type(
+        self,
+        patient_data_id: int,
+        ipd_info_type: str,
+        session: Optional[sqlalchemy.orm.Session] = None,
+    ) -> int:
+        """ Inserts a new `PatientDataIpdInfoType` record.
+
+        Args:
+            patient_data_id (int): The linked `PatientDate` record primary-key
+                ID.
+            ipd_info_type (str): The IPD info type.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `PatientDataIpdInfoType` record.
+        """
+
+        obj = PatientDataIpdInfoType()
+        obj.patient_data_id = patient_data_id
+        obj.ipd_info_type = ipd_info_type
+
+        statement = insert(
+            PatientDataIpdInfoType,
+            values={
+                "patient_data_id": obj.patient_data_id,
+                "ipd_info_type": obj.ipd_info_type,
+            }
+        )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
 
