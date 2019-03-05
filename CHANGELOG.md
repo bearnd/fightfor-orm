@@ -1,5 +1,27 @@
 ## Changelog
 
+### v0.18.0
+
+Issue No.184:
+
+- Updated the `Study` class and set the `phase` column to nullable as per the latest schema.
+- Updated the `Eligibility` class and set the `gender` column to nullable as per the latest schema.
+- Added a new `PatientDataIpdInfoType` class to store `ipd_info_type` records for the 1-N relationship to `patient_data` records.
+- Added a new `StudySecondaryId` ORM class representing a table holding secondary IDs for clinical-trial studies and updated the `Study` class with a new relationships representing those IDs removing the `secondary_id` column.
+- Added the XSD schema for the clinical-trial study records.
+- Added a lot of new relationship attributes between the clinical-trial ORM classes.
+- Added docstrings to existing unit-test modules.
+- Added a new `items_ct.py` module with functions to create fixture records of different types under the `clinicaltrials` schema.
+- Renamed a lot of the `iodi_*` methods of the `DalClinicalTrials` class to `insert_*` as the underlying records cannot be uniquely identified making IODI impossible.
+- Added unit-tests for all the ORM classes and DAL methods under the clinical-trials schema.
+- Removed the alternative retrievals of inserted PK for IODU methods as there’s always an insertion/update thus the `inserted_primary_key` attribute is always defined.
+- Removed the `secondary_id` argument from the `iodu_study` method as it is no longer stored under the `Study` record but rather as there may be multiple secondary IDs for any given study they’re now stored as `StudySecondaryId` records through the new `insert_study_secondary_id` method.
+- Added a new `insert_patient_data_ipd_info_type` method to store `PatientDataIpdInfoType` records.
+
+Issue No. 187: Incorrect MD5 calculations:
+
+- Updated the MD5 calculations of the `AbstractText`, `Affiliation`, and `Journal` classes.
+
 ### v0.17.0
 
 Issue No. 198: Add a `get_joined` method to `DalBase`.:
