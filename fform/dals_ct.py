@@ -38,6 +38,7 @@ from fform.orm_ct import PatientData
 from fform.orm_ct import StudyDoc
 from fform.orm_ct import Study
 from fform.orm_ct import StudyAlias
+from fform.orm_ct import StudySecondaryId
 from fform.orm_ct import StudySponsor
 from fform.orm_ct import StudyOutcome
 from fform.orm_ct import StudyCondition
@@ -1691,7 +1692,6 @@ class DalClinicalTrials(DalFightForBase):
     def iodu_study(
         self,
         org_study_id: Union[str, None],
-        secondary_id: Union[str, None],
         nct_id: str,
         brief_title: str,
         acronym: Union[str, None],
@@ -1727,7 +1727,6 @@ class DalClinicalTrials(DalFightForBase):
 
         Args:
             org_study_id (str): The organizational study ID.
-            secondary_id (str): A secondary study ID.
             nct_id (str): The NCT study ID.
             brief_title (str): A brief study title.
             acronym (str): The study acronym.
@@ -1781,7 +1780,6 @@ class DalClinicalTrials(DalFightForBase):
 
         obj = Study()
         obj.org_study_id = org_study_id
-        obj.secondary_id = secondary_id
         obj.nct_id = nct_id
         obj.brief_title = brief_title
         obj.acronym = acronym
@@ -1816,7 +1814,6 @@ class DalClinicalTrials(DalFightForBase):
             Study,
             values={
                 "org_study_id": obj.org_study_id,
-                "secondary_id": obj.secondary_id,
                 "nct_id": obj.nct_id,
                 "brief_title": obj.brief_title,
                 "acronym": obj.acronym,
@@ -1851,7 +1848,6 @@ class DalClinicalTrials(DalFightForBase):
             index_elements=["nct_id"],
             set_={
                 "org_study_id": obj.org_study_id,
-                "secondary_id": obj.secondary_id,
                 "brief_title": obj.brief_title,
                 "acronym": obj.acronym,
                 "official_title": obj.official_title,
@@ -2512,6 +2508,44 @@ class DalClinicalTrials(DalFightForBase):
             index_elements=["study_id", "facility_id"],
             set_={
                 "facility_canonical_id": obj.facility_canonical_id,
+            }
+        )  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        return result.inserted_primary_key
+
+    @return_first_item
+    @with_session_scope()
+    def insert_study_secondary_id(
+        self,
+        study_id: int,
+        secondary_id: str,
+        session: Optional[sqlalchemy.orm.Session] = None,
+    ) -> int:
+        """ Inserts a new `StudySecondaryId` record.
+
+        Args:
+            study_id (int): The linked `Study` record primary-key ID.
+            secondary_id (str): The secondary ID of the study.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `StudySecondaryId` record.
+        """
+
+        obj = StudySecondaryId()
+        obj.study_id = study_id
+        obj.secondary_id = secondary_id
+
+        statement = insert(
+            StudySecondaryId,
+            values={
+                "study_id": obj.study_id,
+                "secondary_id": obj.secondary_id,
             }
         )  # type: Insert
 
