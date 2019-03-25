@@ -32,7 +32,6 @@ from fform.orm_ct import InterventionArmGroup
 from fform.orm_ct import Eligibility
 from fform.orm_ct import Reference
 from fform.orm_ct import ResponsibleParty
-from fform.orm_ct import MeshTerm
 from fform.orm_ct import PatientData
 from fform.orm_ct import PatientDataIpdInfoType
 from fform.orm_ct import StudyDoc
@@ -48,7 +47,7 @@ from fform.orm_ct import StudyInvestigator
 from fform.orm_ct import StudyLocation
 from fform.orm_ct import StudyReference
 from fform.orm_ct import StudyKeyword
-from fform.orm_ct import StudyMeshTerm
+from fform.orm_ct import StudyDescriptor
 from fform.orm_ct import StudyStudyDoc
 from fform.orm_ct import StudyDates
 from fform.orm_ct import FacilityCanonical
@@ -1467,52 +1466,6 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodi_mesh_term(
-        self,
-        term: str,
-        session: Optional[sqlalchemy.orm.Session] = None,
-    ) -> int:
-        """Creates a new `MeshTerm` record in an IODI manner.
-
-        Args:
-            term (str): The MeSH term.
-            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
-                through which the record will be added. Defaults to `None` in
-                which case a new session is automatically created and terminated
-                upon completion.
-
-        Returns:
-            int: The primary key ID of the `MeshTerm` record.
-        """
-
-        # Create and populate a `MeshTerm` object so that we can retrieve the
-        # MD5 hash.
-        obj = MeshTerm()
-        obj.term = term
-
-        statement = insert(
-            MeshTerm,
-            values={
-                "term": obj.term,
-                "md5": obj.md5,
-            }
-        ).on_conflict_do_nothing()  # type: Insert
-
-        result = session.execute(statement)  # type: ResultProxy
-
-        if result.inserted_primary_key:
-            return result.inserted_primary_key
-        else:
-            obj = self.get_by_attr(
-                orm_class=MeshTerm,
-                attr_name="md5",
-                attr_value=obj.md5,
-                session=session,
-            )  # type: MeshTerm
-            return obj.mesh_term_id
-
-    @return_first_item
-    @with_session_scope()
     def insert_patient_data(
         self,
         sharing_ipd: str,
@@ -2425,44 +2378,44 @@ class DalClinicalTrials(DalFightForBase):
 
     @return_first_item
     @with_session_scope()
-    def iodu_study_mesh_term(
+    def iodu_study_descriptor(
         self,
         study_id: int,
-        mesh_term_id: int,
-        mesh_term_type: MeshTermType,
+        descriptor_id: int,
+        study_descriptor_type: MeshTermType,
         session: Optional[sqlalchemy.orm.Session] = None,
     ) -> int:
-        """Creates a new `StudyMeshTerm` record in an IODU manner.
+        """Creates a new `StudyDescriptor` record in an IODU manner.
 
         Args:
             study_id (int): The linked `Study` record primary-key ID.
-            mesh_term_id (int): The linked `MeshTerm` record primary-key ID.
-            mesh_term_type (MeshTermType): The mesh-term type.
+            descriptor_id (int): The linked `Descriptor` record primary-key ID.
+            study_descriptor_type (MeshTermType): The mesh-term type.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
                 upon completion.
 
         Returns:
-            int: The primary key ID of the `StudyMeshTerm` record.
+            int: The primary key ID of the `StudyDescriptor` record.
         """
 
-        obj = StudyMeshTerm()
+        obj = StudyDescriptor()
         obj.study_id = study_id
-        obj.mesh_term_id = mesh_term_id
-        obj.mesh_term_type = mesh_term_type
+        obj.descriptor_id = descriptor_id
+        obj.study_descriptor_type = study_descriptor_type
 
         statement = insert(
-            StudyMeshTerm,
+            StudyDescriptor,
             values={
                 "study_id": obj.study_id,
-                "mesh_term_id": obj.mesh_term_id,
-                "type": obj.mesh_term_type,
+                "descriptor_id": obj.descriptor_id,
+                "type": obj.study_descriptor_type,
             }
         ).on_conflict_do_update(
-            index_elements=["study_id", "mesh_term_id"],
+            index_elements=["study_id", "descriptor_id"],
             set_={
-                "type": obj.mesh_term_type,
+                "type": obj.study_descriptor_type,
             }
         )  # type: Insert
 

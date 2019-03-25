@@ -1185,6 +1185,21 @@ class Descriptor(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `StudyDescriptor` records.
+    study_descriptors = sqlalchemy.orm.relationship(
+        argument="StudyDescriptor",
+        back_populates="descriptor",
+        uselist=True,
+    )
+
+    # Relationship to a list of `Study` records.
+    studies = sqlalchemy.orm.relationship(
+        argument="Study",
+        secondary="clinicaltrials.study_descriptors",
+        back_populates="descriptors",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.

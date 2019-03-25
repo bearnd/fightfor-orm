@@ -8,7 +8,6 @@ This module defines unit-tests for the `StudyFacility` class as well as the
 import sqlalchemy.exc
 
 from fform.orm_ct import StudyFacility
-from fform.orm_ct import OutcomeType
 
 from tests.bases import DalCtTestBase
 from tests.assets.items_ct import create_study
