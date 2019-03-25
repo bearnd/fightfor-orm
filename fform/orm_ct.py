@@ -1904,72 +1904,6 @@ class ResponsibleParty(Base, OrmFightForBase):
     }
 
 
-class MeshTerm(Base, OrmFightForBase):
-    """ Table of `<mesh_term>` element records."""
-
-    # Set table name.
-    __tablename__ = "mesh_terms"
-
-    # Autoincrementing primary key ID.
-    mesh_term_id = sqlalchemy.Column(
-        name="mesh_term_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the value of the `<mesh_term>` element.
-    term = sqlalchemy.Column(
-        name="term",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=False,
-    )
-
-    # MD5 hash of the term.
-    md5 = sqlalchemy.Column(
-        name="md5",
-        type_=sqlalchemy.types.LargeBinary(length=16),
-        unique=True,
-        index=True,
-        nullable=False,
-    )
-
-    # Relationship to a list of `Study` records.
-    studies = sqlalchemy.orm.relationship(
-        argument="Study",
-        secondary="clinicaltrials.study_mesh_terms",
-        back_populates="mesh_terms",
-        uselist=True,
-    )
-
-    # Relationship to a list of `StudyMeshTerm` records.
-    study_mesh_terms = sqlalchemy.orm.relationship(
-        argument="StudyMeshTerm",
-        back_populates="mesh_term",
-        uselist=True,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "clinicaltrials",
-    }
-
-    @sqlalchemy.orm.validates("term")
-    def update_md5(self, key, value):
-
-        # Assemble the class attributes into a `dict`.
-        attrs = {
-            "term": self.term,
-        }
-        attrs[key] = value
-
-        # Calculate and update the `md5` attribute.
-        self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
-
-        return value
-
-
 class PatientData(Base, OrmFightForBase):
     """ Table of `<patient_data>` element records."""
 
@@ -2735,17 +2669,17 @@ class Study(Base, OrmFightForBase):
         uselist=True,
     )
 
-    # Relationship to a list of `StudyMeshTerm` records.
-    study_mesh_terms = sqlalchemy.orm.relationship(
-        argument="StudyMeshTerm",
+    # Relationship to a list of `StudyDescriptor` records.
+    study_descriptors = sqlalchemy.orm.relationship(
+        argument="StudyDescriptor",
         back_populates="study",
         uselist=True,
     )
 
-    # Relationship to a list of `MeshTerm` records.
-    mesh_terms = sqlalchemy.orm.relationship(
-        argument="MeshTerm",
-        secondary="clinicaltrials.study_mesh_terms",
+    # Relationship to a list of `Descriptor` records.
+    descriptors = sqlalchemy.orm.relationship(
+        argument="Descriptor",
+        secondary="clinicaltrials.study_descriptors",
         back_populates="studies",
         uselist=True,
     )
@@ -3371,15 +3305,15 @@ class StudyKeyword(Base, OrmFightForBase):
     )
 
 
-class StudyMeshTerm(Base, OrmFightForBase):
-    """ Associative table between `Study` and `MeshTerm` records."""
+class StudyDescriptor(Base, OrmFightForBase):
+    """ Associative table between `Study` and `Descriptor` records."""
 
     # Set table name.
-    __tablename__ = "study_mesh_terms"
+    __tablename__ = "study_descriptors"
 
     # Autoincrementing primary key ID.
-    study_mesh_term_id = sqlalchemy.Column(
-        name="study_mesh_term_id",
+    study_descriptor_id = sqlalchemy.Column(
+        name="study_descriptor_id",
         type_=sqlalchemy.types.BigInteger(),
         primary_key=True,
         autoincrement="auto",
@@ -3393,16 +3327,16 @@ class StudyMeshTerm(Base, OrmFightForBase):
         index=True,
     )
 
-    # Foreign key to the mesh-term ID.
-    mesh_term_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("clinicaltrials.mesh_terms.mesh_term_id"),
-        name="mesh_term_id",
+    # Foreign key to the MeSH dewscriptor ID.
+    descriptor_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("mesh.descriptors.descriptor_id"),
+        name="descriptor_id",
         nullable=False,
         index=True,
     )
 
-    # Referring to the type of mesh-term.
-    mesh_term_type = sqlalchemy.Column(
+    # Referring to the type of MeSH descriptor.
+    study_descriptor_type = sqlalchemy.Column(
         name="type",
         type_=sqlalchemy.types.Enum(MeshTermType),
         nullable=False,
@@ -3412,28 +3346,28 @@ class StudyMeshTerm(Base, OrmFightForBase):
     # Relationship to a list of `Study` records.
     studies = sqlalchemy.orm.relationship(
         argument="Study",
-        back_populates="study_mesh_terms",
+        back_populates="study_descriptors",
         uselist=True,
     )
 
     # Relationship to a `Study` record.
     study = sqlalchemy.orm.relationship(
         argument="Study",
-        back_populates="study_mesh_terms",
+        back_populates="study_descriptors",
         uselist=False,
     )
 
-    # Relationship to a `MeshTerm` record.
-    mesh_term = sqlalchemy.orm.relationship(
-        argument="MeshTerm",
-        back_populates="study_mesh_terms",
+    # Relationship to a `Descriptor` record.
+    descriptor = sqlalchemy.orm.relationship(
+        argument="Descriptor",
+        back_populates="study_descriptors",
         uselist=False,
     )
 
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
-        sqlalchemy.UniqueConstraint('study_id', 'mesh_term_id'),
+        sqlalchemy.UniqueConstraint('study_id', 'descriptor_id'),
         # Set table schema.
         {"schema": "clinicaltrials"},
     )

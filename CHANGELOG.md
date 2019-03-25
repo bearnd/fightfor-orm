@@ -1,8 +1,14 @@
 ## Changelog
 
+### v0.19.0
+
+Issue No. 184:
+
+- Removed the `MeshTerm` ORM class as these will no longer be stored in the `clinicaltrials` schema. Instead the `StudyMeshTerm` class was renamed to `StudyDescriptor` and the FKs were shifted to the `mesh.descriptors` table. The corresponding relationships and DAL methods were updated.
+
 ### v0.18.0
 
-Issue No.184:
+Issue No. 184:
 
 - Updated the `Study` class and set the `phase` column to nullable as per the latest schema.
 - Updated the `Eligibility` class and set the `gender` column to nullable as per the latest schema.
