@@ -1562,6 +1562,7 @@ class DalMesh(DalFightForBase):
                 orm_class=DescriptorDefinition,
                 attrs_names_values={
                     "descriptor_id": descriptor_id,
+                    "source": source,
                     "md5": md5,
                 },
                 session=session,
