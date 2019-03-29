@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.19.2
+
+- Fixed yet another bug in the `iodi_descriptor_definition` method of the `DalMesh` class where the retrieval was based on a non-unique tuple since uniqueness needs to be based on the descriptor ID, source, and definition MD5.
+
 ### v0.19.1
 
 - Fixed bug in the `iodi_descriptor_definition` method of the `DalMesh` class where the retrieval was based on a non-unique tuple.
