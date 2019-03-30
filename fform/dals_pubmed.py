@@ -10,7 +10,6 @@ from sqlalchemy.engine.result import ResultProxy
 
 from fform.dal_base import DalFightForBase
 from fform.dal_base import with_session_scope
-from fform.orm_pubmed import Chemical
 from fform.orm_pubmed import Author
 from fform.orm_pubmed import Affiliation
 from fform.orm_pubmed import PmKeyword
@@ -62,45 +61,6 @@ class DalPubmed(DalFightForBase):
             *args,
             **kwargs
         )
-
-    @lists_equal_length
-    @with_session_scope()
-    def biodi_chemicals(
-        self,
-        nums_registries: List[str],
-        uids: List[str],
-        chemicals: List[str],
-        session=None
-    ) -> List[int]:
-
-        statement = insert(
-            Chemical,
-            values=list(
-                {
-                    "num_registry": num_registry,
-                    "uid": uid,
-                    "chemical": chemical,
-                } for num_registry, uid, chemical in zip(
-                    nums_registries,
-                    uids,
-                    chemicals
-                )
-            )
-        ).on_conflict_do_nothing()
-
-        session.execute(statement)
-
-        objs = self.bget_by_attr(
-            orm_class=Chemical,
-            attr_name="uid",
-            attr_values=uids,
-            do_sort=True,
-            session=session,
-        )  # type: List[Chemical]
-
-        obj_ids = [getattr(obj, obj.pk_name) for obj in objs]
-
-        return obj_ids
 
     @lists_equal_length
     @with_session_scope()

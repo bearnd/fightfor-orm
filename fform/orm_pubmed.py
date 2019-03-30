@@ -727,7 +727,7 @@ class CitationChemical(Base, OrmFightForBase):
 
     # Foreign key to the chemical ID.
     chemical_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("pubmed.chemicals.chemical_id"),
+        sqlalchemy.ForeignKey("mesh.descriptors.descriptor_id"),
         name="chemical_id",
         nullable=False,
     )
@@ -1049,59 +1049,6 @@ class Author(Base, OrmFightForBase):
         return value
 
 
-class Chemical(Base, OrmFightForBase):
-    """Table of `<Chemical>` element records."""
-
-    # set table name
-    __tablename__ = "chemicals"
-
-    # Autoincrementing primary key ID.
-    chemical_id = sqlalchemy.Column(
-        name="chemical_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Chemical registry number (referring to the `<RegistryNumber>` element).
-    num_registry = sqlalchemy.Column(
-        name="num_registry",
-        type_=sqlalchemy.types.Unicode(),
-        index=True,
-        nullable=True
-    )
-
-    # Publication type UID (referring to the `UI` attribute of the
-    # `<NameOfSubstance>` element).
-    uid = sqlalchemy.Column(
-        name="uid",
-        type_=sqlalchemy.types.Unicode(),
-        unique=True,
-        index=True,
-        nullable=False,
-    )
-
-    # Chemical name (referring to the `<NameOfSubstance>` element).
-    chemical = sqlalchemy.Column(
-        name="chemical",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=False
-    )
-
-    # Relationship to a list of `Citation` records.
-    citations = sqlalchemy.orm.relationship(
-        argument="Citation",
-        secondary="pubmed.citation_chemicals",
-        back_populates="chemicals"
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "pubmed"
-    }
-
-
 class Citation(Base, OrmFightForBase):
     """Table of `<MedlineCitation>` element records."""
 
@@ -1185,9 +1132,8 @@ class Citation(Base, OrmFightForBase):
 
     # Relationship to a list of `Chemical` records.
     chemicals = sqlalchemy.orm.relationship(
-        argument="Chemical",
+        argument="Descriptor",
         secondary="pubmed.citation_chemicals",
-        back_populates="citations"
     )
 
     # Relationship to a list of `PmKeyword` records.
