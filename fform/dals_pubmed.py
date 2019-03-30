@@ -14,8 +14,6 @@ from fform.orm_pubmed import Chemical
 from fform.orm_pubmed import Author
 from fform.orm_pubmed import Affiliation
 from fform.orm_pubmed import PmKeyword
-from fform.orm_pubmed import PmDescriptor
-from fform.orm_pubmed import PmQualifier
 from fform.orm_pubmed import PublicationType
 from fform.orm_pubmed import Journal
 from fform.orm_pubmed import JournalIssnType
@@ -99,78 +97,6 @@ class DalPubmed(DalFightForBase):
             do_sort=True,
             session=session,
         )  # type: List[Chemical]
-
-        obj_ids = [getattr(obj, obj.pk_name) for obj in objs]
-
-        return obj_ids
-
-    @lists_equal_length
-    @with_session_scope()
-    def biodi_descriptors(
-        self,
-        uids: List[str],
-        descriptors: List[str],
-        session=None
-    ) -> List[int]:
-
-        statement = insert(
-            PmDescriptor,
-            values=list(
-                {
-                    "uid": uid,
-                    "descriptor": descriptor,
-                } for uid, descriptor in zip(
-                    uids,
-                    descriptors
-                )
-            )
-        ).on_conflict_do_nothing()
-
-        session.execute(statement)
-
-        objs = self.bget_by_attr(
-            orm_class=PmDescriptor,
-            attr_name="uid",
-            attr_values=uids,
-            do_sort=True,
-            session=session,
-        )  # type: List[PmDescriptor]
-
-        obj_ids = [getattr(obj, obj.pk_name) for obj in objs]
-
-        return obj_ids
-
-    @lists_equal_length
-    @with_session_scope()
-    def biodi_qualifiers(
-        self,
-        uids: List[str],
-        qualifiers: List[str],
-        session=None
-    ) -> List[int]:
-
-        statement = insert(
-            PmQualifier,
-            values=list(
-                {
-                    "uid": uid,
-                    "qualifier": qualifier,
-                } for uid, qualifier in zip(
-                    uids,
-                    qualifiers
-                )
-            )
-        ).on_conflict_do_nothing()
-
-        session.execute(statement)
-
-        objs = self.bget_by_attr(
-            orm_class=PmQualifier,
-            attr_name="uid",
-            attr_values=uids,
-            do_sort=True,
-            session=session,
-        )  # type: List[PmQualifier]
 
         obj_ids = [getattr(obj, obj.pk_name) for obj in objs]
 

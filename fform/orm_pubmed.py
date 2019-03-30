@@ -742,7 +742,7 @@ class CitationChemical(Base, OrmFightForBase):
 
 
 class CitationDescriptorQualifier(Base, OrmFightForBase):
-    """Associative table between `Citation`, `PmDescriptor` and `PmQualifier`
+    """Associative table between `Citation`, `Descriptor` and `Qualifier`
     records."""
 
     # set table name
@@ -766,7 +766,7 @@ class CitationDescriptorQualifier(Base, OrmFightForBase):
 
     # Foreign key to the descriptor ID.
     descriptor_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("pubmed.descriptors.descriptor_id"),
+        sqlalchemy.ForeignKey("mesh.descriptors.descriptor_id"),
         name="descriptor_id",
         nullable=False,
         index=True,
@@ -782,7 +782,7 @@ class CitationDescriptorQualifier(Base, OrmFightForBase):
 
     # Foreign key to the qualifier ID.
     qualifier_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey("pubmed.qualifiers.qualifier_id"),
+        sqlalchemy.ForeignKey("mesh.qualifiers.qualifier_id"),
         name="qualifier_id",
         nullable=True,
         index=True,
@@ -1202,15 +1202,15 @@ class Citation(Base, OrmFightForBase):
         argument="CitationDescriptorQualifier",
     )
 
-    # Relationship to a list of `PmDescriptor` records.
+    # Relationship to a list of `Descriptor` records.
     descriptors = sqlalchemy.orm.relationship(
-        argument="PmDescriptor",
+        argument="Descriptor",
         secondary="pubmed.citation_descriptors_qualifiers",
     )
 
-    # Relationship to a list of `PmQualifier` records.
+    # Relationship to a list of `Qualifier` records.
     qualifiers = sqlalchemy.orm.relationship(
-        argument="PmQualifier",
+        argument="Qualifier",
         secondary="pubmed.citation_descriptors_qualifiers",
     )
 
@@ -1272,46 +1272,6 @@ class Databank(Base, OrmFightForBase):
         self.md5 = self.calculate_md5(attrs=attrs, do_lowercase=True)
 
         return value
-
-
-class PmDescriptor(Base, OrmFightForBase):
-    """Table of `<DescriptorName>` element records."""
-
-    # set table name
-    __tablename__ = "descriptors"
-
-    # Autoincrementing primary key ID.
-    descriptor_id = sqlalchemy.Column(
-        name="descriptor_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Descriptor UID (referring to the `UI` attribute of the `<DescriptorName>`
-    # element).
-    uid = sqlalchemy.Column(
-        name="uid",
-        type_=sqlalchemy.types.Unicode(),
-        unique=True,
-        index=True,
-        nullable=False,
-    )
-
-    # Descriptor qualifier name (value of the `<DescriptorName>` element).
-    descriptor = sqlalchemy.Column(
-        name="descriptor",
-        type_=sqlalchemy.types.Unicode(),
-        unique=True,
-        nullable=False,
-        index=True,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "pubmed"
-    }
 
 
 class Grant(Base, OrmFightForBase):
@@ -1638,46 +1598,6 @@ class PublicationType(Base, OrmFightForBase):
         argument="Article",
         secondary="pubmed.article_publication_types",
         back_populates="publication_types"
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "pubmed"
-    }
-
-
-class PmQualifier(Base, OrmFightForBase):
-    """Table of `<Qualifier>` element records."""
-
-    # set table name
-    __tablename__ = "qualifiers"
-
-    # Autoincrementing primary key ID.
-    qualifier_id = sqlalchemy.Column(
-        name="qualifier_id",
-        type_=sqlalchemy.types.BigInteger(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Qualifier UID (referring to the `UI` attribute of the `<QualifierName>`
-    # element).
-    uid = sqlalchemy.Column(
-        name="uid",
-        type_=sqlalchemy.types.Unicode(),
-        unique=True,
-        nullable=False,
-        index=True,
-    )
-
-    # Unique qualifier name (value of the `<QualifierName>` element).
-    qualifier = sqlalchemy.Column(
-        name="qualifier",
-        type_=sqlalchemy.types.Unicode(),
-        unique=True,
-        nullable=False,
-        index=True,
     )
 
     # Set table arguments.
