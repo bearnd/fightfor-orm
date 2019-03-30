@@ -1197,7 +1197,7 @@ class Citation(Base, OrmFightForBase):
         back_populates="citations"
     )
 
-    # Relationship to a list of `PmKeyword` records.
+    # Relationship to a list of `CitationDescriptorQualifier` records.
     descriptors_qualifiers = sqlalchemy.orm.relationship(
         argument="CitationDescriptorQualifier",
     )
