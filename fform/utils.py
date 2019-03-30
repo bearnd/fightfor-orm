@@ -73,7 +73,8 @@ def lists_equal_length(func):
         # Check whether all the `list` objects have the same length.
         do_have_same_length = len(set(map(len, lists))) == 1
 
-        # Raise an `InvalidArgumentsError` exception if there's a length mismatch.
+        # Raise an `InvalidArgumentsError` exception if there's a length
+        # mismatch.
         if not do_have_same_length:
             msg_fmt = "The argument lists must have the same length."
             raise InvalidArgumentsError(msg_fmt)
