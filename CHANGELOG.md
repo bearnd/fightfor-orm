@@ -1,5 +1,10 @@
 ## Changelog
 
+### v0.20.0
+
+- Removed the `PmDescriptor` and `PmQualifier` ORM classes and their corresponding DAL methods from the `DalPubmed` class. Also replaced their FKs in the `CitationDescriptorQualifier` ORM class with FKs to the `Descriptor` and `Qualifier` ORM classes under the `mesh` schema and appropriately updated the relevant relationships under the `Citation` class.
+- Removed the `Chemical` ORM class and its corresponding DAL method from the `DalPubmed` class. Also replaced its FKs in the `CitationChemical` ORM class with FKs to the corresponding `Descriptor` ORM class under the `mesh` schema and appropriately updated the relevant relationships under the `Citation` class.
+
 ### v0.19.2
 
 - Fixed yet another bug in the `iodi_descriptor_definition` method of the `DalMesh` class where the retrieval was based on a non-unique tuple since uniqueness needs to be based on the descriptor ID, source, and definition MD5.
