@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.20.1
+
+- Updated the `Descriptor`, `Qualifier`, `TreeNumber`, `DescriptorTreeNumber`, and `QualifierTreeNumber` classes and added extra relationships.
+
 ### v0.20.0
 
 - Removed the `PmDescriptor` and `PmQualifier` ORM classes and their corresponding DAL methods from the `DalPubmed` class. Also replaced their FKs in the `CitationDescriptorQualifier` ORM class with FKs to the `Descriptor` and `Qualifier` ORM classes under the `mesh` schema and appropriately updated the relevant relationships under the `Citation` class.
