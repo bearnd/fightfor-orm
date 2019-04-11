@@ -160,11 +160,25 @@ class TreeNumber(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `DescriptorTreeNumber` records.
+    descriptor_tree_numbers = sqlalchemy.orm.relationship(
+        argument="DescriptorTreeNumber",
+        back_populates="tree_number",
+        uselist=True,
+    )
+
     # Relationship to a list of `Qualifier` records.
     qualifiers = sqlalchemy.orm.relationship(
         argument="Qualifier",
         secondary="mesh.qualifier_tree_numbers",
         back_populates="tree_numbers",
+        uselist=True,
+    )
+
+    # Relationship to a list of `QualifierTreeNumber` records.
+    qualifier_tree_numbers = sqlalchemy.orm.relationship(
+        argument="QualifierTreeNumber",
+        back_populates="tree_number",
         uselist=True,
     )
 
@@ -792,6 +806,13 @@ class Qualifier(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `QualifierTreeNumber` records.
+    qualifier_tree_numbers = sqlalchemy.orm.relationship(
+        argument="QualifierTreeNumber",
+        back_populates="qualifier",
+        uselist=True,
+    )
+
     # Relationship to a list of `Concept` records.
     concepts = sqlalchemy.orm.relationship(
         argument="Concept",
@@ -888,6 +909,20 @@ class QualifierTreeNumber(Base, OrmFightForBase):
         ),
         name="tree_number_id",
         nullable=False,
+    )
+
+    # Relationship to a `Qualifier` record.
+    qualifier = sqlalchemy.orm.relationship(
+        argument="Qualifier",
+        back_populates="qualifier_tree_numbers",
+        uselist=False,
+    )
+
+    # Relationship to a `TreeNumber` record.
+    tree_number = sqlalchemy.orm.relationship(
+        argument="TreeNumber",
+        back_populates="qualifier_tree_numbers",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -1163,6 +1198,13 @@ class Descriptor(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `DescriptorTreeNumber` records.
+    descriptor_tree_numbers = sqlalchemy.orm.relationship(
+        argument="DescriptorTreeNumber",
+        back_populates="descriptor",
+        uselist=True,
+    )
+
     # Relationship to a list of `Concept` records.
     concepts = sqlalchemy.orm.relationship(
         argument="Concept",
@@ -1413,6 +1455,20 @@ class DescriptorTreeNumber(Base, OrmFightForBase):
         ),
         name="tree_number_id",
         nullable=False,
+    )
+
+    # Relationship to a `Descriptor` record.
+    descriptor = sqlalchemy.orm.relationship(
+        argument="Descriptor",
+        back_populates="descriptor_tree_numbers",
+        uselist=False,
+    )
+
+    # Relationship to a `TreeNumber` record.
+    tree_number = sqlalchemy.orm.relationship(
+        argument="TreeNumber",
+        back_populates="descriptor_tree_numbers",
+        uselist=False,
     )
 
     # Set table arguments.
