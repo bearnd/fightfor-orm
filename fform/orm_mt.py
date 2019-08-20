@@ -241,6 +241,13 @@ class ThesaurusId(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `TermThesaurusId` records.
+    term_thesaurus_ids = sqlalchemy.orm.relationship(
+        argument="TermThesaurusId",
+        back_populates="thesaurus_id",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -328,6 +335,13 @@ class Term(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `TermThesaurusId` records.
+    term_thesaurus_ids = sqlalchemy.orm.relationship(
+        argument="TermThesaurusId",
+        back_populates="term",
+        uselist=True,
+    )
+
     # Referring to the `<TermNote>` element.
     note = sqlalchemy.Column(
         name="note",
@@ -340,6 +354,13 @@ class Term(Base, OrmFightForBase):
         argument="Concept",
         secondary="mesh.concept_terms",
         back_populates="terms",
+        uselist=True,
+    )
+
+    # Relationship to a list of `ConceptTerm` records.
+    concept_terms = sqlalchemy.orm.relationship(
+        argument="ConceptTerm",
+        back_populates="term",
         uselist=True,
     )
 
@@ -378,6 +399,20 @@ class TermThesaurusId(Base, OrmFightForBase):
         ),
         name="thesaurus_id_id",
         nullable=False,
+    )
+
+    # Relationship to a `Term` record.
+    term = sqlalchemy.orm.relationship(
+        argument="Term",
+        back_populates="term_thesaurus_ids",
+        uselist=False,
+    )
+
+    # Relationship to a `ThesaurusId` record.
+    thesaurus_id = sqlalchemy.orm.relationship(
+        argument="ThesaurusId",
+        back_populates="term_thesaurus_ids",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -424,6 +459,13 @@ class RelatedRegistryNumber(Base, OrmFightForBase):
         argument="Concept",
         secondary="mesh.concept_related_registry_numbers",
         back_populates="related_registry_numbers",
+        uselist=True,
+    )
+
+    # Relationship to a list of `ConceptRelatedRegistryNumber` records.
+    concept_related_registry_numbers = sqlalchemy.orm.relationship(
+        argument="ConceptRelatedRegistryNumber",
+        back_populates="related_registry_number",
         uselist=True,
     )
 
@@ -525,6 +567,13 @@ class Concept(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `ConceptRelatedRegistryNumber` records.
+    concept_related_registry_numbers = sqlalchemy.orm.relationship(
+        argument="ConceptRelatedRegistryNumber",
+        back_populates="concept",
+        uselist=True,
+    )
+
     # TODO: `<ConceptRelationList>` element.
 
     # Relationship to a list of `Term` records. Based on the `<Term>` elements
@@ -533,6 +582,13 @@ class Concept(Base, OrmFightForBase):
         argument="Term",
         secondary="mesh.concept_terms",
         back_populates="concepts",
+        uselist=True,
+    )
+
+    # Relationship to a list of `ConceptTerm` records.
+    concept_terms = sqlalchemy.orm.relationship(
+        argument="ConceptTerm",
+        back_populates="concept",
         uselist=True,
     )
 
@@ -557,6 +613,27 @@ class Concept(Base, OrmFightForBase):
         argument="Supplemental",
         secondary="mesh.supplemental_concepts",
         back_populates="concepts",
+        uselist=True,
+    )
+
+    # Relationship to a list of `DescriptorConcept` records.
+    descriptor_concepts = sqlalchemy.orm.relationship(
+        argument="DescriptorConcept",
+        back_populates="concept",
+        uselist=True,
+    )
+
+    # Relationship to a list of `QualifierConcept` records.
+    qualifier_concepts = sqlalchemy.orm.relationship(
+        argument="QualifierConcept",
+        back_populates="concept",
+        uselist=True,
+    )
+
+    # Relationship to a list of `SupplementalConcept` records.
+    supplemental_concepts = sqlalchemy.orm.relationship(
+        argument="SupplementalConcept",
+        back_populates="concept",
         uselist=True,
     )
 
@@ -597,6 +674,20 @@ class ConceptRelatedRegistryNumber(Base, OrmFightForBase):
         ),
         name="related_registry_number_id",
         nullable=False,
+    )
+
+    # Relationship to a `Concept` record.
+    concept = sqlalchemy.orm.relationship(
+        argument="Concept",
+        back_populates="concept_related_registry_numbers",
+        uselist=False,
+    )
+
+    # Relationship to a `RelatedRegistryNumber` record.
+    related_registry_number = sqlalchemy.orm.relationship(
+        argument="RelatedRegistryNumber",
+        back_populates="concept_related_registry_numbers",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -715,6 +806,20 @@ class ConceptTerm(Base, OrmFightForBase):
         nullable=False,
     )
 
+    # Relationship to a `Concept` record.
+    concept = sqlalchemy.orm.relationship(
+        argument="Concept",
+        back_populates="concept_terms",
+        uselist=False,
+    )
+
+    # Relationship to a `Term` record.
+    term = sqlalchemy.orm.relationship(
+        argument="Term",
+        back_populates="concept_terms",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
@@ -821,11 +926,25 @@ class Qualifier(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `QualifierConcept` records.
+    qualifier_concepts = sqlalchemy.orm.relationship(
+        argument="QualifierConcept",
+        back_populates="qualifier",
+        uselist=True,
+    )
+
     # Relationship to a list of `Descriptor` records.
     descriptors = sqlalchemy.orm.relationship(
         argument="Descriptor",
         secondary="mesh.descriptor_allowable_qualifiers",
         back_populates="qualifiers",
+        uselist=True,
+    )
+
+    # Relationship to a list of `DescriptorAllowableQualifier` records.
+    descriptor_allowable_qualifiers = sqlalchemy.orm.relationship(
+        argument="DescriptorAllowableQualifier",
+        back_populates="qualifier",
         uselist=True,
     )
 
@@ -870,6 +989,20 @@ class QualifierConcept(Base, OrmFightForBase):
         name="is_preferred",
         type_=sqlalchemy.types.Boolean(),
         nullable=False,
+    )
+
+    # Relationship to a `Qualifier` record.
+    qualifier = sqlalchemy.orm.relationship(
+        argument="Qualifier",
+        back_populates="qualifier_concepts",
+        uselist=False,
+    )
+
+    # Relationship to a `Concept` record.
+    concept = sqlalchemy.orm.relationship(
+        argument="Concept",
+        back_populates="qualifier_concepts",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -962,11 +1095,25 @@ class PreviousIndexing(Base, OrmFightForBase):
         back_populates="previous_indexings",
     )
 
+    # Relationship to a list of `DescriptorPreviousIndexing` records.
+    descriptor_previous_indexings = sqlalchemy.orm.relationship(
+        argument="DescriptorPreviousIndexing",
+        back_populates="previous_indexing",
+        uselist=True,
+    )
+
     # Relationship to a list of `Supplemental` records.
     supplementals = sqlalchemy.orm.relationship(
         argument="Supplemental",
         secondary="mesh.supplemental_previous_indexings",
         back_populates="previous_indexings",
+    )
+
+    # Relationship to a list of `SupplementalPreviousIndexing` records.
+    supplemental_previous_indexings = sqlalchemy.orm.relationship(
+        argument="SupplementalPreviousIndexing",
+        back_populates="previous_indexing",
+        uselist=True,
     )
 
     # MD5 hash of the tree-number.
@@ -1042,6 +1189,13 @@ class EntryCombination(Base, OrmFightForBase):
     descriptors = sqlalchemy.orm.relationship(
         argument="Descriptor",
         back_populates="entry_combinations",
+        uselist=True,
+    )
+
+    # Relationship to a list of `DescriptorEntryCombination` records.
+    descriptor_entry_combinations = sqlalchemy.orm.relationship(
+        argument="DescriptorEntryCombination",
+        back_populates="entry_combination",
         uselist=True,
     )
 
@@ -1126,6 +1280,13 @@ class Descriptor(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `DescriptorAllowableQualifier` records.
+    descriptor_allowable_qualifiers = sqlalchemy.orm.relationship(
+        argument="DescriptorAllowableQualifier",
+        back_populates="descriptor",
+        uselist=True,
+    )
+
     # Referring to the `<Annotation>` element.
     annotation = sqlalchemy.Column(
         name="annotation",
@@ -1170,12 +1331,26 @@ class Descriptor(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `DescriptorPreviousIndexing` records.
+    descriptor_previous_indexings = sqlalchemy.orm.relationship(
+        argument="DescriptorPreviousIndexing",
+        back_populates="descriptor",
+        uselist=True,
+    )
+
     # Relationship to a list of `EntryCombination` records. Based on the
     # `<SeeRelatedDescriptor>` elements under the `<SeeRelatedList>` element.
     entry_combinations = sqlalchemy.orm.relationship(
         argument="EntryCombination",
         secondary="mesh.descriptor_entry_combinations",
         back_populates="descriptors",
+        uselist=True,
+    )
+
+    # Relationship to a list of `DescriptorEntryCombination` records.
+    descriptor_entry_combinations = sqlalchemy.orm.relationship(
+        argument="DescriptorEntryCombination",
+        back_populates="descriptor",
         uselist=True,
     )
 
@@ -1210,6 +1385,13 @@ class Descriptor(Base, OrmFightForBase):
         argument="Concept",
         secondary="mesh.descriptor_concepts",
         back_populates="descriptors",
+        uselist=True,
+    )
+
+    # Relationship to a list of `DescriptorConcept` records.
+    descriptor_concepts = sqlalchemy.orm.relationship(
+        argument="DescriptorConcept",
+        back_populates="descriptor",
         uselist=True,
     )
 
@@ -1281,6 +1463,20 @@ class DescriptorEntryCombination(Base, OrmFightForBase):
         nullable=False,
     )
 
+    # Relationship to a `Descriptor` record.
+    descriptor = sqlalchemy.orm.relationship(
+        argument="Descriptor",
+        back_populates="descriptor_entry_combinations",
+        uselist=False,
+    )
+
+    # Relationship to a `EntryCombination` record.
+    entry_combination = sqlalchemy.orm.relationship(
+        argument="EntryCombination",
+        back_populates="descriptor_entry_combinations",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
@@ -1326,6 +1522,20 @@ class DescriptorConcept(Base, OrmFightForBase):
         nullable=False,
     )
 
+    # Relationship to a `Descriptor` record.
+    descriptor = sqlalchemy.orm.relationship(
+        argument="Descriptor",
+        back_populates="descriptor_concepts",
+        uselist=False,
+    )
+
+    # Relationship to a `Concept` record.
+    concept = sqlalchemy.orm.relationship(
+        argument="Concept",
+        back_populates="descriptor_concepts",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
@@ -1365,6 +1575,20 @@ class DescriptorPreviousIndexing(Base, OrmFightForBase):
         ),
         name="previous_indexing_id",
         nullable=False,
+    )
+
+    # Relationship to a `Descriptor` record.
+    descriptor = sqlalchemy.orm.relationship(
+        argument="Descriptor",
+        back_populates="descriptor_previous_indexings",
+        uselist=False,
+    )
+
+    # Relationship to a `PreviousIndexing` record.
+    previous_indexing = sqlalchemy.orm.relationship(
+        argument="PreviousIndexing",
+        back_populates="descriptor_previous_indexings",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -1416,6 +1640,20 @@ class DescriptorAllowableQualifier(Base, OrmFightForBase):
         name="abbreviation",
         type_=sqlalchemy.types.Unicode(),
         nullable=False,
+    )
+
+    # Relationship to a `Descriptor` record.
+    descriptor = sqlalchemy.orm.relationship(
+        argument="Descriptor",
+        back_populates="descriptor_allowable_qualifiers",
+        uselist=False,
+    )
+
+    # Relationship to a `Qualifier` record.
+    qualifier = sqlalchemy.orm.relationship(
+        argument="Qualifier",
+        back_populates="descriptor_allowable_qualifiers",
+        uselist=False,
     )
 
     # Set table arguments.
@@ -1696,6 +1934,13 @@ class Supplemental(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `SupplementalPreviousIndexing` records.
+    supplemental_previous_indexings = sqlalchemy.orm.relationship(
+        argument="SupplementalPreviousIndexing",
+        back_populates="supplemental",
+        uselist=True,
+    )
+
     # Relationship to a list of `EntryCombination` records defined via
     # `<HeadingMappedTo>` elements.
     heading_mapped_tos = sqlalchemy.orm.relationship(
@@ -1725,6 +1970,13 @@ class Supplemental(Base, OrmFightForBase):
         argument="Concept",
         secondary="mesh.supplemental_concepts",
         back_populates="supplementals",
+        uselist=True,
+    )
+
+    # Relationship to a list of `SupplementalConcept` records.
+    supplemental_concepts = sqlalchemy.orm.relationship(
+        argument="SupplementalConcept",
+        back_populates="supplemental",
         uselist=True,
     )
 
@@ -1853,6 +2105,20 @@ class SupplementalConcept(Base, OrmFightForBase):
         nullable=False,
     )
 
+    # Relationship to a `Supplemental` record.
+    supplemental = sqlalchemy.orm.relationship(
+        argument="Supplemental",
+        back_populates="supplemental_concepts",
+        uselist=False,
+    )
+
+    # Relationship to a `Concept` record.
+    concept = sqlalchemy.orm.relationship(
+        argument="Concept",
+        back_populates="supplemental_concepts",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
@@ -1892,6 +2158,20 @@ class SupplementalPreviousIndexing(Base, OrmFightForBase):
         ),
         name="previous_indexing_id",
         nullable=False,
+    )
+
+    # Relationship to a `Supplemental` record.
+    supplemental = sqlalchemy.orm.relationship(
+        argument="Supplemental",
+        back_populates="supplemental_previous_indexings",
+        uselist=False,
+    )
+
+    # Relationship to a `PreviousIndexing` record.
+    previous_indexing = sqlalchemy.orm.relationship(
+        argument="PreviousIndexing",
+        back_populates="supplemental_previous_indexings",
+        uselist=False,
     )
 
     # Set table arguments.
