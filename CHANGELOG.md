@@ -1,5 +1,11 @@
 ## Changelog
 
+### v0.21.0
+
+Issue No. 272: Add relationships to `Descriptor` class for associative tables:
+
+- Added new relationships to associative tables across different classes.
+
 ### v0.20.1
 
 - Updated the `Descriptor`, `Qualifier`, `TreeNumber`, `DescriptorTreeNumber`, and `QualifierTreeNumber` classes and added extra relationships.
