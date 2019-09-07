@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.22.1
+
+- Removed the `name` from the UPDATE portion of upserts when the name is supposed to be UNIQUE and part of the CONFLICT.
+
 ### v0.22.0
 
 Issue No.294: duplicate key value violates unique constraint "ix_mesh_supplementals_name":
