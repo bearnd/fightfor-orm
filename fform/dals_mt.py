@@ -319,7 +319,7 @@ class DalMesh(DalFightForBase):
                 "translators_scope_note": translators_scope_note,
             }
         ).on_conflict_do_update(
-            index_elements=["ui"],
+            index_elements=["ui", "name"],
             set_={
                 "name": name,
                 "casn1_name": casn1_name,
@@ -483,7 +483,7 @@ class DalMesh(DalFightForBase):
                 "online_note": online_note,
             }
         ).on_conflict_do_update(
-            index_elements=["ui"],
+            index_elements=["ui", "name"],
             set_={
                 "name": name,
                 "created": created,
@@ -740,7 +740,7 @@ class DalMesh(DalFightForBase):
                 "consider_also": consider_also,
             }
         ).on_conflict_do_update(
-            index_elements=["ui"],
+            index_elements=["ui", "name"],
             set_={
                 "class": descriptor_class,
                 "name": name,
@@ -1174,7 +1174,7 @@ class DalMesh(DalFightForBase):
                 "frequency": frequency,
             }
         ).on_conflict_do_update(
-            index_elements=["ui"],
+            index_elements=["ui", "name"],
             set_={
                 "class": supplemental_class,
                 "name": name,
