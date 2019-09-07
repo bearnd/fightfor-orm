@@ -321,7 +321,6 @@ class DalMesh(DalFightForBase):
         ).on_conflict_do_update(
             index_elements=["ui", "name"],
             set_={
-                "name": name,
                 "casn1_name": casn1_name,
                 "registry_number": registry_number,
                 "scope_note": scope_note,
@@ -485,7 +484,6 @@ class DalMesh(DalFightForBase):
         ).on_conflict_do_update(
             index_elements=["ui", "name"],
             set_={
-                "name": name,
                 "created": created,
                 "revised": revised,
                 "established": established,
@@ -743,7 +741,6 @@ class DalMesh(DalFightForBase):
             index_elements=["ui", "name"],
             set_={
                 "class": descriptor_class,
-                "name": name,
                 "created": created,
                 "revised": revised,
                 "established": established,
@@ -1177,7 +1174,6 @@ class DalMesh(DalFightForBase):
             index_elements=["ui", "name"],
             set_={
                 "class": supplemental_class,
-                "name": name,
                 "created": created,
                 "revised": revised,
                 "note": note,
