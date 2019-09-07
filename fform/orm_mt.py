@@ -638,10 +638,12 @@ class Concept(Base, OrmFightForBase):
     )
 
     # Set table arguments.
-    __table_args__ = {
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint('ui', 'name'),
         # Set table schema.
-        "schema": "mesh"
-    }
+        {"schema": "mesh"}
+    )
 
 
 class ConceptRelatedRegistryNumber(Base, OrmFightForBase):
@@ -949,10 +951,12 @@ class Qualifier(Base, OrmFightForBase):
     )
 
     # Set table arguments.
-    __table_args__ = {
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint('ui', 'name'),
         # Set table schema.
-        "schema": "mesh"
-    }
+        {"schema": "mesh"}
+    )
 
 
 class QualifierConcept(Base, OrmFightForBase):
@@ -1425,10 +1429,12 @@ class Descriptor(Base, OrmFightForBase):
     )
 
     # Set table arguments.
-    __table_args__ = {
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint('ui', 'name'),
         # Set table schema.
-        "schema": "mesh"
-    }
+        {"schema": "mesh"}
+    )
 
 
 class DescriptorEntryCombination(Base, OrmFightForBase):
@@ -1981,10 +1987,12 @@ class Supplemental(Base, OrmFightForBase):
     )
 
     # Set table arguments.
-    __table_args__ = {
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint('ui', 'name'),
         # Set table schema.
-        "schema": "mesh"
-    }
+        {"schema": "mesh"}
+    )
 
 
 class SupplementalHeadingMappedTo(Base, OrmFightForBase):
