@@ -1,5 +1,12 @@
 ## Changelog
 
+### v0.22.0
+
+Issue No.294: duplicate key value violates unique constraint "ix_mesh_supplementals_name":
+
+- Updated all ORM classes with both a `ui` and `name` unique constraint and added a UNIQUE constraint on their tuples.
+- Updated the upsert methods of all ORM classes with both a `ui` and `name` unique constraint and defined their two-column indices..
+
 ### v0.21.0
 
 Issue No. 272: Add relationships to `Descriptor` class for associative tables:
