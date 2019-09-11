@@ -250,6 +250,10 @@ class DalFightForBase(DalBase):
                 matching the primary-key ID and `None` if no record exists.
         """
 
+        self.logger.info(
+            f"Retrieving `{orm_class.__name__}` record with PK of '{pk}'."
+        )
+
         query = session.query(orm_class)
         query = query.filter(
             getattr(orm_class, orm_class.get_pk_name()) == pk
@@ -297,12 +301,10 @@ class DalFightForBase(DalBase):
             joinedloads = []
             for joined_relationship in joined_relationships:
                 if not hasattr(orm_class, joined_relationship):
-                    msg = "Relationship '{}' not defined under ORM class '{}'."
-                    msg_fmt = msg.format(
-                        joined_relationship,
-                        orm_class.__name__,
+                    raise RelationshipDoesNotExist(
+                        f"Relationship '{joined_relationship}' not defined "
+                        f"under ORM class '{orm_class.__name__}'."
                     )
-                    raise RelationshipDoesNotExist(msg_fmt)
 
                 joinedloads.append(
                     sqlalchemy.orm.joinedload(
@@ -342,6 +344,11 @@ class DalFightForBase(DalBase):
             Type[OrmFightForBase]: The record object of type `orm_class`
                 matching the primary-key ID and `None` if no record exists.
         """
+
+        self.logger.info(
+            f"Retrieving `{orm_class.__name__}` record with PK of `{pk}`"
+            f"join-loaded against its attributes '{joined_relationships}'."
+        )
 
         query = session.query(orm_class)
         query = query.filter(
@@ -388,25 +395,30 @@ class DalFightForBase(DalBase):
                 type with the given primary-key ID.
         """
 
+        self.logger.info(
+            f"Updating `{orm_class.__name__}` record with PK of '{pk}' and"
+            f"setting the value of its '{attr_name}' attribute to "
+            f"'{attr_value}'."
+        )
+
         # Retrieve the record object
         obj = self.get(orm_class=orm_class, pk=pk, session=session)
 
         # Log an error and raise an exception if the `orm_class` does not define
         # an `attr_name` attribute.
         if not hasattr(orm_class, attr_name):
-            msg = "Class `{}` does not define attribute `{}`."
-            msg_fmt = msg.format(orm_class, attr_name)
-            self.logger.error(msg_fmt)
-            raise MissingAttributeError(msg_fmt)
+            msg = (f"Class `{orm_class}` does not define attribute "
+                   f"`{attr_name}`.")
+            self.logger.error(msg)
+            raise MissingAttributeError(msg)
 
         # Log an error and raise an exception if there is no `orm_class` record
         # with the given primary-key ID.
         if not obj:
-            msg = ("Record of type '{}' with a primary-key ID of '{}' was "
-                   "not found.")
-            msg_fmt = msg.format(orm_class, pk)
-            self.logger.error(msg_fmt)
-            raise RecordMissingError(msg_fmt)
+            msg = (f"Record of type '{orm_class.__name__}' with a primary-key "
+                   f"ID of '{pk}' was not found.")
+            self.logger.error(msg)
+            raise RecordMissingError(msg)
 
         # Set the attribute value in the retrieved record object.
         setattr(obj, attr_name, attr_value)
@@ -433,6 +445,10 @@ class DalFightForBase(DalBase):
                 which case a new session is automatically created and terminated
                 upon completion.
         """
+
+        self.logger.info(
+            f"Deleting `{orm_class.__name__}` record with PK of '{pk}'."
+        )
 
         query = session.query(orm_class)
         query = query.filter(
@@ -479,13 +495,18 @@ class DalFightForBase(DalBase):
                 records were found with the given attribute value.
         """
 
+        self.logger.info(
+            f"Retrieving `{orm_class.__name__}` record where the value of "
+            f"its '{attr_name}' attribute is equal to '{attr_value}'."
+        )
+
         # Log an error and raise an exception if the `orm_class` does not define
         # an `attr_name` attribute.
         if not hasattr(orm_class, attr_name):
-            msg = "Class `{}` does not define attribute `{}`."
-            msg_fmt = msg.format(orm_class, attr_name)
-            self.logger.error(msg_fmt)
-            raise MissingAttributeError(msg_fmt)
+            msg = (f"Class `{orm_class.__name__}` does not define attribute"
+                   f" `{attr_name}`.")
+            self.logger.error(msg)
+            raise MissingAttributeError(msg)
 
         query = session.query(orm_class)
         query = query.filter(getattr(orm_class, attr_name) == attr_value)
@@ -530,13 +551,18 @@ class DalFightForBase(DalBase):
                 the `attr_name` attribute.
         """
 
+        self.logger.info(
+            f"Retrieving all `{orm_class.__name__}` records where the value of "
+            f"their '{attr_name}' attribute is equal to any of '{attr_values}'."
+        )
+
         # Log an error and raise an exception if the `orm_class` does not define
         # an `attr_name` attribute.
         if not hasattr(orm_class, attr_name):
-            msg = "Class `{}` does not define attribute `{}`."
-            msg_fmt = msg.format(orm_class, attr_name)
-            self.logger.error(msg_fmt)
-            raise MissingAttributeError(msg_fmt)
+            msg = (f"Class `{orm_class.__name__}` does not define attribute"
+                   f" `{attr_name}`.")
+            self.logger.error(msg)
+            raise MissingAttributeError(msg)
 
         query = session.query(orm_class)
         query = query.filter(getattr(orm_class, attr_name).in_(attr_values))
@@ -593,14 +619,19 @@ class DalFightForBase(DalBase):
                 records were found with the given attribute(s).
         """
 
+        self.logger.info(
+            f"Retrieving `{orm_class.__name__}` record matching attribute:value"
+            f"pairs or '{attrs_names_values}'."
+        )
+
         # Log an error and raise an exception if the `orm_class` does not define
         # any of the `attrs_names_values` attributes (keys).
         for attr_name in attrs_names_values.keys():
             if not hasattr(orm_class, attr_name):
-                msg = "Class `{}` does not define attribute `{}`."
-                msg_fmt = msg.format(orm_class, attr_name)
-                self.logger.error(msg_fmt)
-                raise MissingAttributeError(msg_fmt)
+                msg = (f"Class `{orm_class.__name__}` does not define "
+                       f"attribute `{attr_name}`.")
+                self.logger.error(msg)
+                raise MissingAttributeError(msg)
 
         query = session.query(orm_class)
         for attr_name, attr_value in attrs_names_values.items():
@@ -644,6 +675,11 @@ class DalFightForBase(DalBase):
                 attrs_names_values dictionary are not of the same length.
         """
 
+        self.logger.info(
+            f"Retrieving all `{orm_class.__name__}` records matching "
+            f"attribute:value pairs or '{attrs_names_values}'."
+        )
+
         # Retrieve all attribute names.
         attr_names = attrs_names_values.keys()
 
@@ -651,10 +687,10 @@ class DalFightForBase(DalBase):
         # any of the `attrs_names_values` attributes (keys).
         for attr_name in attr_names:
             if not hasattr(orm_class, attr_name):
-                msg = "Class `{}` does not define attribute `{}`."
-                msg_fmt = msg.format(orm_class, attr_name)
-                self.logger.error(msg_fmt)
-                raise MissingAttributeError(msg_fmt)
+                msg = (f"Class `{orm_class.__name__}` does not define "
+                       f"attribute `{attr_name}`.")
+                self.logger.error(msg)
+                raise MissingAttributeError(msg)
 
         # Retrieve all attribute value lists.
         attr_values = attrs_names_values.values()
@@ -707,10 +743,10 @@ class DalFightForBase(DalBase):
         # the `attr_name` attribute.
         for obj in objs:
             if not hasattr(obj, attr_name):
-                msg = "Class `{}` does not define attribute `{}`."
-                msg_fmt = msg.format(obj.__class__, attr_name)
-                self.logger.error(msg_fmt)
-                raise MissingAttributeError(msg_fmt)
+                msg = (f"Class `{obj.__class__.__name__}` does not define "
+                       f"attribute `{attr_name}`.")
+                self.logger.error(msg)
+                raise MissingAttributeError(msg)
 
         # Log an error and raise an exception if the `objs` and `attr_values`
         # lists are not of equal length.

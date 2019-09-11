@@ -93,6 +93,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `TreeNumber` record.
         """
 
+        self.logger.info(f"IODIing `TreeNumber` record.")
+
         # Create and populate a `TreeNumber` object so that we can retrieve the
         # MD5 hash.
         obj = TreeNumber()
@@ -111,6 +113,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=TreeNumber,
                 attr_name="md5",
@@ -139,6 +142,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `ThesaurusId` record.
         """
 
+        self.logger.info(f"IODIing `ThesaurusId` record.")
+
         # Create and populate a `ThesaurusId` object so that we can retrieve the
         # MD5 hash.
         obj = ThesaurusId()
@@ -157,6 +162,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=ThesaurusId,
                 attr_name="md5",
@@ -196,6 +202,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `Term` record.
         """
+
+        self.logger.info(f"IODUing `Term` record.")
 
         # Upsert the `Term` record.
         statement = insert(
@@ -248,6 +256,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `TermThesaurusId` record.
         """
 
+        self.logger.info(f"IODIing `TermThesaurusId` record.")
+
         statement = insert(
             TermThesaurusId,
             values={
@@ -261,6 +271,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=TermThesaurusId,
                 attrs_names_values={
@@ -303,6 +314,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `Concept` record.
         """
+
+        self.logger.info(f"IODUing `Concept` record.")
 
         # Upsert the `Concept` record.
         statement = insert(
@@ -360,6 +373,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `ConceptRelatedConcept` record.
         """
 
+        self.logger.info(f"IODUing `ConceptRelatedConcept` record.")
+
         statement = insert(
             ConceptRelatedConcept,
             values={
@@ -409,6 +424,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `ConceptTerm` record.
         """
+
+        self.logger.info(f"IODUing `ConceptTerm` record.")
 
         statement = insert(
             ConceptTerm,
@@ -468,6 +485,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `Qualifier` record.
         """
 
+        self.logger.info(f"IODUing `Qualifier` record.")
+
         # Upsert the `Qualifier` record.
         statement = insert(
             Qualifier,
@@ -522,6 +541,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `QualifierConcept` record.
         """
 
+        self.logger.info(f"IODUing `QualifierConcept` record.")
+
         statement = insert(
             QualifierConcept,
             values={
@@ -562,6 +583,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `QualifierTreeNumber` record.
         """
 
+        self.logger.info(f"IODIing `QualifierTreeNumber` record.")
+
         statement = insert(
             QualifierTreeNumber,
             values={
@@ -575,6 +598,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=QualifierTreeNumber,
                 attrs_names_values={
@@ -605,6 +629,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `PreviousIndexing` record.
         """
 
+        self.logger.info(f"IODIing `PreviousIndexing` record.")
+
         # Create and populate a `PreviousIndexing` object so that we can
         # retrieve the MD5 hash.
         obj = PreviousIndexing()
@@ -624,6 +650,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=PreviousIndexing,
                 attr_name="md5",
@@ -657,6 +684,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `EntryCombination` record.
         """
+
+        self.logger.info(f"IODUing `EntryCombination` record.")
 
         statement = insert(
             EntryCombination,
@@ -720,6 +749,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `Descriptor` record.
         """
 
+        self.logger.info(f"IODUing `Descriptor` record.")
+
         # Upsert the `Descriptor` record.
         statement = insert(
             Descriptor,
@@ -780,6 +811,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `DescriptorEntryCombination` record.
         """
 
+        self.logger.info(f"IODIing `DescriptorEntryCombination` record.")
+
         statement = insert(
             DescriptorEntryCombination,
             values={
@@ -793,6 +826,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=DescriptorEntryCombination,
                 attrs_names_values={
@@ -827,6 +861,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `DescriptorConcept` record.
         """
+
+        self.logger.info(f"IODUing `DescriptorConcept` record.")
 
         statement = insert(
             DescriptorConcept,
@@ -869,6 +905,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `DescriptorPreviousIndexing` record.
         """
 
+        self.logger.info(f"IODIing `DescriptorPreviousIndexing` record.")
+
         statement = insert(
             DescriptorPreviousIndexing,
             values={
@@ -882,6 +920,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=DescriptorPreviousIndexing,
                 attrs_names_values={
@@ -917,6 +956,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `DescriptorAllowableQualifier`
                 record.
         """
+
+        self.logger.info(f"IODUing `DescriptorAllowableQualifier` record.")
 
         statement = insert(
             DescriptorAllowableQualifier,
@@ -958,6 +999,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `DescriptorTreeNumber` record.
         """
 
+        self.logger.info(f"IODIing `DescriptorTreeNumber` record.")
+
         statement = insert(
             DescriptorTreeNumber,
             values={
@@ -971,6 +1014,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=DescriptorTreeNumber,
                 attrs_names_values={
@@ -1006,6 +1050,10 @@ class DalMesh(DalFightForBase):
                 `DescriptorPharmacologicalActionDescriptor` record.
         """
 
+        self.logger.info(
+            f"IODIing `DescriptorPharmacologicalActionDescriptor` record."
+        )
+
         statement = insert(
             DescriptorPharmacologicalActionDescriptor,
             values={
@@ -1021,6 +1069,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=DescriptorPharmacologicalActionDescriptor,
                 attrs_names_values={
@@ -1056,6 +1105,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `DescriptorRelatedDescriptor` record.
         """
 
+        self.logger.info(f"IODIing `DescriptorRelatedDescriptor` record.")
+
         statement = insert(
             DescriptorRelatedDescriptor,
             values={
@@ -1069,6 +1120,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=DescriptorRelatedDescriptor,
                 attrs_names_values={
@@ -1099,6 +1151,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `Source` record.
         """
 
+        self.logger.info(f"IODIing `Source` record.")
+
         # Create and populate a `Source` object so that we can retrieve the
         # MD5 hash.
         obj = Source()
@@ -1117,6 +1171,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=Source,
                 attr_name="md5",
@@ -1157,6 +1212,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `Supplemental` record.
         """
+
+        self.logger.info(f"IODUing `Supplemental` record.")
 
         # Upsert the `Supplemental` record.
         statement = insert(
@@ -1209,6 +1266,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `SupplementalHeadingMappedTo` record.
         """
 
+        self.logger.info(f"IODIing `SupplementalHeadingMappedTo` record.")
+
         statement = insert(
             SupplementalHeadingMappedTo,
             values={
@@ -1222,6 +1281,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=SupplementalHeadingMappedTo,
                 attrs_names_values={
@@ -1258,6 +1318,8 @@ class DalMesh(DalFightForBase):
                 record.
         """
 
+        self.logger.info(f"IODIing `SupplementalIndexingInformation` record.")
+
         statement = insert(
             SupplementalIndexingInformation,
             values={
@@ -1271,6 +1333,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=SupplementalIndexingInformation,
                 attrs_names_values={
@@ -1306,6 +1369,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `SupplementalConcept` record.
         """
+
+        self.logger.info(f"IODUing `SupplementalConcept` record.")
 
         statement = insert(
             SupplementalConcept,
@@ -1351,6 +1416,8 @@ class DalMesh(DalFightForBase):
                 record.
         """
 
+        self.logger.info(f"IODIing `SupplementalPreviousIndexing` record.")
+
         statement = insert(
             SupplementalPreviousIndexing,
             values={
@@ -1364,6 +1431,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=SupplementalPreviousIndexing,
                 attrs_names_values={
@@ -1400,6 +1468,10 @@ class DalMesh(DalFightForBase):
                 `SupplementalPharmacologicalActionDescriptor` record.
         """
 
+        self.logger.info(
+            f"IODIing `SupplementalPharmacologicalActionDescriptor` record."
+        )
+
         statement = insert(
             SupplementalPharmacologicalActionDescriptor,
             values={
@@ -1415,6 +1487,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=SupplementalPharmacologicalActionDescriptor,
                 attrs_names_values={
@@ -1450,6 +1523,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `SupplementalSource` record.
         """
 
+        self.logger.info(f"IODIing `SupplementalSource` record.")
+
         statement = insert(
             SupplementalSource,
             values={
@@ -1463,6 +1538,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=SupplementalSource,
                 attrs_names_values={
@@ -1538,6 +1614,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `DescriptorDefinition` record.
         """
 
+        self.logger.info(f"IODIing `DescriptorDefinition` record.")
+
         # Upsert the `DescriptorDefinition` record.
         statement = insert(
             DescriptorDefinition,
@@ -1554,6 +1632,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=DescriptorDefinition,
                 attrs_names_values={

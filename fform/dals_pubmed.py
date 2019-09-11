@@ -86,6 +86,7 @@ class DalPubmed(DalFightForBase):
 
         session.execute(statement)
 
+        # noinspection PyTypeChecker
         objs = self.bget_by_attr(
             orm_class=PmKeyword,
             attr_name="md5",
@@ -122,6 +123,7 @@ class DalPubmed(DalFightForBase):
 
         session.execute(statement)
 
+        # noinspection PyTypeChecker
         objs = self.bget_by_attr(
             orm_class=PublicationType,
             attr_name="uid",
@@ -185,6 +187,7 @@ class DalPubmed(DalFightForBase):
 
         session.execute(statement)
 
+        # noinspection PyTypeChecker
         objs = self.bget_by_attr(
             orm_class=Author,
             attr_name="md5",
@@ -237,6 +240,7 @@ class DalPubmed(DalFightForBase):
 
         session.execute(statement)
 
+        # noinspection PyTypeChecker
         objs = self.bget_by_attr(
             orm_class=Affiliation,
             attr_name="md5",
@@ -288,6 +292,7 @@ class DalPubmed(DalFightForBase):
 
         session.execute(statement)
 
+        # noinspection PyTypeChecker
         objs = self.bget_by_attr(
             orm_class=Grant,
             attr_name="md5",
@@ -324,6 +329,7 @@ class DalPubmed(DalFightForBase):
 
         session.execute(statement)
 
+        # noinspection PyTypeChecker
         objs = self.bget_by_attr(
             orm_class=Databank,
             attr_name="md5",
@@ -360,6 +366,7 @@ class DalPubmed(DalFightForBase):
 
         session.execute(statement)
 
+        # noinspection PyTypeChecker
         objs = self.bget_by_attr(
             orm_class=AccessionNumber,
             attr_name="md5",
@@ -648,6 +655,7 @@ class DalPubmed(DalFightForBase):
 
         session.execute(statement)
 
+        # noinspection PyTypeChecker
         objs = self.bget_by_attr(
             orm_class=AbstractText,
             attr_name="md5",
@@ -682,6 +690,7 @@ class DalPubmed(DalFightForBase):
 
         session.execute(statement)
 
+        # noinspection PyTypeChecker
         obj = self.get_by_attr(
             orm_class=JournalInfo,
             attr_name="nlmid",
@@ -717,6 +726,7 @@ class DalPubmed(DalFightForBase):
 
         session.execute(statement)
 
+        # noinspection PyTypeChecker
         obj = self.get_by_attr(
             orm_class=Journal,
             attr_name="md5",
@@ -768,6 +778,7 @@ class DalPubmed(DalFightForBase):
 
         session.execute(statement)
 
+        # noinspection PyTypeChecker
         obj = self.get_by_attr(
             orm_class=Article,
             attr_name="md5",
@@ -807,6 +818,7 @@ class DalPubmed(DalFightForBase):
 
         session.execute(statement)
 
+        # noinspection PyTypeChecker
         obj = self.get_by_attr(
             orm_class=Citation,
             attr_name="pmid",
@@ -1053,6 +1065,7 @@ class DalPubmed(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=AffiliationCanonical,
                 attr_name="google_place_id",
