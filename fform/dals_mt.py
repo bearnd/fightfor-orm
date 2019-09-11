@@ -111,6 +111,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=TreeNumber,
                 attr_name="md5",
@@ -157,6 +158,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=ThesaurusId,
                 attr_name="md5",
@@ -261,6 +263,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=TermThesaurusId,
                 attrs_names_values={
@@ -575,6 +578,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=QualifierTreeNumber,
                 attrs_names_values={
@@ -624,6 +628,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=PreviousIndexing,
                 attr_name="md5",
@@ -793,6 +798,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=DescriptorEntryCombination,
                 attrs_names_values={
@@ -882,6 +888,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=DescriptorPreviousIndexing,
                 attrs_names_values={
@@ -971,6 +978,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=DescriptorTreeNumber,
                 attrs_names_values={
@@ -1021,6 +1029,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=DescriptorPharmacologicalActionDescriptor,
                 attrs_names_values={
@@ -1069,6 +1078,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=DescriptorRelatedDescriptor,
                 attrs_names_values={
@@ -1117,6 +1127,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=Source,
                 attr_name="md5",
@@ -1222,6 +1233,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=SupplementalHeadingMappedTo,
                 attrs_names_values={
@@ -1271,6 +1283,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=SupplementalIndexingInformation,
                 attrs_names_values={
@@ -1364,6 +1377,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=SupplementalPreviousIndexing,
                 attrs_names_values={
@@ -1415,6 +1429,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=SupplementalPharmacologicalActionDescriptor,
                 attrs_names_values={
@@ -1463,6 +1478,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=SupplementalSource,
                 attrs_names_values={
@@ -1554,6 +1570,7 @@ class DalMesh(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=DescriptorDefinition,
                 attrs_names_values={

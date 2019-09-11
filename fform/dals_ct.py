@@ -137,6 +137,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=Sponsor,
                 attr_name="md5",
@@ -184,6 +185,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=Keyword,
                 attr_name="md5",
@@ -230,6 +232,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=Condition,
                 attr_name="md5",
@@ -292,6 +295,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=Facility,
                 attr_name="md5",
@@ -584,6 +588,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=Person,
                 attr_name="md5",
@@ -642,6 +647,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=Contact,
                 attr_name="md5",
@@ -696,6 +702,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=Investigator,
                 attr_name="md5",
@@ -796,6 +803,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=LocationInvestigator,
                 attrs_names_values={
@@ -1141,6 +1149,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=Intervention,
                 attr_name="md5",
@@ -1187,6 +1196,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attr(
                 orm_class=Alias,
                 attr_name="md5",
@@ -1235,6 +1245,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=InterventionAlias,
                 attrs_names_values={
@@ -1285,6 +1296,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=InterventionArmGroup,
                 attrs_names_values={
@@ -1927,6 +1939,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=StudyAlias,
                 attrs_names_values={
@@ -2072,6 +2085,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=StudyCondition,
                 attrs_names_values={
@@ -2121,6 +2135,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=StudyArmGroup,
                 attrs_names_values={
@@ -2171,6 +2186,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=StudyIntervention,
                 attrs_names_values={
@@ -2221,6 +2237,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=StudyInvestigator,
                 attrs_names_values={
@@ -2270,6 +2287,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=StudyLocation,
                 attrs_names_values={
@@ -2366,6 +2384,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=StudyKeyword,
                 attrs_names_values={
@@ -2462,6 +2481,7 @@ class DalClinicalTrials(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=StudyStudyDoc,
                 attrs_names_values={

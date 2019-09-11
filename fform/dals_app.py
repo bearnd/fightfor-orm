@@ -73,6 +73,7 @@ class DalApp(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=User,
                 attrs_names_values={
@@ -147,6 +148,7 @@ class DalApp(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=Search,
                 attrs_names_values={
@@ -191,6 +193,7 @@ class DalApp(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=UserSearch,
                 attrs_names_values={
@@ -236,6 +239,7 @@ class DalApp(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=SearchDescriptor,
                 attrs_names_values={
