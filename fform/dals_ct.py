@@ -116,6 +116,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Sponsor` record.
         """
 
+        self.logger.info(f"IODIing `Sponsor` record.")
+
         # Create and populate a `Sponsor` object so that we can retrieve the
         # MD5 hash.
         obj = Sponsor()
@@ -166,6 +168,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Keyword` record.
         """
 
+        self.logger.info(f"IODIing `Keyword` record.")
+
         # Create and populate a `Person` object so that we can retrieve the
         # MD5 hash.
         obj = Keyword()
@@ -213,6 +217,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `Condition` record.
         """
+
+        self.logger.info(f"IODIing `Condition` record.")
 
         # Create and populate a `Condition` object so that we can retrieve the
         # MD5 hash.
@@ -266,8 +272,10 @@ class DalClinicalTrials(DalFightForBase):
                 upon completion.
 
         Returns:
-            int: The primary key ID of the `Condition` record.
+            int: The primary key ID of the `Facility` record.
         """
+
+        self.logger.info(f"IODIing `Facility` record.")
 
         # Create and populate a `Facility` object so that we can retrieve the
         # MD5 hash.
@@ -406,8 +414,10 @@ class DalClinicalTrials(DalFightForBase):
                 upon completion.
 
         Returns:
-            int: The primary key ID of the `Location` record.
+            int: The primary key ID of the `FacilityCanonical` record.
         """
+
+        self.logger.info(f"IODUing `FacilityCanonical` record.")
 
         # Assemble a PostGIS coordinates point if coordinates have been defined.
         coordinates = None
@@ -564,6 +574,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Person` record.
         """
 
+        self.logger.info(f"IODIing `Person` record.")
+
         # Create and populate a `Person` object so that we can retrieve the
         # MD5 hash.
         obj = Person()
@@ -623,6 +635,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Contact` record.
         """
 
+        self.logger.info(f"IODIing `Contact` record.")
+
         # Create and populate a `Contact` object so that we can retrieve the
         # MD5 hash.
         obj = Contact()
@@ -679,6 +693,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `Investigator` record.
         """
+
+        self.logger.info(f"IODIing `Investigator` record.")
 
         # Create and populate a `Investigator` object so that we can retrieve
         # the MD5 hash.
@@ -737,6 +753,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Location` record.
         """
 
+        self.logger.info(f"IODUing `Location` record.")
+
         obj = Location()
         obj.facility_id = facility_id
         obj.status = status
@@ -785,6 +803,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `LocationInvestigator` record.
         """
+
+        self.logger.info(f"IODIing `LocationInvestigator` record.")
 
         obj = LocationInvestigator()
         obj.location_id = location_id
@@ -847,6 +867,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `OversightInfo` record.
         """
 
+        self.logger.info(f"Inserting `OversightInfo` record.")
+
         obj = OversightInfo()
         obj.has_dmc = has_dmc
         obj.is_fda_regulated_drug = is_fda_regulated_drug
@@ -897,6 +919,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `ExpandedAccessInfo` record.
         """
+
+        self.logger.info(f"Inserting `ExpandedAccessInfo` record.")
 
         obj = ExpandedAccessInfo()
         obj.expanded_access_type_individual = expanded_access_type_individual
@@ -953,6 +977,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyDesignInfo` record.
         """
 
+        self.logger.info(f"Inserting `StudyDesignInfo` record.")
+
         obj = StudyDesignInfo()
         obj.allocation = allocation
         obj.intervention_model = intervention_model
@@ -1007,6 +1033,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `ProtocolOutcome` record.
         """
 
+        self.logger.info(f"Inserting `ProtocolOutcome` record.")
+
         obj = ProtocolOutcome()
         obj.measure = measure
         obj.time_frame = time_frame
@@ -1047,6 +1075,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Enrollment` record.
         """
 
+        self.logger.info(f"Inserting `Enrollment` record.")
+
         obj = Enrollment()
         obj.value = value
         obj.enrollment_type = enrollment_type
@@ -1086,6 +1116,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `ArmGroup` record.
         """
+
+        self.logger.info(f"Inserting `ArmGroup` record.")
 
         obj = ArmGroup()
         obj.label = label
@@ -1128,6 +1160,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `Intervention` record.
         """
+
+        self.logger.info(f"IODIing `Intervention` record.")
 
         obj = Intervention()
         obj.intervention_type = intervention_type
@@ -1177,6 +1211,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `Alias` record.
         """
+
+        self.logger.info(f"IODIing `Alias` record.")
 
         # Create and populate a `Alias` object so that we can retrieve
         # the MD5 hash.
@@ -1228,6 +1264,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `InterventionAlias` record.
         """
 
+        self.logger.info(f"IODIing `InterventionAlias` record.")
+
         obj = InterventionAlias()
         obj.intervention_id = intervention_id
         obj.alias_id = alias_id
@@ -1278,6 +1316,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `InterventionArmGroup` record.
         """
+
+        self.logger.info(f"IODIing `InterventionArmGroup` record.")
 
         obj = InterventionArmGroup()
         obj.intervention_id = intervention_id
@@ -1345,6 +1385,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Eligibility` record.
         """
 
+        self.logger.info(f"Inserting `Eligibility` record.")
+
         obj = Eligibility()
         obj.study_pop = study_pop
         obj.sampling_method = sampling_method
@@ -1396,6 +1438,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `Reference` record.
         """
+
+        self.logger.info(f"IODUing `Reference` record.")
 
         obj = Reference()
         obj.citation = citation
@@ -1452,6 +1496,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `ResponsibleParty` record.
         """
 
+        self.logger.info(f"Inserting `ResponsibleParty` record.")
+
         obj = ResponsibleParty()
         obj.name_title = name_title
         obj.organization = organization
@@ -1504,6 +1550,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `PatientData` record.
         """
 
+        self.logger.info(f"Inserting `PatientData` record.")
+
         obj = PatientData()
         obj.sharing_ipd = sharing_ipd
         obj.ipd_description = ipd_description
@@ -1549,6 +1597,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `PatientDataIpdInfoType` record.
         """
 
+        self.logger.info(f"Inserting `PatientDataIpdInfoType` record.")
+
         obj = PatientDataIpdInfoType()
         obj.patient_data_id = patient_data_id
         obj.ipd_info_type = ipd_info_type
@@ -1590,6 +1640,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `StudyDoc` record.
         """
+
+        self.logger.info(f"Inserting `StudyDoc` record.")
 
         obj = StudyDoc()
         obj.doc_id = doc_id
@@ -1664,6 +1716,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `StudyDates` record.
         """
+
+        self.logger.info(f"Inserting `StudyDates` record.")
 
         obj = StudyDates()
         obj.study_first_submitted = study_first_submitted
@@ -1795,6 +1849,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `Study` record.
         """
 
+        self.logger.info(f"IODUing `Study` record.")
+
         obj = Study()
         obj.org_study_id = org_study_id
         obj.nct_id = nct_id
@@ -1922,6 +1978,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyAlias` record.
         """
 
+        self.logger.info(f"IODIing `StudyAlias` record.")
+
         obj = StudyAlias()
         obj.study_id = study_id
         obj.alias_id = alias_id
@@ -1975,6 +2033,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudySponsor` record.
         """
 
+        self.logger.info(f"IODUing `StudySponsor` record.")
+
         obj = StudySponsor()
         obj.study_id = study_id
         obj.sponsor_id = sponsor_id
@@ -2023,6 +2083,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyOutcome` record.
         """
 
+        self.logger.info(f"IODUing `StudyOutcome` record.")
+
         obj = StudyOutcome()
         obj.study_id = study_id
         obj.protocol_outcome_id = protocol_outcome_id
@@ -2067,6 +2129,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `StudyCondition` record.
         """
+
+        self.logger.info(f"IODIing `StudyCondition` record.")
 
         obj = StudyCondition()
         obj.study_id = study_id
@@ -2117,6 +2181,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `StudyArmGroup` record.
         """
+
+        self.logger.info(f"IODIing `StudyArmGroup` record.")
 
         obj = StudyArmGroup()
         obj.study_id = study_id
@@ -2169,6 +2235,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyIntervention` record.
         """
 
+        self.logger.info(f"IODIing `StudyIntervention` record.")
+
         obj = StudyIntervention()
         obj.study_id = study_id
         obj.intervention_id = intervention_id
@@ -2220,6 +2288,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyInvestigator` record.
         """
 
+        self.logger.info(f"IODIing `StudyInvestigator` record.")
+
         obj = StudyInvestigator()
         obj.study_id = study_id
         obj.investigator_id = investigator_id
@@ -2269,6 +2339,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `StudyLocation` record.
         """
+
+        self.logger.info(f"IODIing `StudyLocation` record.")
 
         obj = StudyLocation()
         obj.study_id = study_id
@@ -2322,6 +2394,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyReference` record.
         """
 
+        self.logger.info(f"IODUing `StudyReference` record.")
+
         obj = StudyReference()
         obj.study_id = study_id
         obj.reference_id = reference_id
@@ -2366,6 +2440,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `StudyKeyword` record.
         """
+
+        self.logger.info(f"IODIing `StudyKeyword` record.")
 
         obj = StudyKeyword()
         obj.study_id = study_id
@@ -2419,6 +2495,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyDescriptor` record.
         """
 
+        self.logger.info(f"IODUing `StudyDescriptor` record.")
+
         obj = StudyDescriptor()
         obj.study_id = study_id
         obj.descriptor_id = descriptor_id
@@ -2463,6 +2541,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `StudyStudyDoc` record.
         """
+
+        self.logger.info(f"IODIing `StudyStudyDoc` record.")
 
         obj = StudyStudyDoc()
         obj.study_id = study_id
@@ -2517,6 +2597,8 @@ class DalClinicalTrials(DalFightForBase):
             int: The primary key ID of the `StudyFacility` record.
         """
 
+        self.logger.info(f"IODUing `StudyFacility` record.")
+
         obj = StudyFacility()
         obj.study_id = study_id
         obj.facility_id = facility_id
@@ -2561,6 +2643,8 @@ class DalClinicalTrials(DalFightForBase):
         Returns:
             int: The primary key ID of the `StudySecondaryId` record.
         """
+
+        self.logger.info(f"Inserting `StudySecondaryId` record.")
 
         obj = StudySecondaryId()
         obj.study_id = study_id

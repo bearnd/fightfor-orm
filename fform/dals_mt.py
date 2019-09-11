@@ -93,6 +93,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `TreeNumber` record.
         """
 
+        self.logger.info(f"IODIing `TreeNumber` record.")
+
         # Create and populate a `TreeNumber` object so that we can retrieve the
         # MD5 hash.
         obj = TreeNumber()
@@ -139,6 +141,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `ThesaurusId` record.
         """
+
+        self.logger.info(f"IODIing `ThesaurusId` record.")
 
         # Create and populate a `ThesaurusId` object so that we can retrieve the
         # MD5 hash.
@@ -199,6 +203,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `Term` record.
         """
 
+        self.logger.info(f"IODUing `Term` record.")
+
         # Upsert the `Term` record.
         statement = insert(
             Term,
@@ -249,6 +255,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `TermThesaurusId` record.
         """
+
+        self.logger.info(f"IODIing `TermThesaurusId` record.")
 
         statement = insert(
             TermThesaurusId,
@@ -307,6 +315,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `Concept` record.
         """
 
+        self.logger.info(f"IODUing `Concept` record.")
+
         # Upsert the `Concept` record.
         statement = insert(
             Concept,
@@ -363,6 +373,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `ConceptRelatedConcept` record.
         """
 
+        self.logger.info(f"IODUing `ConceptRelatedConcept` record.")
+
         statement = insert(
             ConceptRelatedConcept,
             values={
@@ -412,6 +424,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `ConceptTerm` record.
         """
+
+        self.logger.info(f"IODUing `ConceptTerm` record.")
 
         statement = insert(
             ConceptTerm,
@@ -471,6 +485,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `Qualifier` record.
         """
 
+        self.logger.info(f"IODUing `Qualifier` record.")
+
         # Upsert the `Qualifier` record.
         statement = insert(
             Qualifier,
@@ -525,6 +541,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `QualifierConcept` record.
         """
 
+        self.logger.info(f"IODUing `QualifierConcept` record.")
+
         statement = insert(
             QualifierConcept,
             values={
@@ -564,6 +582,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `QualifierTreeNumber` record.
         """
+
+        self.logger.info(f"IODIing `QualifierTreeNumber` record.")
 
         statement = insert(
             QualifierTreeNumber,
@@ -608,6 +628,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `PreviousIndexing` record.
         """
+
+        self.logger.info(f"IODIing `PreviousIndexing` record.")
 
         # Create and populate a `PreviousIndexing` object so that we can
         # retrieve the MD5 hash.
@@ -662,6 +684,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `EntryCombination` record.
         """
+
+        self.logger.info(f"IODUing `EntryCombination` record.")
 
         statement = insert(
             EntryCombination,
@@ -725,6 +749,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `Descriptor` record.
         """
 
+        self.logger.info(f"IODUing `Descriptor` record.")
+
         # Upsert the `Descriptor` record.
         statement = insert(
             Descriptor,
@@ -785,6 +811,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `DescriptorEntryCombination` record.
         """
 
+        self.logger.info(f"IODIing `DescriptorEntryCombination` record.")
+
         statement = insert(
             DescriptorEntryCombination,
             values={
@@ -834,6 +862,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `DescriptorConcept` record.
         """
 
+        self.logger.info(f"IODUing `DescriptorConcept` record.")
+
         statement = insert(
             DescriptorConcept,
             values={
@@ -874,6 +904,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `DescriptorPreviousIndexing` record.
         """
+
+        self.logger.info(f"IODIing `DescriptorPreviousIndexing` record.")
 
         statement = insert(
             DescriptorPreviousIndexing,
@@ -925,6 +957,8 @@ class DalMesh(DalFightForBase):
                 record.
         """
 
+        self.logger.info(f"IODUing `DescriptorAllowableQualifier` record.")
+
         statement = insert(
             DescriptorAllowableQualifier,
             values={
@@ -964,6 +998,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `DescriptorTreeNumber` record.
         """
+
+        self.logger.info(f"IODIing `DescriptorTreeNumber` record.")
 
         statement = insert(
             DescriptorTreeNumber,
@@ -1013,6 +1049,10 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the
                 `DescriptorPharmacologicalActionDescriptor` record.
         """
+
+        self.logger.info(
+            f"IODIing `DescriptorPharmacologicalActionDescriptor` record."
+        )
 
         statement = insert(
             DescriptorPharmacologicalActionDescriptor,
@@ -1065,6 +1105,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `DescriptorRelatedDescriptor` record.
         """
 
+        self.logger.info(f"IODIing `DescriptorRelatedDescriptor` record.")
+
         statement = insert(
             DescriptorRelatedDescriptor,
             values={
@@ -1108,6 +1150,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `Source` record.
         """
+
+        self.logger.info(f"IODIing `Source` record.")
 
         # Create and populate a `Source` object so that we can retrieve the
         # MD5 hash.
@@ -1169,6 +1213,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `Supplemental` record.
         """
 
+        self.logger.info(f"IODUing `Supplemental` record.")
+
         # Upsert the `Supplemental` record.
         statement = insert(
             Supplemental,
@@ -1220,6 +1266,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `SupplementalHeadingMappedTo` record.
         """
 
+        self.logger.info(f"IODIing `SupplementalHeadingMappedTo` record.")
+
         statement = insert(
             SupplementalHeadingMappedTo,
             values={
@@ -1269,6 +1317,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `SupplementalIndexingInformation`
                 record.
         """
+
+        self.logger.info(f"IODIing `SupplementalIndexingInformation` record.")
 
         statement = insert(
             SupplementalIndexingInformation,
@@ -1320,6 +1370,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `SupplementalConcept` record.
         """
 
+        self.logger.info(f"IODUing `SupplementalConcept` record.")
+
         statement = insert(
             SupplementalConcept,
             values={
@@ -1363,6 +1415,8 @@ class DalMesh(DalFightForBase):
             int: The primary key ID of the `SupplementalPreviousIndexing`
                 record.
         """
+
+        self.logger.info(f"IODIing `SupplementalPreviousIndexing` record.")
 
         statement = insert(
             SupplementalPreviousIndexing,
@@ -1414,6 +1468,10 @@ class DalMesh(DalFightForBase):
                 `SupplementalPharmacologicalActionDescriptor` record.
         """
 
+        self.logger.info(
+            f"IODIing `SupplementalPharmacologicalActionDescriptor` record."
+        )
+
         statement = insert(
             SupplementalPharmacologicalActionDescriptor,
             values={
@@ -1464,6 +1522,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `SupplementalSource` record.
         """
+
+        self.logger.info(f"IODIing `SupplementalSource` record.")
 
         statement = insert(
             SupplementalSource,
@@ -1553,6 +1613,8 @@ class DalMesh(DalFightForBase):
         Returns:
             int: The primary key ID of the `DescriptorDefinition` record.
         """
+
+        self.logger.info(f"IODIing `DescriptorDefinition` record.")
 
         # Upsert the `DescriptorDefinition` record.
         statement = insert(

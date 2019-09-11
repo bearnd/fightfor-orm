@@ -59,6 +59,8 @@ class DalApp(DalFightForBase):
             int: The primary key ID of the `User` record.
         """
 
+        self.logger.info(f"IODIing `User` record.")
+
         # Upsert the `User` record.
         statement = insert(
             User,
@@ -118,6 +120,8 @@ class DalApp(DalFightForBase):
         Returns:
             int: The primary key ID of the `Search` record.
         """
+
+        self.logger.info(f"IODIing `Search` record.")
 
         # Upsert the `Search` record.
         statement = insert(
@@ -180,6 +184,8 @@ class DalApp(DalFightForBase):
             int: The primary key ID of the `UserSearch` record.
         """
 
+        self.logger.info(f"IODIing `UserSearch` record.")
+
         statement = insert(
             UserSearch,
             values={
@@ -225,6 +231,8 @@ class DalApp(DalFightForBase):
         Returns:
             int: The primary key ID of the `SearchDescriptor` record.
         """
+
+        self.logger.info(f"IODIing `SearchDescriptor` record.")
 
         statement = insert(
             SearchDescriptor,
