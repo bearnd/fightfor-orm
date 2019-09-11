@@ -59,6 +59,8 @@ class DalApp(DalFightForBase):
             int: The primary key ID of the `User` record.
         """
 
+        self.logger.info(f"IODIing `User` record.")
+
         # Upsert the `User` record.
         statement = insert(
             User,
@@ -73,6 +75,7 @@ class DalApp(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=User,
                 attrs_names_values={
@@ -118,6 +121,8 @@ class DalApp(DalFightForBase):
             int: The primary key ID of the `Search` record.
         """
 
+        self.logger.info(f"IODIing `Search` record.")
+
         # Upsert the `Search` record.
         statement = insert(
             Search,
@@ -147,6 +152,7 @@ class DalApp(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=Search,
                 attrs_names_values={
@@ -178,6 +184,8 @@ class DalApp(DalFightForBase):
             int: The primary key ID of the `UserSearch` record.
         """
 
+        self.logger.info(f"IODIing `UserSearch` record.")
+
         statement = insert(
             UserSearch,
             values={
@@ -191,6 +199,7 @@ class DalApp(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=UserSearch,
                 attrs_names_values={
@@ -223,6 +232,8 @@ class DalApp(DalFightForBase):
             int: The primary key ID of the `SearchDescriptor` record.
         """
 
+        self.logger.info(f"IODIing `SearchDescriptor` record.")
+
         statement = insert(
             SearchDescriptor,
             values={
@@ -236,6 +247,7 @@ class DalApp(DalFightForBase):
         if result.inserted_primary_key:
             return result.inserted_primary_key
         else:
+            # noinspection PyTypeChecker
             obj = self.get_by_attrs(
                 orm_class=SearchDescriptor,
                 attrs_names_values={

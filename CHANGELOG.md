@@ -1,5 +1,13 @@
 ## Changelog
 
+### v0.23.0
+
+- Added inspection overrides to remove PyCharm warnings.
+- Added logging messages.
+- Updated Python requirements.
+- Updated the Ansible role to use Python 3.7.
+- Added `black` configuration.
+
 ### v0.22.1
 
 - Removed the `name` from the UPDATE portion of upserts when the name is supposed to be UNIQUE and part of the CONFLICT.
