@@ -167,127 +167,6 @@ class PrimaryInstitute(Base, OrmFightForBase):
     }
 
 
-class HealthTopic(Base, OrmFightForBase):
-    """ Table of `<health-topic>` element records representing a
-        health-topic.
-    """
-
-    # Set table name.
-    __tablename__ = "health_topics"
-
-    # Autoincrementing primary key ID.
-    health_topic_id = sqlalchemy.Column(
-        name="health_topic_id",
-        type_=sqlalchemy.types.Integer(),
-        primary_key=True,
-        autoincrement="auto",
-    )
-
-    # Referring to the `id` attribute.
-    ui = sqlalchemy.Column(
-        name="ui",
-        type_=sqlalchemy.types.Integer(),
-        nullable=False,
-        unique=True,
-        index=True,
-    )
-
-    # Referring to the `title` attribute.
-    title = sqlalchemy.Column(
-        name="title",
-        type_=sqlalchemy.types.Unicode(),
-        nullable=False,
-        unique=True,
-        index=True,
-    )
-
-    # Referring to the `url` attribute.
-    url = sqlalchemy.Column(
-        name="url", type_=sqlalchemy.types.UnicodeText(), nullable=False
-    )
-
-    # Referring to the `meta-desc` attribute.
-    description = sqlalchemy.Column(
-        name="description", type_=sqlalchemy.types.UnicodeText(), nullable=False
-    )
-
-    # Referring to the `<full-summary>` element.
-    summary = sqlalchemy.Column(
-        name="summary", type_=sqlalchemy.types.UnicodeText(), nullable=True
-    )
-
-    date_created = sqlalchemy.Column(
-        name="date_created", type_=sqlalchemy.types.Date(), nullable=False
-    )
-
-    # Foreign key to the primary-institute ID.
-    primary_institute_id = sqlalchemy.Column(
-        sqlalchemy.ForeignKey(
-            "medline.primary_institutes.primary_institute_id"
-        ),
-        name="primary_institute_id",
-        nullable=True,
-    )
-
-    # Relationship to a `PrimaryInstitute` record.
-    primary_institute = sqlalchemy.orm.relationship(
-        argument="PrimaryInstitute",
-        back_populates="health_topics",
-        uselist=False,
-    )
-
-    # Relationship to a list of `HealthTopicGroup` records.
-    health_topic_groups = sqlalchemy.orm.relationship(
-        argument="HealthTopicGroup",
-        secondary="medline.health_topic_health_topic_groups",
-        back_populates="health_topics",
-        uselist=True,
-    )
-
-    # Relationship to a list of `HealthTopicHealthTopicGroup` records.
-    health_topic_health_topic_groups = sqlalchemy.orm.relationship(
-        argument="HealthTopicHealthTopicGroup",
-        back_populates="health_topic",
-        uselist=True,
-    )
-
-    # Relationship to a list of `AlsoCalled` records.
-    also_calleds = sqlalchemy.orm.relationship(
-        argument="AlsoCalled",
-        secondary="medline.health_topic_also_calleds",
-        back_populates="health_topics",
-        uselist=True,
-    )
-
-    # Relationship to a list of `HealthTopicAlsoCalled` records.
-    health_topic_also_calleds = sqlalchemy.orm.relationship(
-        argument="HealthTopicAlsoCalled",
-        back_populates="health_topic",
-        uselist=True,
-    )
-
-    # Relationship to a list of `Descriptor` records.
-    descriptors = sqlalchemy.orm.relationship(
-        argument="Descriptor",
-        secondary="medline.health_topic_descriptors",
-        back_populates="health_topics",
-        uselist=True,
-    )
-
-    # Relationship to a list of `HealthTopicDescriptor` records.
-    health_topic_descriptors = sqlalchemy.orm.relationship(
-        argument="HealthTopicDescriptor",
-        back_populates="health_topic",
-        uselist=True,
-    )
-
-    # Set table arguments.
-    __table_args__ = {
-        # Set table schema.
-        "schema": "medline"
-    }
-
-
 class HealthTopicHealthTopicGroup(Base, OrmFightForBase):
     """ Associative table between `HealthTopic` and `HealthTopicGroup`
         records.
@@ -484,3 +363,124 @@ class HealthTopicRelatedHealthTopic(Base, OrmFightForBase):
         # Set table schema.
         {"schema": "medline"},
     )
+
+
+class HealthTopic(Base, OrmFightForBase):
+    """ Table of `<health-topic>` element records representing a
+        health-topic.
+    """
+
+    # Set table name.
+    __tablename__ = "health_topics"
+
+    # Autoincrementing primary key ID.
+    health_topic_id = sqlalchemy.Column(
+        name="health_topic_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Referring to the `id` attribute.
+    ui = sqlalchemy.Column(
+        name="ui",
+        type_=sqlalchemy.types.Integer(),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    # Referring to the `title` attribute.
+    title = sqlalchemy.Column(
+        name="title",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    # Referring to the `url` attribute.
+    url = sqlalchemy.Column(
+        name="url", type_=sqlalchemy.types.UnicodeText(), nullable=False
+    )
+
+    # Referring to the `meta-desc` attribute.
+    description = sqlalchemy.Column(
+        name="description", type_=sqlalchemy.types.UnicodeText(), nullable=False
+    )
+
+    # Referring to the `<full-summary>` element.
+    summary = sqlalchemy.Column(
+        name="summary", type_=sqlalchemy.types.UnicodeText(), nullable=True
+    )
+
+    date_created = sqlalchemy.Column(
+        name="date_created", type_=sqlalchemy.types.Date(), nullable=False
+    )
+
+    # Foreign key to the primary-institute ID.
+    primary_institute_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey(
+            "medline.primary_institutes.primary_institute_id"
+        ),
+        name="primary_institute_id",
+        nullable=True,
+    )
+
+    # Relationship to a `PrimaryInstitute` record.
+    primary_institute = sqlalchemy.orm.relationship(
+        argument="PrimaryInstitute",
+        back_populates="health_topics",
+        uselist=False,
+    )
+
+    # Relationship to a list of `HealthTopicGroup` records.
+    health_topic_groups = sqlalchemy.orm.relationship(
+        argument="HealthTopicGroup",
+        secondary="medline.health_topic_health_topic_groups",
+        back_populates="health_topics",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicHealthTopicGroup` records.
+    health_topic_health_topic_groups = sqlalchemy.orm.relationship(
+        argument="HealthTopicHealthTopicGroup",
+        back_populates="health_topic",
+        uselist=True,
+    )
+
+    # Relationship to a list of `AlsoCalled` records.
+    also_calleds = sqlalchemy.orm.relationship(
+        argument="AlsoCalled",
+        secondary="medline.health_topic_also_calleds",
+        back_populates="health_topics",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicAlsoCalled` records.
+    health_topic_also_calleds = sqlalchemy.orm.relationship(
+        argument="HealthTopicAlsoCalled",
+        back_populates="health_topic",
+        uselist=True,
+    )
+
+    # Relationship to a list of `Descriptor` records.
+    descriptors = sqlalchemy.orm.relationship(
+        argument="Descriptor",
+        secondary="medline.health_topic_descriptors",
+        back_populates="health_topics",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicDescriptor` records.
+    health_topic_descriptors = sqlalchemy.orm.relationship(
+        argument="HealthTopicDescriptor",
+        back_populates="health_topic",
+        uselist=True,
+    )
+
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "medline"
+    }
