@@ -9,6 +9,7 @@ Exclusions:
 - The `language` attribute of the `health-topic` element is excluded from the
 `HealthTopic` class.
 - The `language-mapped-topic` elements are excluded entirely.
+- The `qualifier` element under the `mesh-heading` element is excluded entirely.
 - The `other-language` elements are excluded entirely.
 """
 
@@ -315,6 +316,57 @@ class HealthTopicAlsoCalled(Base, OrmFightForBase):
     __table_args__ = (
         # Set unique constraint.
         sqlalchemy.UniqueConstraint("health_topic_id", "also_called_id"),
+        # Set table schema.
+        {"schema": "medline"},
+    )
+
+
+class HealthTopicDescriptor(Base, OrmFightForBase):
+    """ Associative table between `HealthTopic` and `Descriptor` records."""
+
+    # Set table name.
+    __tablename__ = "health_topic_descriptors"
+
+    # Autoincrementing primary key ID.
+    health_topic_descriptor_id = sqlalchemy.Column(
+        name="health_topic_descriptor_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the health-topic ID.
+    health_topic_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("medline.health_topics.health_topic_id"),
+        name="health_topic_id",
+        nullable=False,
+    )
+
+    # Foreign key to the descriptor ID.
+    descriptor_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("mesh.descriptors.descriptor_id"),
+        name="descriptor_id",
+        nullable=False,
+    )
+
+    # Relationship to a `HealthTopic` record.
+    health_topic = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        back_populates="health_topic_descriptors",
+        uselist=False,
+    )
+
+    # Relationship to a `Descriptor` record.
+    descriptor = sqlalchemy.orm.relationship(
+        argument="Descriptor",
+        back_populates="health_topic_descriptors",
+        uselist=False,
+    )
+
+    # Set table arguments.
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint("health_topic_id", "descriptor_id"),
         # Set table schema.
         {"schema": "medline"},
     )
