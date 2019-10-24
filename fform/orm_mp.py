@@ -1,5 +1,17 @@
 # -*- coding: utf-8 -*-
 
+"""
+This module defines a set of SQLAlchemy ORM classes representing database tables
+meant to store the XML records of the MedlinePlus dataset available under
+https://medlineplus.gov/xml.html.
+
+Exclusions:
+- The `language` attribute of the `health-topic` element is excluded from the
+`HealthTopic` class.
+- The `language-mapped-topic` elements are excluded entirely.
+- The `other-language` elements are excluded entirely.
+"""
+
 import sqlalchemy.orm
 
 from fform.orm_base import Base
