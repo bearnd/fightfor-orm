@@ -90,6 +90,21 @@ class AlsoCalled(Base, OrmFightForBase):
         index=True,
     )
 
+    # Relationship to a list of `HealthTopic` records.
+    health_topics = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        secondary="medline.health_topic_also_calleds",
+        back_populates="also_calleds",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicAlsoCalled` records.
+    health_topic_also_calleds = sqlalchemy.orm.relationship(
+        argument="HealthTopicAlsoCalled",
+        back_populates="also_called",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -164,6 +179,22 @@ class HealthTopic(Base, OrmFightForBase):
         back_populates="health_topic",
         uselist=True,
     )
+
+    # Relationship to a list of `AlsoCalled` records.
+    also_calleds = sqlalchemy.orm.relationship(
+        argument="AlsoCalled",
+        secondary="medline.health_topic_also_calleds",
+        back_populates="health_topics",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicAlsoCalled` records.
+    health_topic_also_calleds = sqlalchemy.orm.relationship(
+        argument="HealthTopicAlsoCalled",
+        back_populates="health_topic",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -252,6 +283,20 @@ class HealthTopicAlsoCalled(Base, OrmFightForBase):
         sqlalchemy.ForeignKey("medline.also_calleds.also_called_id"),
         name="also_called_id",
         nullable=False,
+    )
+
+    # Relationship to a `HealthTopic` record.
+    health_topic = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        back_populates="health_topic_also_calleds",
+        uselist=False,
+    )
+
+    # Relationship to a `AlsoCalled` record.
+    also_called = sqlalchemy.orm.relationship(
+        argument="AlsoCalled",
+        back_populates="health_topic_also_calleds",
+        uselist=False,
     )
 
     # Set table arguments.
