@@ -479,6 +479,19 @@ class HealthTopic(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Self-referential relationship via an associative table as described under
+    # https://blog.ramosly.com/sqlalchemy-orm-setting-up-self-referential-
+    # many-to-many-relationships-866c97d9308b
+    related_health_topics = sqlalchemy.orm.relationship(
+        "HealthTopic",
+        secondary="medline.health_topic_related_health_topics",
+        primaryjoin=health_topic_id
+        == HealthTopicRelatedHealthTopic.health_topic_id,
+        secondaryjoin=health_topic_id
+        == HealthTopicRelatedHealthTopic.related_health_topic_id,
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
