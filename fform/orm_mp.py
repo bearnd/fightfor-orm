@@ -412,6 +412,43 @@ class HealthTopicRelatedHealthTopic(Base, OrmFightForBase):
     )
 
 
+class HealthTopicSeeReference(Base, OrmFightForBase):
+    """ Associative table between `HealthTopic` and `SeeReference` records."""
+
+    # Set table name.
+    __tablename__ = "health_topic_see_references"
+
+    # Autoincrementing primary key ID.
+    health_topic_see_reference_id = sqlalchemy.Column(
+        name="health_topic_see_reference_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the health-topic ID.
+    health_topic_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("medline.health_topics.health_topic_id"),
+        name="health_topic_id",
+        nullable=False,
+    )
+
+    # Foreign key to the see-reference ID.
+    see_reference_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("medline.see_references.see_reference_id"),
+        name="see_reference_id",
+        nullable=False,
+    )
+
+    # Set table arguments.
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint("health_topic_id", "see_reference_id"),
+        # Set table schema.
+        {"schema": "medline"},
+    )
+
+
 class HealthTopic(Base, OrmFightForBase):
     """ Table of `<health-topic>` element records representing a
         health-topic.
