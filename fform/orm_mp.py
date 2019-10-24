@@ -208,6 +208,21 @@ class HealthTopic(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `Descriptor` records.
+    descriptors = sqlalchemy.orm.relationship(
+        argument="Descriptor",
+        secondary="medline.health_topic_descriptors",
+        back_populates="health_topics",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicDescriptor` records.
+    health_topic_descriptors = sqlalchemy.orm.relationship(
+        argument="HealthTopicDescriptor",
+        back_populates="health_topic",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
