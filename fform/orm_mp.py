@@ -42,6 +42,22 @@ class HealthTopicGroup(Base, OrmFightForBase):
     url = sqlalchemy.Column(
         name="url", type_=sqlalchemy.types.UnicodeText(), nullable=False
     )
+
+    # Relationship to a list of `HealthTopic` records.
+    health_topics = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        secondary="medline.health_topic_health_topic_groups",
+        back_populates="health_topic_groups",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicHealthTopicGroup` records.
+    health_topic_health_topic_groups = sqlalchemy.orm.relationship(
+        argument="HealthTopicHealthTopicGroup",
+        back_populates="health_topic_group",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -134,6 +150,20 @@ class HealthTopic(Base, OrmFightForBase):
         name="date_created", type_=sqlalchemy.types.Date(), nullable=False
     )
 
+    # Relationship to a list of `HealthTopicGroup` records.
+    health_topic_groups = sqlalchemy.orm.relationship(
+        argument="HealthTopicGroup",
+        secondary="medline.health_topic_health_topic_groups",
+        back_populates="health_topics",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicHealthTopicGroup` records.
+    health_topic_health_topic_groups = sqlalchemy.orm.relationship(
+        argument="HealthTopicHealthTopicGroup",
+        back_populates="health_topic",
+        uselist=True,
+    )
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -172,6 +202,21 @@ class HealthTopicHealthTopicGroup(Base, OrmFightForBase):
         name="health_topic_group_id",
         nullable=False,
     )
+
+    # Relationship to a `HealthTopic` record.
+    health_topic = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        back_populates="health_topic_health_topic_groups",
+        uselist=False,
+    )
+
+    # Relationship to a `HealthTopicGroup` record.
+    health_topic_group = sqlalchemy.orm.relationship(
+        argument="HealthTopicGroup",
+        back_populates="health_topic_health_topic_groups",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
