@@ -4,7 +4,6 @@ import sqlalchemy.orm
 
 from fform.orm_base import Base
 from fform.orm_base import OrmFightForBase
-from fform.utils import EnumBase
 
 
 class HealthTopicGroup(Base, OrmFightForBase):
@@ -41,7 +40,5 @@ class HealthTopicGroup(Base, OrmFightForBase):
 
     # Referring to the `url` attribute.
     url = sqlalchemy.Column(
-        name="url",
-        type_=sqlalchemy.types.UnicodeText(),
-        nullable=True,
+        name="url", type_=sqlalchemy.types.UnicodeText(), nullable=False
     )
