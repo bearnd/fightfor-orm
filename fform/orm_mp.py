@@ -42,6 +42,11 @@ class HealthTopicGroup(Base, OrmFightForBase):
     url = sqlalchemy.Column(
         name="url", type_=sqlalchemy.types.UnicodeText(), nullable=False
     )
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "medline"
+    }
 class HealthTopic(Base, OrmFightForBase):
     """ Table of `<health-topic>` element records representing a
         health-topic.
