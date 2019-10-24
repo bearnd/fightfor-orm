@@ -11,6 +11,7 @@ Exclusions:
 - The `language-mapped-topic` elements are excluded entirely.
 - The `qualifier` element under the `mesh-heading` element is excluded entirely.
 - The `other-language` elements are excluded entirely.
+- The `site` elements are excluded entirely.
 """
 
 import sqlalchemy.orm
@@ -440,6 +441,20 @@ class HealthTopicSeeReference(Base, OrmFightForBase):
         nullable=False,
     )
 
+    # Relationship to a `HealthTopic` record.
+    health_topic = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        back_populates="health_topic_see_references",
+        uselist=False,
+    )
+
+    # Relationship to a `SeeReference` record.
+    see_reference = sqlalchemy.orm.relationship(
+        argument="SeeReference",
+        back_populates="health_topic_see_references",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
@@ -573,6 +588,21 @@ class HealthTopic(Base, OrmFightForBase):
         == HealthTopicRelatedHealthTopic.health_topic_id,
         secondaryjoin=health_topic_id
         == HealthTopicRelatedHealthTopic.related_health_topic_id,
+        uselist=True,
+    )
+
+    # Relationship to a list of `SeeReference` records.
+    see_references = sqlalchemy.orm.relationship(
+        argument="SeeReference",
+        secondary="medline.health_topic_see_references",
+        back_populates="health_topics",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicSeeReference` records.
+    health_topic_see_references = sqlalchemy.orm.relationship(
+        argument="HealthTopicSeeReference",
+        back_populates="health_topic",
         uselist=True,
     )
 
