@@ -167,6 +167,53 @@ class PrimaryInstitute(Base, OrmFightForBase):
     }
 
 
+class SeeReference(Base, OrmFightForBase):
+    """ Table of `<see-reference>` element records representing a reference to a
+        health-topic.
+    """
+
+    # Set table name.
+    __tablename__ = "see_references"
+
+    # Autoincrementing primary key ID.
+    see_reference_id = sqlalchemy.Column(
+        name="see_reference_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Referring to the value of the `<see-reference>` element.
+    name = sqlalchemy.Column(
+        name="name",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    # Relationship to a list of `HealthTopic` records.
+    health_topics = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        secondary="medline.health_topic_see_references",
+        back_populates="see_references",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicSeeReference` records.
+    health_topic_see_references = sqlalchemy.orm.relationship(
+        argument="HealthTopicSeeReference",
+        back_populates="see_reference",
+        uselist=True,
+    )
+
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "medline"
+    }
+
+
 class HealthTopicHealthTopicGroup(Base, OrmFightForBase):
     """ Associative table between `HealthTopic` and `HealthTopicGroup`
         records.
