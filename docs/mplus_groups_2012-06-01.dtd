@@ -1,0 +1,66 @@
+<!--===================================================================================
+
+    Description:
+
+
+    This DTD defines the "baseline" of the health topic groups in MedlinePlus.  A 
+    baseline of the health topic groups is a snapshot of all the health topic groups
+    at one specific time. It does not record any changes of the health topic groups 
+    in MedlinePlus (i.e. new, modified, or deleted topics).  
+    
+    ====================================================================================
+    A sample XML data structure:
+    
+   <health-topic-groups total="88" total-english="44" total-spanish="44" date-generated="05/04/2012 01:11:24">
+	<group language="English" id="1" url="https://www.nlm.nih.gov/medlineplus/cancers.html">Cancers</group>
+   </health-topic-groups>
+    
+    Note: 
+    * Root element is health-topic-groups.
+    * The health-topic-groups element can contain one or more group elements. 
+    * The group element value will be stored in specific language (i.e. English or 
+      Spanish) based on the language attribute value in the group element.
+      
+    Special DTD Notation:
+    
+    * = 0 or more occurrences (optional element and repeatable)
+    ? = 0 or 1 occurrences (optional element at most 1)
+    + = 1 or more occurrences (required element and repeatable)
+    | = choice, one or the other but not both
+   
+=======================================================================================-->
+<!ENTITY % Language "(English | Spanish)">
+<!---================================================================================== 
+    The health-topic-groups element is the root element of the XML file.  It contains 
+    one or more group elements.
+    
+    Attribute Definition:
+    total     	    - indicates the number of topic groups in the XML file.
+    total-english    - indicates the number of English topic groups in the XML file.
+    total-spanish    - indicates the number of Spanish topic groups in the XML file.
+    date-generated - the creation date for this baseline XML file 
+                    (in mm/dd/yyyy hh24:mi:ss format).
+          
+=======================================================================================-->
+<!ELEMENT health-topic-groups (group+)>
+<!ATTLIST health-topic-groups 
+	total CDATA #REQUIRED
+        total-english CDATA        #REQUIRED
+        total-spanish CDATA        #REQUIRED
+	date-generated CDATA #REQUIRED
+>
+<!--===================================================================================
+
+    The goup element contains language, id, url attributes.
+          
+    Attribute Definition:
+    language - Language code attribute. Currently, it could be either "English" or
+               "Spanish".  English is the default language code.
+          
+=======================================================================================-->
+<!ELEMENT group (#PCDATA)>
+<!ATTLIST group
+	language CDATA #REQUIRED
+        id     CDATA #REQUIRED
+        url    CDATA #REQUIRED 
+>

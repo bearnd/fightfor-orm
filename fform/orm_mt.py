@@ -1250,7 +1250,6 @@ class Descriptor(Base, OrmFightForBase):
         nullable=False,
         unique=True,
         index=True,
-
     )
 
     # Referring to the value of the `<DateCreated>` element.
