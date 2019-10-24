@@ -47,6 +47,40 @@ class HealthTopicGroup(Base, OrmFightForBase):
         # Set table schema.
         "schema": "medline"
     }
+
+
+class AlsoCalled(Base, OrmFightForBase):
+    """ Table of `<also-called>` element records representing an alias of a
+        health-topic.
+    """
+
+    # Set table name.
+    __tablename__ = "also_calleds"
+
+    # Autoincrementing primary key ID.
+    also_called_id = sqlalchemy.Column(
+        name="also_called_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Referring to the value of the `<also-called>` element.
+    name = sqlalchemy.Column(
+        name="name",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "medline"
+    }
+
+
 class HealthTopic(Base, OrmFightForBase):
     """ Table of `<health-topic>` element records representing a
         health-topic.
