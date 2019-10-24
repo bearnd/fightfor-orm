@@ -139,3 +139,43 @@ class HealthTopic(Base, OrmFightForBase):
         # Set table schema.
         "schema": "medline"
     }
+
+
+class HealthTopicHealthTopicGroup(Base, OrmFightForBase):
+    """ Associative table between `HealthTopic` and `HealthTopicGroup`
+        records.
+    """
+
+    # Set table name.
+    __tablename__ = "health_topic_health_topic_groups"
+
+    # Autoincrementing primary key ID.
+    health_topic_health_topic_group_id = sqlalchemy.Column(
+        name="health_topic_health_topic_group_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the health-topic ID.
+    health_topic_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("medline.health_topics.health_topic_id"),
+        name="health_topic_id",
+        nullable=False,
+    )
+
+    # Foreign key to the health-topic group ID.
+    health_topic_group_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey(
+            "medline.health_topic_groups.health_topic_group_id"
+        ),
+        name="health_topic_group_id",
+        nullable=False,
+    )
+    # Set table arguments.
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint("health_topic_id", "health_topic_group_id"),
+        # Set table schema.
+        {"schema": "medline"},
+    )
