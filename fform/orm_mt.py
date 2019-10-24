@@ -1427,6 +1427,21 @@ class Descriptor(Base, OrmFightForBase):
         uselist=True,
     )
 
+    # Relationship to a list of `HealthTopicDescriptor` records.
+    health_topic_descriptors = sqlalchemy.orm.relationship(
+        argument="HealthTopicDescriptor",
+        back_populates="descriptor",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopic` records.
+    health_topics = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        secondary="medline.health_topic_descriptors",
+        back_populates="descriptors",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
