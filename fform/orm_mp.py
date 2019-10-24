@@ -125,6 +125,48 @@ class AlsoCalled(Base, OrmFightForBase):
     }
 
 
+class PrimaryInstitute(Base, OrmFightForBase):
+    """ Table of `<primary-institute>` element records representing a
+        primary-institute.
+    """
+
+    # Set table name.
+    __tablename__ = "primary_institutes"
+
+    # Autoincrementing primary key ID.
+    primary_institute_id = sqlalchemy.Column(
+        name="primary_institute_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Referring to the value of the `<group>` element.
+    name = sqlalchemy.Column(
+        name="name",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    # Referring to the `url` attribute.
+    url = sqlalchemy.Column(
+        name="url", type_=sqlalchemy.types.UnicodeText(), nullable=False
+    )
+
+    # Relationship to a list of `HealthTopic` records.
+    health_topics = sqlalchemy.orm.relationship(
+        argument="HealthTopic", back_populates="primary_institute", uselist=True
+    )
+
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "medline"
+    }
+
+
 class HealthTopic(Base, OrmFightForBase):
     """ Table of `<health-topic>` element records representing a
         health-topic.
@@ -176,6 +218,22 @@ class HealthTopic(Base, OrmFightForBase):
 
     date_created = sqlalchemy.Column(
         name="date_created", type_=sqlalchemy.types.Date(), nullable=False
+    )
+
+    # Foreign key to the primary-institute ID.
+    primary_institute_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey(
+            "medline.primary_institutes.primary_institute_id"
+        ),
+        name="primary_institute_id",
+        nullable=True,
+    )
+
+    # Relationship to a `PrimaryInstitute` record.
+    primary_institute = sqlalchemy.orm.relationship(
+        argument="PrimaryInstitute",
+        back_populates="health_topics",
+        uselist=False,
     )
 
     # Relationship to a list of `HealthTopicGroup` records.
