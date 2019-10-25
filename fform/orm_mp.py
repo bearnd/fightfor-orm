@@ -569,6 +569,42 @@ class HealthTopicSeeReference(Base, OrmFightForBase):
     )
 
 
+class HealthTopicBodyPart(Base, OrmFightForBase):
+    """ Associative table between `HealthTopic` and `BodyPart` records."""
+
+    # Set table name.
+    __tablename__ = "health_topic_body_parts"
+
+    # Autoincrementing primary key ID.
+    health_topic_body_part_id = sqlalchemy.Column(
+        name="health_topic_body_part_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the health-topic ID.
+    health_topic_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("medline.health_topics.health_topic_id"),
+        name="health_topic_id",
+        nullable=False,
+    )
+
+    # Foreign key to the body-part ID.
+    body_part_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("medline.body_parts.body_part_id"),
+        name="body_part_id",
+        nullable=False,
+    )
+    # Set table arguments.
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint("health_topic_id", "body_part_id"),
+        # Set table schema.
+        {"schema": "medline"},
+    )
+
+
 class HealthTopic(Base, OrmFightForBase):
     """ Table of `<health-topic>` element records representing a
         health-topic.
