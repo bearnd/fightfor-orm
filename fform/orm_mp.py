@@ -115,7 +115,7 @@ class HealthTopicGroup(Base, OrmFightForBase):
             "medline.health_topic_group_classes.health_topic_group_class_id"
         ),
         name="health_topic_group_class_id",
-        nullable=True,
+        nullable=False,
     )
 
     # Relationship to a `HealthTopicGroupClass` record.
