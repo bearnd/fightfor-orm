@@ -43,11 +43,6 @@ class HealthTopicGroupClass(Base, OrmFightForBase):
         index=True,
     )
 
-    # Referring to the `url` attribute.
-    url = sqlalchemy.Column(
-        name="url", type_=sqlalchemy.types.UnicodeText(), nullable=False
-    )
-
     # Relationship to a list of `HealthTopicGroup` records.
     health_topic_groups = sqlalchemy.orm.relationship(
         argument="HealthTopicGroup",
