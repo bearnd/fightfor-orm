@@ -43,11 +43,6 @@ class HealthTopicGroupClass(Base, OrmFightForBase):
         index=True,
     )
 
-    # Referring to the `url` attribute.
-    url = sqlalchemy.Column(
-        name="url", type_=sqlalchemy.types.UnicodeText(), nullable=False
-    )
-
     # Relationship to a list of `HealthTopicGroup` records.
     health_topic_groups = sqlalchemy.orm.relationship(
         argument="HealthTopicGroup",
@@ -120,7 +115,7 @@ class HealthTopicGroup(Base, OrmFightForBase):
             "medline.health_topic_group_classes.health_topic_group_class_id"
         ),
         name="health_topic_group_class_id",
-        nullable=True,
+        nullable=False,
     )
 
     # Relationship to a `HealthTopicGroupClass` record.
@@ -128,6 +123,74 @@ class HealthTopicGroup(Base, OrmFightForBase):
         argument="HealthTopicGroupClass",
         back_populates="health_topic_groups",
         uselist=False,
+    )
+
+    # Relationship to a list of `BodyPart` records.
+    body_parts = sqlalchemy.orm.relationship(
+        argument="BodyPart",
+        back_populates="health_topic_group",
+        uselist=True,
+    )
+
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "medline"
+    }
+
+
+class BodyPart(Base, OrmFightForBase):
+    """ Table of MedlinePlus health-topic related body-parts."""
+
+    # Set table name.
+    __tablename__ = "body_parts"
+
+    # Autoincrementing primary key ID.
+    body_part_id = sqlalchemy.Column(
+        name="body_part_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Referring to the name of the body part.
+    name = sqlalchemy.Column(
+        name="name",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    # Foreign key to the health-topic group ID.
+    health_topic_group_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey(
+            "medline.health_topic_groups.health_topic_group_id"
+        ),
+        name="health_topic_group_id",
+        nullable=False,
+    )
+
+    # Relationship to a `HealthTopicGroup` record.
+    health_topic_group = sqlalchemy.orm.relationship(
+        argument="HealthTopicGroup",
+        back_populates="body_parts",
+        uselist=False,
+    )
+
+    # Relationship to a list of `HealthTopic` records.
+    health_topics = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        secondary="medline.health_topic_body_parts",
+        back_populates="body_parts",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicBodyPart` records.
+    health_topic_body_parts = sqlalchemy.orm.relationship(
+        argument="HealthTopicBodyPart",
+        back_populates="body_part",
+        uselist=True,
     )
 
     # Set table arguments.
@@ -522,6 +585,57 @@ class HealthTopicSeeReference(Base, OrmFightForBase):
     )
 
 
+class HealthTopicBodyPart(Base, OrmFightForBase):
+    """ Associative table between `HealthTopic` and `BodyPart` records."""
+
+    # Set table name.
+    __tablename__ = "health_topic_body_parts"
+
+    # Autoincrementing primary key ID.
+    health_topic_body_part_id = sqlalchemy.Column(
+        name="health_topic_body_part_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Foreign key to the health-topic ID.
+    health_topic_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("medline.health_topics.health_topic_id"),
+        name="health_topic_id",
+        nullable=False,
+    )
+
+    # Foreign key to the body-part ID.
+    body_part_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey("medline.body_parts.body_part_id"),
+        name="body_part_id",
+        nullable=False,
+    )
+
+    # Relationship to a `HealthTopic` record.
+    health_topic = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        back_populates="health_topic_body_parts",
+        uselist=False,
+    )
+
+    # Relationship to a `BodyPart` record.
+    body_part = sqlalchemy.orm.relationship(
+        argument="BodyPart",
+        back_populates="health_topic_body_parts",
+        uselist=False,
+    )
+
+    # Set table arguments.
+    __table_args__ = (
+        # Set unique constraint.
+        sqlalchemy.UniqueConstraint("health_topic_id", "body_part_id"),
+        # Set table schema.
+        {"schema": "medline"},
+    )
+
+
 class HealthTopic(Base, OrmFightForBase):
     """ Table of `<health-topic>` element records representing a
         health-topic.
@@ -660,6 +774,21 @@ class HealthTopic(Base, OrmFightForBase):
     # Relationship to a list of `HealthTopicSeeReference` records.
     health_topic_see_references = sqlalchemy.orm.relationship(
         argument="HealthTopicSeeReference",
+        back_populates="health_topic",
+        uselist=True,
+    )
+
+    # Relationship to a list of `BodyPart` records.
+    body_parts = sqlalchemy.orm.relationship(
+        argument="BodyPart",
+        secondary="medline.health_topic_body_parts",
+        back_populates="health_topics",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicBodyPart` records.
+    health_topic_body_parts = sqlalchemy.orm.relationship(
+        argument="HealthTopicBodyPart",
         back_populates="health_topic",
         uselist=True,
     )
