@@ -125,6 +125,13 @@ class HealthTopicGroup(Base, OrmFightForBase):
         uselist=False,
     )
 
+    # Relationship to a list of `BodyPart` records.
+    body_parts = sqlalchemy.orm.relationship(
+        argument="BodyPart",
+        back_populates="health_topic_group",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -153,6 +160,22 @@ class BodyPart(Base, OrmFightForBase):
         nullable=False,
         unique=True,
         index=True,
+    )
+
+    # Foreign key to the health-topic group ID.
+    health_topic_group_id = sqlalchemy.Column(
+        sqlalchemy.ForeignKey(
+            "medline.health_topic_groups.health_topic_group_id"
+        ),
+        name="health_topic_group_id",
+        nullable=False,
+    )
+
+    # Relationship to a `HealthTopicGroup` record.
+    health_topic_group = sqlalchemy.orm.relationship(
+        argument="HealthTopicGroup",
+        back_populates="body_parts",
+        uselist=False,
     )
     # Set table arguments.
     __table_args__ = {
