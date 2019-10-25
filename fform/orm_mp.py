@@ -20,6 +20,41 @@ from fform.orm_base import Base
 from fform.orm_base import OrmFightForBase
 
 
+class HealthTopicGroupClass(Base, OrmFightForBase):
+    """ Table of MedlinePlus health-topic group classes."""
+
+    # Set table name.
+    __tablename__ = "health_topic_group_classes"
+
+    # Autoincrementing primary key ID.
+    health_topic_group_class_id = sqlalchemy.Column(
+        name="health_topic_group_class_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Referring to the name of the health-topic group class.
+    name = sqlalchemy.Column(
+        name="name",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
+    # Referring to the `url` attribute.
+    url = sqlalchemy.Column(
+        name="url", type_=sqlalchemy.types.UnicodeText(), nullable=False
+    )
+
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "medline"
+    }
+
+
 class HealthTopicGroup(Base, OrmFightForBase):
     """ Table of `<group>` element records representing a health-topic group."""
 
