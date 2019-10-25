@@ -127,9 +127,7 @@ class HealthTopicGroup(Base, OrmFightForBase):
 
     # Relationship to a list of `BodyPart` records.
     body_parts = sqlalchemy.orm.relationship(
-        argument="BodyPart",
-        back_populates="health_topic_group",
-        uselist=True,
+        argument="BodyPart", back_populates="health_topic_group", uselist=True
     )
 
     # Set table arguments.
@@ -173,9 +171,7 @@ class BodyPart(Base, OrmFightForBase):
 
     # Relationship to a `HealthTopicGroup` record.
     health_topic_group = sqlalchemy.orm.relationship(
-        argument="HealthTopicGroup",
-        back_populates="body_parts",
-        uselist=False,
+        argument="HealthTopicGroup", back_populates="body_parts", uselist=False
     )
 
     # Relationship to a list of `HealthTopic` records.
@@ -188,9 +184,7 @@ class BodyPart(Base, OrmFightForBase):
 
     # Relationship to a list of `HealthTopicBodyPart` records.
     health_topic_body_parts = sqlalchemy.orm.relationship(
-        argument="HealthTopicBodyPart",
-        back_populates="body_part",
-        uselist=True,
+        argument="HealthTopicBodyPart", back_populates="body_part", uselist=True
     )
 
     # Set table arguments.
