@@ -132,6 +132,35 @@ class HealthTopicGroup(Base, OrmFightForBase):
     }
 
 
+class BodyPart(Base, OrmFightForBase):
+    """ Table of MedlinePlus health-topic related body-parts."""
+
+    # Set table name.
+    __tablename__ = "body_parts"
+
+    # Autoincrementing primary key ID.
+    body_part_id = sqlalchemy.Column(
+        name="body_part_id",
+        type_=sqlalchemy.types.Integer(),
+        primary_key=True,
+        autoincrement="auto",
+    )
+
+    # Referring to the name of the body part.
+    name = sqlalchemy.Column(
+        name="name",
+        type_=sqlalchemy.types.Unicode(),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+    # Set table arguments.
+    __table_args__ = {
+        # Set table schema.
+        "schema": "medline"
+    }
+
+
 class AlsoCalled(Base, OrmFightForBase):
     """ Table of `<also-called>` element records representing an alias of a
         health-topic.
