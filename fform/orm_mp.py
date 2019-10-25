@@ -177,6 +177,22 @@ class BodyPart(Base, OrmFightForBase):
         back_populates="body_parts",
         uselist=False,
     )
+
+    # Relationship to a list of `HealthTopic` records.
+    health_topics = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        secondary="medline.health_topic_body_parts",
+        back_populates="body_parts",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicBodyPart` records.
+    health_topic_body_parts = sqlalchemy.orm.relationship(
+        argument="HealthTopicBodyPart",
+        back_populates="body_part",
+        uselist=True,
+    )
+
     # Set table arguments.
     __table_args__ = {
         # Set table schema.
@@ -596,6 +612,21 @@ class HealthTopicBodyPart(Base, OrmFightForBase):
         name="body_part_id",
         nullable=False,
     )
+
+    # Relationship to a `HealthTopic` record.
+    health_topic = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        back_populates="health_topic_body_parts",
+        uselist=False,
+    )
+
+    # Relationship to a `BodyPart` record.
+    body_part = sqlalchemy.orm.relationship(
+        argument="BodyPart",
+        back_populates="health_topic_body_parts",
+        uselist=False,
+    )
+
     # Set table arguments.
     __table_args__ = (
         # Set unique constraint.
@@ -743,6 +774,21 @@ class HealthTopic(Base, OrmFightForBase):
     # Relationship to a list of `HealthTopicSeeReference` records.
     health_topic_see_references = sqlalchemy.orm.relationship(
         argument="HealthTopicSeeReference",
+        back_populates="health_topic",
+        uselist=True,
+    )
+
+    # Relationship to a list of `BodyPart` records.
+    body_parts = sqlalchemy.orm.relationship(
+        argument="BodyPart",
+        secondary="medline.health_topic_body_parts",
+        back_populates="health_topics",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicBodyPart` records.
+    health_topic_body_parts = sqlalchemy.orm.relationship(
+        argument="HealthTopicBodyPart",
         back_populates="health_topic",
         uselist=True,
     )
