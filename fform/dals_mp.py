@@ -200,3 +200,35 @@ class DalMedline(DalFightForBase):
                 session=session,
             )  # type: AlsoCalled
             return obj.also_called_id
+
+    @return_first_item
+    @with_session_scope()
+    def iodu_primary_institute(
+        self, name: str, url: str, session: sqlalchemy.orm.Session = None
+    ) -> int:
+        """ Creates a new `PrimaryInstitute` record in an IODU manner.
+
+        Args:
+            name (str): The primary-institute group name.
+            url (str): The primary-institute group URL.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `PrimaryInstitute` record.
+        """
+
+        self.logger.info(f"IODUing `PrimaryInstitute` record.")
+
+        # Upsert the `PrimaryInstitute` record.
+        statement = insert(
+            PrimaryInstitute, values={"name": name, "url": url}
+        ).on_conflict_do_update(
+            index_elements=["name"], set_={"url": url}
+        )  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        return result.inserted_primary_key
