@@ -8,7 +8,6 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.dialects.postgresql import Insert
 from sqlalchemy.engine.result import ResultProxy
 
-
 from fform.dal_base import DalFightForBase
 from fform.dal_base import with_session_scope
 from fform.orm_mt import TreeNumber
