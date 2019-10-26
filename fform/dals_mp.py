@@ -374,3 +374,53 @@ class DalMedline(DalFightForBase):
                 session=session,
             )  # type: HealthTopicAlsoCalled
             return obj.health_topic_also_called_id
+
+    @return_first_item
+    @with_session_scope()
+    def iodi_health_topic_descriptor(
+        self,
+        health_topic_id: int,
+        descriptor_id: int,
+        session: sqlalchemy.orm.Session = None,
+    ) -> int:
+        """ Creates a new `HealthTopicDescriptor` record in an IODI manner.
+
+        Args:
+            health_topic_id (int): The linked `HealthTopic` record primary-key
+                ID.
+            descriptor_id (int): The linked `Descriptor` record primary-key ID.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `HealthTopicDescriptor` record.
+        """
+
+        self.logger.info(f"IODIing `HealthTopicDescriptor` record.")
+
+        # Upsert the `HealthTopicDescriptor` record.
+        statement = insert(
+            HealthTopicDescriptor,
+            values={
+                "health_topic_id": health_topic_id,
+                "descriptor_id": descriptor_id,
+            },
+        ).on_conflict_do_nothing()  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        if result.inserted_primary_key:
+            return result.inserted_primary_key
+        else:
+            # noinspection PyTypeChecker
+            obj = self.get_by_attrs(
+                orm_class=HealthTopicDescriptor,
+                attrs_names_values={
+                    "health_topic_id": health_topic_id,
+                    "descriptor_id": descriptor_id,
+                },
+                session=session,
+            )  # type: HealthTopicDescriptor
+            return obj.health_topic_descriptor_id
