@@ -122,3 +122,42 @@ class DalMedline(DalFightForBase):
         result = session.execute(statement)  # type: ResultProxy
 
         return result.inserted_primary_key
+
+    @return_first_item
+    @with_session_scope()
+    def iodi_body_part(
+        self, name: str, session: sqlalchemy.orm.Session = None
+    ) -> int:
+        """ Creates a new `BodyPart` record in an IODI manner.
+
+        Args:
+            name (str): The body-part name.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `BodyPart` record.
+        """
+
+        self.logger.info(f"IODIing `BodyPart` record.")
+
+        # Upsert the `BodyPart` record.
+        statement = insert(
+            BodyPart, values={"name": name}
+        ).on_conflict_do_nothing()  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        if result.inserted_primary_key:
+            return result.inserted_primary_key
+        else:
+            # noinspection PyTypeChecker
+            obj = self.get_by_attr(
+                orm_class=BodyPart,
+                attr_name="name",
+                attr_value=name,
+                session=session,
+            )  # type: BodyPart
+            return obj.body_part_id
