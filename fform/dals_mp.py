@@ -161,3 +161,42 @@ class DalMedline(DalFightForBase):
                 session=session,
             )  # type: BodyPart
             return obj.body_part_id
+
+    @return_first_item
+    @with_session_scope()
+    def iodi_also_called(
+        self, name: str, session: sqlalchemy.orm.Session = None
+    ) -> int:
+        """ Creates a new `AlsoCalled` record in an IODI manner.
+
+        Args:
+            name (str): The also-called name.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `AlsoCalled` record.
+        """
+
+        self.logger.info(f"IODIing `AlsoCalled` record.")
+
+        # Upsert the `AlsoCalled` record.
+        statement = insert(
+            AlsoCalled, values={"name": name}
+        ).on_conflict_do_nothing()  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        if result.inserted_primary_key:
+            return result.inserted_primary_key
+        else:
+            # noinspection PyTypeChecker
+            obj = self.get_by_attr(
+                orm_class=AlsoCalled,
+                attr_name="name",
+                attr_value=name,
+                session=session,
+            )  # type: AlsoCalled
+            return obj.also_called_id
