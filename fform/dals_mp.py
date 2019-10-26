@@ -477,3 +477,55 @@ class DalMedline(DalFightForBase):
                 session=session,
             )  # type: HealthTopicRelatedHealthTopic
             return obj.health_topic_related_health_topic_id
+
+    @return_first_item
+    @with_session_scope()
+    def iodi_health_topic_see_reference(
+        self,
+        health_topic_id: int,
+        see_reference_id: int,
+        session: sqlalchemy.orm.Session = None,
+    ) -> int:
+        """ Creates a new `HealthTopicSeeReference` record in an IODI
+            manner.
+
+        Args:
+            health_topic_id (int): The linked `HealthTopic` record primary-key
+                ID.
+            see_reference_id (int): The linked related `SeeReference` record
+                primary-key ID.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `HealthTopicSeeReference` record.
+        """
+
+        self.logger.info(f"IODIing `HealthTopicSeeReference` record.")
+
+        # Upsert the `HealthTopicSeeReference` record.
+        statement = insert(
+            HealthTopicSeeReference,
+            values={
+                "health_topic_id": health_topic_id,
+                "see_reference_id": see_reference_id,
+            },
+        ).on_conflict_do_nothing()  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        if result.inserted_primary_key:
+            return result.inserted_primary_key
+        else:
+            # noinspection PyTypeChecker
+            obj = self.get_by_attrs(
+                orm_class=HealthTopicSeeReference,
+                attrs_names_values={
+                    "health_topic_id": health_topic_id,
+                    "see_reference_id": see_reference_id,
+                },
+                session=session,
+            )  # type: HealthTopicSeeReference
+            return obj.health_topic_see_reference_id
