@@ -15,6 +15,7 @@ from fform import dals_ct
 from fform import orm_app
 from fform import dals_app
 from fform import orm_mp
+from fform import dals_mp
 from fform.orm_mt import *
 from fform.orm_ct import *
 from fform.orm_pubmed import *
