@@ -1250,7 +1250,6 @@ class Descriptor(Base, OrmFightForBase):
         nullable=False,
         unique=True,
         index=True,
-
     )
 
     # Referring to the value of the `<DateCreated>` element.
@@ -1424,6 +1423,21 @@ class Descriptor(Base, OrmFightForBase):
     studies = sqlalchemy.orm.relationship(
         argument="Study",
         secondary="clinicaltrials.study_descriptors",
+        back_populates="descriptors",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopicDescriptor` records.
+    health_topic_descriptors = sqlalchemy.orm.relationship(
+        argument="HealthTopicDescriptor",
+        back_populates="descriptor",
+        uselist=True,
+    )
+
+    # Relationship to a list of `HealthTopic` records.
+    health_topics = sqlalchemy.orm.relationship(
+        argument="HealthTopic",
+        secondary="medline.health_topic_descriptors",
         back_populates="descriptors",
         uselist=True,
     )
