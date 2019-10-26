@@ -1,5 +1,13 @@
 ## Changelog
 
+### v0.24.0
+
+- Story No. 1692: Create ORM for MedlinePlus Health Topic Group XML.
+- Story No. 1695: Create ORM for MedlinePlus Compressed Health Topic XML.
+- Story No. 1706: Add ORM for health-topic group classes.
+- Story No. 1707: Add ORM for health-topic subgroups.
+- Story No. 1697: Add MedlinePlus DALs.
+
 ### v0.23.0
 
 - Added inspection overrides to remove PyCharm warnings.

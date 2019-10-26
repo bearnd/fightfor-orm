@@ -44,6 +44,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/somada141/fform',
-    version='0.23.0',
+    version='0.24.0',
     zip_safe=False,
 )
