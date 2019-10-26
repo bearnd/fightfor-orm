@@ -581,3 +581,61 @@ class DalMedline(DalFightForBase):
                 session=session,
             )  # type: HealthTopicBodyPart
             return obj.health_topic_body_part_id
+
+    @return_first_item
+    @with_session_scope()
+    def iodu_health_topic(
+        self,
+        ui: str,
+        title: str,
+        url: str,
+        description: str,
+        summary: str,
+        date_created: datetime.date,
+        session: sqlalchemy.orm.Session = None,
+    ) -> int:
+        """ Creates a new `HealthTopic` record in an IODU manner.
+
+        Args:
+            ui (str): The health-topic UI.
+            title (str): The health-topic title.
+            url (str): The health-topic url.
+            description (str): The health-topic description.
+            summary (str): The health-topic summary.
+            date_created (datetime.Date): The date the health-topic was created.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `HealthTopic` record.
+        """
+
+        self.logger.info(f"IODUing `HealthTopic` record.")
+
+        # Upsert the `HealthTopic` record.
+        statement = insert(
+            HealthTopic,
+            values={
+                "ui": ui,
+                "title": title,
+                "url": url,
+                "description": description,
+                "summary": summary,
+                "date_created": date_created,
+            },
+        ).on_conflict_do_update(
+            index_elements=["ui"],
+            set_={
+                "title": title,
+                "url": url,
+                "description": description,
+                "summary": summary,
+                "date_created": date_created,
+            },
+        )  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        return result.inserted_primary_key
