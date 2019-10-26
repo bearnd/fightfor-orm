@@ -529,3 +529,55 @@ class DalMedline(DalFightForBase):
                 session=session,
             )  # type: HealthTopicSeeReference
             return obj.health_topic_see_reference_id
+
+    @return_first_item
+    @with_session_scope()
+    def iodi_health_topic_body_part(
+        self,
+        health_topic_id: int,
+        body_part_id: int,
+        session: sqlalchemy.orm.Session = None,
+    ) -> int:
+        """ Creates a new `HealthTopicBodyPart` record in an IODI
+            manner.
+
+        Args:
+            health_topic_id (int): The linked `HealthTopic` record primary-key
+                ID.
+            body_part_id (int): The linked related `BodyPart` record
+                primary-key ID.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `HealthTopicBodyPart` record.
+        """
+
+        self.logger.info(f"IODIing `HealthTopicBodyPart` record.")
+
+        # Upsert the `HealthTopicBodyPart` record.
+        statement = insert(
+            HealthTopicBodyPart,
+            values={
+                "health_topic_id": health_topic_id,
+                "body_part_id": body_part_id,
+            },
+        ).on_conflict_do_nothing()  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        if result.inserted_primary_key:
+            return result.inserted_primary_key
+        else:
+            # noinspection PyTypeChecker
+            obj = self.get_by_attrs(
+                orm_class=HealthTopicBodyPart,
+                attrs_names_values={
+                    "health_topic_id": health_topic_id,
+                    "body_part_id": body_part_id,
+                },
+                session=session,
+            )  # type: HealthTopicBodyPart
+            return obj.health_topic_body_part_id
