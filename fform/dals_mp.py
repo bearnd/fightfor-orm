@@ -323,3 +323,54 @@ class DalMedline(DalFightForBase):
                 session=session,
             )  # type: HealthTopicHealthTopicGroup
             return obj.health_topic_health_topic_group_id
+
+    @return_first_item
+    @with_session_scope()
+    def iodi_health_topic_also_called(
+        self,
+        health_topic_id: int,
+        also_called_id: int,
+        session: sqlalchemy.orm.Session = None,
+    ) -> int:
+        """ Creates a new `HealthTopicAlsoCalled` record in an IODI manner.
+
+        Args:
+            health_topic_id (int): The linked `HealthTopic` record primary-key
+                ID.
+            also_called_id (int): The linked `AlsoCalled` record
+                primary-key ID.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `HealthTopicAlsoCalled` record.
+        """
+
+        self.logger.info(f"IODIing `HealthTopicAlsoCalled` record.")
+
+        # Upsert the `HealthTopicAlsoCalled` record.
+        statement = insert(
+            HealthTopicAlsoCalled,
+            values={
+                "health_topic_id": health_topic_id,
+                "also_called_id": also_called_id,
+            },
+        ).on_conflict_do_nothing()  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        if result.inserted_primary_key:
+            return result.inserted_primary_key
+        else:
+            # noinspection PyTypeChecker
+            obj = self.get_by_attrs(
+                orm_class=HealthTopicAlsoCalled,
+                attrs_names_values={
+                    "health_topic_id": health_topic_id,
+                    "also_called_id": also_called_id,
+                },
+                session=session,
+            )  # type: HealthTopicAlsoCalled
+            return obj.health_topic_also_called_id
