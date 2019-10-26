@@ -232,3 +232,42 @@ class DalMedline(DalFightForBase):
         result = session.execute(statement)  # type: ResultProxy
 
         return result.inserted_primary_key
+
+    @return_first_item
+    @with_session_scope()
+    def iodi_see_reference(
+        self, name: str, session: sqlalchemy.orm.Session = None
+    ) -> int:
+        """ Creates a new `SeeReference` record in an IODI manner.
+
+        Args:
+            name (str): The see-reference name.
+            session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
+                through which the record will be added. Defaults to `None` in
+                which case a new session is automatically created and terminated
+                upon completion.
+
+        Returns:
+            int: The primary key ID of the `SeeReference` record.
+        """
+
+        self.logger.info(f"IODIing `SeeReference` record.")
+
+        # Upsert the `SeeReference` record.
+        statement = insert(
+            SeeReference, values={"name": name}
+        ).on_conflict_do_nothing()  # type: Insert
+
+        result = session.execute(statement)  # type: ResultProxy
+
+        if result.inserted_primary_key:
+            return result.inserted_primary_key
+        else:
+            # noinspection PyTypeChecker
+            obj = self.get_by_attr(
+                orm_class=SeeReference,
+                attr_name="name",
+                attr_value=name,
+                session=session,
+            )  # type: SeeReference
+            return obj.see_reference_id
