@@ -141,12 +141,17 @@ class DalMedline(DalFightForBase):
     @return_first_item
     @with_session_scope()
     def iodi_body_part(
-        self, name: str, session: sqlalchemy.orm.Session = None
+        self,
+        name: str,
+        health_topic_group_id: int,
+        session: sqlalchemy.orm.Session = None,
     ) -> int:
         """ Creates a new `BodyPart` record in an IODI manner.
 
         Args:
             name (str): The body-part name.
+            health_topic_group_id (int): The linked related `HealthTopicGroup`
+                record primary-key ID.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
@@ -160,7 +165,11 @@ class DalMedline(DalFightForBase):
 
         # Upsert the `BodyPart` record.
         statement = insert(
-            BodyPart, values={"name": name}
+            BodyPart,
+            values={
+                "name": name,
+                "health_topic_group_id": health_topic_group_id,
+            },
         ).on_conflict_do_nothing()  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
