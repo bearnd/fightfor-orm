@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.24.2
+
+- Updated the `iodu_health_topic` method of the `DalMedline` class and added the missing `primary_institute_id` argument.
+
 ### v0.24.1
 
 - Updated the `iodu_health_topic_group` method of the `DalMedline` class and added the missing `health_topic_group_class_id` argument.
