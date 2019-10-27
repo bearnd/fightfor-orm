@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+from typing import Optional
 
 import sqlalchemy.orm
 from sqlalchemy.dialects.postgresql import insert
@@ -606,6 +607,7 @@ class DalMedline(DalFightForBase):
         description: str,
         summary: str,
         date_created: datetime.date,
+        primary_institute_id: Optional[int] = None,
         session: sqlalchemy.orm.Session = None,
     ) -> int:
         """ Creates a new `HealthTopic` record in an IODU manner.
@@ -617,6 +619,8 @@ class DalMedline(DalFightForBase):
             description (str): The health-topic description.
             summary (str): The health-topic summary.
             date_created (datetime.Date): The date the health-topic was created.
+            primary_institute_id (int): The linked related `PrimaryInstitute`
+                record primary-key ID.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
@@ -638,6 +642,7 @@ class DalMedline(DalFightForBase):
                 "description": description,
                 "summary": summary,
                 "date_created": date_created,
+                "primary_institute_id": primary_institute_id,
             },
         ).on_conflict_do_update(
             index_elements=["ui"],
@@ -647,6 +652,7 @@ class DalMedline(DalFightForBase):
                 "description": description,
                 "summary": summary,
                 "date_created": date_created,
+                "primary_institute_id": primary_institute_id,
             },
         )  # type: Insert
 
