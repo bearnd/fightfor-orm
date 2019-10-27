@@ -93,6 +93,7 @@ class DalMedline(DalFightForBase):
         ui: str,
         name: str,
         url: str,
+        health_topic_group_class_id: int,
         session: sqlalchemy.orm.Session = None,
     ) -> int:
         """ Creates a new `HealthTopicGroup` record in an IODU manner.
@@ -101,6 +102,8 @@ class DalMedline(DalFightForBase):
             ui (str): The health-topic group UI.
             name (str): The health-topic group name.
             url (str): The health-topic group URL.
+            health_topic_group_class_id (int): The linked
+                `HealthTopicGroupClass` record primary-key ID.
             session (sqlalchemy.orm.Session, optional): An SQLAlchemy session
                 through which the record will be added. Defaults to `None` in
                 which case a new session is automatically created and terminated
@@ -114,9 +117,20 @@ class DalMedline(DalFightForBase):
 
         # Upsert the `HealthTopicGroup` record.
         statement = insert(
-            HealthTopicGroup, values={"ui": ui, "name": name, "url": url}
+            HealthTopicGroup,
+            values={
+                "ui": ui,
+                "name": name,
+                "url": url,
+                "health_topic_group_class_id": health_topic_group_class_id,
+            },
         ).on_conflict_do_update(
-            index_elements=["ui"], set_={"url": url}
+            index_elements=["ui"],
+            set_={
+                "url": url,
+                "name": name,
+                "health_topic_group_class_id": health_topic_group_class_id,
+            },
         )  # type: Insert
 
         result = session.execute(statement)  # type: ResultProxy
